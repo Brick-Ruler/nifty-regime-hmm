@@ -1,0 +1,174 @@
+{
+  "initialized_at": "2026-11-17 22:35:00",
+  "portfolio_mode": "DYNAMIC_CONCENTRATION_PAPER_TRADING",
+  "strategy_name": "HMM Dynamic Concentration (8 in Bull / 16 in Panic)",
+  "initial_portfolio_value": 100000.0,
+  "initial_nifty_close": 25387.4,
+  "peak_portfolio_value": 100000.0,
+  "active_regime": "AGGRESSIVE GROWTH",
+  "cash_buffer": -135.3,
+  "equity_value": 100135.3,
+  "total_portfolio_value": 100000.0,
+  "cumulative_friction_paid": 0.0,
+  "holdings": {
+    "DIXON.NS": {
+      "name": "Dixon Technologies",
+      "basket": "AGGRESSIVE",
+      "sector": "EMS / Electronics",
+      "shares": 1,
+      "buy_price": 13081.0,
+      "cmp": 13081.0,
+      "current_value": 13081.0
+    },
+    "CHOLAFIN.NS": {
+      "name": "Cholamandalam Inv",
+      "basket": "AGGRESSIVE",
+      "sector": "High-Beta NBFC",
+      "shares": 7,
+      "buy_price": 1884.7,
+      "cmp": 1884.7,
+      "current_value": 13192.9
+    },
+    "MANAPPURAM.NS": {
+      "name": "Manappuram Finance",
+      "basket": "AGGRESSIVE",
+      "sector": "Gold NBFC",
+      "shares": 42,
+      "buy_price": 296.6,
+      "cmp": 296.6,
+      "current_value": 12457.2
+    },
+    "AARTIIND.NS": {
+      "name": "Aarti Industries",
+      "basket": "AGGRESSIVE",
+      "sector": "Specialty Chemicals",
+      "shares": 27,
+      "buy_price": 470.8,
+      "cmp": 470.8,
+      "current_value": 12711.6
+    },
+    "BHARATFORG.NS": {
+      "name": "Bharat Forge",
+      "basket": "AGGRESSIVE",
+      "sector": "Industrial / Forging",
+      "shares": 7,
+      "buy_price": 1714.7,
+      "cmp": 1714.7,
+      "current_value": 12002.9
+    },
+    "PERSISTENT.NS": {
+      "name": "Persistent Systems",
+      "basket": "AGGRESSIVE",
+      "sector": "Midcap IT / Tech",
+      "shares": 2,
+      "buy_price": 5911.0,
+      "cmp": 5911.0,
+      "current_value": 11822.0
+    },
+    "INDHOTEL.NS": {
+      "name": "Indian Hotels",
+      "basket": "AGGRESSIVE",
+      "sector": "Discretionary / Travel",
+      "shares": 14,
+      "buy_price": 901.55,
+      "cmp": 901.55,
+      "current_value": 12621.7
+    },
+    "COFORGE.NS": {
+      "name": "Coforge",
+      "basket": "AGGRESSIVE",
+      "sector": "Digital Solutions / IT",
+      "shares": 6,
+      "buy_price": 2041.0,
+      "cmp": 2041.0,
+      "current_value": 12246.0
+    },
+    "ABBOTINDIA.NS": {
+      "name": "Abbott India",
+      "basket": "DEFENSIVE",
+      "sector": "MNC Healthcare",
+      "shares": 0,
+      "buy_price": 25815.0,
+      "cmp": 25815.0,
+      "current_value": 0.0
+    },
+    "TORNTPHARM.NS": {
+      "name": "Torrent Pharma",
+      "basket": "DEFENSIVE",
+      "sector": "Chronic Formulations",
+      "shares": 0,
+      "buy_price": 4668.8,
+      "cmp": 4668.8,
+      "current_value": 0.0
+    },
+    "IPCALAB.NS": {
+      "name": "Ipca Laboratories",
+      "basket": "DEFENSIVE",
+      "sector": "API / Pain Mgmt",
+      "shares": 0,
+      "buy_price": 1834.4,
+      "cmp": 1834.4,
+      "current_value": 0.0
+    },
+    "MARICO.NS": {
+      "name": "Marico",
+      "basket": "DEFENSIVE",
+      "sector": "FMCG Consumer Staples",
+      "shares": 0,
+      "buy_price": 924.0,
+      "cmp": 924.0,
+      "current_value": 0.0
+    },
+    "ALKEM.NS": {
+      "name": "Alkem Laboratories",
+      "basket": "DEFENSIVE",
+      "sector": "Anti-Infectives",
+      "shares": 0,
+      "buy_price": 5175.0,
+      "cmp": 5175.0,
+      "current_value": 0.0
+    },
+    "COLPAL.NS": {
+      "name": "Colgate-Palmolive",
+      "basket": "DEFENSIVE",
+      "sector": "Oral Hygiene / Staples",
+      "shares": 0,
+      "buy_price": 1719.7,
+      "cmp": 1719.7,
+      "current_value": 0.0
+    },
+    "DABUR.NS": {
+      "name": "Dabur India",
+      "basket": "DEFENSIVE",
+      "sector": "Ayurvedic Consumer Goods",
+      "shares": 0,
+      "buy_price": 384.3,
+      "cmp": 384.3,
+      "current_value": 0.0
+    },
+    "LUPIN.NS": {
+      "name": "Lupin",
+      "basket": "DEFENSIVE",
+      "sector": "Pharma / Respiratory",
+      "shares": 0,
+      "buy_price": 1950.0,
+      "cmp": 1950.0,
+      "current_value": 0.0
+    }
+  },
+  "trade_log": [
+    {
+      "date": "2026-11-17 22:35",
+      "action": "PORTFOLIO_INIT",
+      "note": "Initial allocation of Rs. 1 Lakh into 8 Aggressive Champions (12.5% each)"
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-11-17",
+      "value": 100000.0,
+      "nifty_close": 25387.4,
+      "regime": "AGGRESSIVE GROWTH"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+name: NIFTY Autonomous Dual-Scan Portfolio Engine
+
+on:
+  schedule:
+    # 03:55 AM UTC is 09:25 AM IST (Monday to Friday)
+    - cron: '55 3 * * 1-5'
+    # 09:45 AM UTC is 03:15 PM IST (Monday to Friday)
+    - cron: '45 9 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      scan_mode:
+        description: 'Scan Mode to Execute'
+        required: true
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - morning
+          - eod
+
+permissions:
+  contents: write
+
+jobs:
+  run-portfolio-agent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Determine Scan Mode & Execute Agent
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        run: |
+          # Detect whether this is morning scan (03:55 UTC) or EOD scan (09:45 UTC)
+          CURRENT_HOUR=$(date -u +%H)
+          MODE="${{ github.event.inputs.scan_mode }}"
+
+          if [ "$MODE" = "morning" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -lt 7 ]); then
+            echo ">>> Executing Morning Gap Circuit Breaker (9:25 AM IST Scan)..."
+            python auto_portfolio_agent.py --morning-check
+          else
+            echo ">>> Executing EOD Markov Regime Rebalance Scan (3:15 PM IST Scan)..."
+            python auto_portfolio_agent.py
+          fi
+
+      - name: Commit & Push Updated Portfolio Ledger
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add portfolio_ledger.json latest_email_brief.html morning_normal_report.html emergency_gap_alert.html
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit today."
+          else
+            git commit -m "Automated ledger update: $(date -u +'%Y-%m-%d %H:%M UTC') [skip ci]"
+            git push
+          fi

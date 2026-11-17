@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+temp_email_body.html
+task_morning.xml
+task_eod.xml
+run_morning.bat
+run_daily.bat
