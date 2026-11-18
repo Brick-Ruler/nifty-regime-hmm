@@ -1,6 +1,7 @@
 """
 Live Quote Fetcher for NIFTY Dynamic Tracker
-Fetches live NSE prices for NIFTY 50, India VIX, and all portfolio stocks.
+Primary Engine: Zerodha Kite Connect L1 Real-Time Exchange Feed
+Fallback Engine: Direct Yahoo Finance v8 Fast Chart API
 """
 import urllib.request
 import urllib.parse
@@ -20,7 +21,7 @@ SYMBOLS = [
     'ALKEM.NS', 'COLPAL.NS', 'DABUR.NS', 'LUPIN.NS'
 ]
 
-def fetch_symbol_meta(symbol):
+def fetch_symbol_meta_yahoo(symbol):
     encoded = urllib.parse.quote(symbol)
     url = f"https://query1.finance.yahoo.com/v8/finance/chart/{encoded}?range=1d&interval=5m"
     headers = {"User-Agent": "Mozilla/5.0"}
@@ -35,18 +36,32 @@ def fetch_symbol_meta(symbol):
                 chg = ((cmp - prev) / prev) * 100.0
                 return {'cmp': round(cmp, 2), 'prev_close': round(prev, 2), 'change_pct': round(chg, 2)}
     except Exception as e:
-        print(f"Error fetching {symbol}: {e}")
+        print(f"Error fetching {symbol} via Yahoo: {e}")
     return None
 
 def update_live_quotes():
+    # 1. Attempt Primary Zerodha Kite Connect Feed
+    try:
+        from zerodha_feed import fetch_kite_quotes
+        kite_quotes = fetch_kite_quotes()
+        if kite_quotes and len(kite_quotes.get('stocks', {})) > 0:
+            with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
+                json.dump(kite_quotes, f, indent=2)
+            print(f"[SUCCESS] Updated live_quotes.json via Zerodha Kite Connect ({len(kite_quotes['stocks'])} stocks)!")
+            return kite_quotes
+    except Exception as e:
+        print(f"[NOTICE] Zerodha feed not active ({e}); falling back to standard feed.")
+
+    # 2. Fallback to Yahoo Finance Feed
     now_str = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     quotes = {
         'timestamp': now_str,
+        'source': 'FALLBACK_EXCHANGE_FEED',
         'stocks': {}
     }
     
     for s in SYMBOLS:
-        res = fetch_symbol_meta(s)
+        res = fetch_symbol_meta_yahoo(s)
         if res:
             if s == '^NSEI':
                 quotes['nifty'] = res
@@ -57,7 +72,7 @@ def update_live_quotes():
 
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
         json.dump(quotes, f, indent=2)
-    print(f"Successfully updated live_quotes.json at {now_str} with {len(quotes['stocks'])} stocks!")
+    print(f"[SUCCESS] Updated live_quotes.json via Fallback Feed at {now_str} with {len(quotes['stocks'])} stocks!")
     return quotes
 
 if __name__ == '__main__':

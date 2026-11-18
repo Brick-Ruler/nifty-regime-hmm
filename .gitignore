@@ -5,3 +5,7 @@ task_morning.xml
 task_eod.xml
 run_morning.bat
 run_daily.bat
+.env
+kite_session.json
+credentials.json
+*.token
