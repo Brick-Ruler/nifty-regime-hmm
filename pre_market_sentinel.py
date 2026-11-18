@@ -121,10 +121,30 @@ def scan_company_overnight_news(company_name, ticker):
 
     return findings
 
+def is_valid_premarket_window():
+    if "--force" in sys.argv:
+        print("[TIME GATE] --force flag detected. Bypassing schedule window check.")
+        return True
+    from datetime import timezone, timedelta
+    ist_tz = timezone(timedelta(hours=5, minutes=30))
+    now_ist = datetime.now(timezone.utc).astimezone(ist_tz)
+    weekday = now_ist.weekday()
+    if weekday > 4:
+        print(f"[TIME GATE] Weekend detected (Day {weekday}). Pre-market scan suppressed.")
+        return False
+    total_mins = now_ist.hour * 60 + now_ist.minute
+    # Pre-Market Window: 08:30 to 09:15 IST (510 to 555 minutes)
+    if not (510 <= total_mins <= 555):
+        print(f"[TIME GATE] Current time {now_ist.strftime('%H:%M IST')} is outside Pre-Market window (08:30-09:15 IST). Execution suppressed.")
+        return False
+    return True
+
 # =====================================================================
 # 3. Main Pre-Market Sentinel Logic
 # =====================================================================
 def run_premarket_sentinel():
+    if not is_valid_premarket_window():
+        return
     print("=" * 80)
     print("   NIFTY PRE-MARKET STRATEGIC SENTINEL & NEWS FILTER (08:50 AM IST)   ")
     print("=" * 80)

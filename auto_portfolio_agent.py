@@ -136,7 +136,43 @@ def fetch_open_and_prev_close(symbol):
         pass
     return None, None, 0.0
 
+def is_valid_execution_window(mode):
+    """
+    Guards against delayed cloud runners executing outside valid market hours.
+    Timezone: Asia/Kolkata (IST = UTC + 5:30)
+    Can be bypassed manually using --force flag.
+    """
+    if "--force" in sys.argv:
+        print("[TIME GATE] --force flag detected. Bypassing schedule window check.")
+        return True
+
+    from datetime import timezone, timedelta
+    ist_tz = timezone(timedelta(hours=5, minutes=30))
+    now_ist = datetime.now(timezone.utc).astimezone(ist_tz)
+    weekday = now_ist.weekday()  # 0=Monday, 4=Friday, 5=Saturday, 6=Sunday
+
+    if weekday > 4:
+        print(f"[TIME GATE] Weekend detected (Day {weekday}). Execution suppressed.")
+        return False
+
+    total_mins = now_ist.hour * 60 + now_ist.minute
+
+    if mode == "morning":
+        # Morning Gap Window: 09:15 to 10:15 IST (555 to 615 minutes)
+        if not (555 <= total_mins <= 615):
+            print(f"[TIME GATE] Current time {now_ist.strftime('%H:%M IST')} is outside Morning Gap window (09:15-10:15 IST). Execution suppressed.")
+            return False
+    elif mode == "eod":
+        # EOD Rebalance Window: 14:45 to 16:30 IST (885 to 990 minutes)
+        if not (885 <= total_mins <= 990):
+            print(f"[TIME GATE] Current time {now_ist.strftime('%H:%M IST')} is outside EOD Rebalance window (14:45-16:30 IST). Execution suppressed.")
+            return False
+
+    return True
+
 def run_morning_circuit_breaker():
+    if not is_valid_execution_window("morning"):
+        return
     print("=" * 80)
     print("      MORNING EMERGENCY GAP CIRCUIT BREAKER (9:25 AM IST SCAN)        ")
     print("=" * 80)
@@ -399,6 +435,8 @@ def run_morning_circuit_breaker():
 
 
 def run_eod_agent():
+    if not is_valid_execution_window("eod"):
+        return
     print("=" * 80)
     print("   AUTONOMOUS HMM AGENT: EOD EXECUTION & COMPREHENSIVE BRIEFING (3:15 PM)  ")
     print("=" * 80)

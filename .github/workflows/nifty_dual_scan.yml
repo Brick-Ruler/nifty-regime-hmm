@@ -52,12 +52,14 @@ jobs:
           if [ "$MODE" = "premarket" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -eq 3 ] && [ "$CURRENT_MIN" -le 35 ]); then
             echo ">>> Executing Pre-Market Sentinel (08:50 AM IST Scan)..."
             python pre_market_sentinel.py
-          elif [ "$MODE" = "morning" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -lt 7 ]); then
+          elif [ "$MODE" = "morning" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -ge 3 ] && [ "$CURRENT_HOUR" -lt 6 ]); then
             echo ">>> Executing Morning Gap Circuit Breaker (09:25 AM IST Scan)..."
             python auto_portfolio_agent.py --morning-check
-          else
+          elif [ "$MODE" = "eod" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -ge 9 ] && [ "$CURRENT_HOUR" -le 11 ]); then
             echo ">>> Executing EOD Markov Regime Rebalance Scan (03:15 PM IST Scan)..."
             python auto_portfolio_agent.py
+          else
+            echo ">>> Outside valid market scan hours (UTC: ${CURRENT_HOUR}:${CURRENT_MIN}). Suppressing execution to prevent stale off-hour alerts."
           fi
 
       - name: Commit & Push Updated Portfolio Ledger
