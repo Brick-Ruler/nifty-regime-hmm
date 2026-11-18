@@ -947,62 +947,81 @@
             footPnLEl.style.color = totalUnrealizedPnL >= 0 ? 'var(--green)' : 'var(--red)';
         }
 
-        // Fetch Live Quotes from same-origin JSON feed
+        // Fetch Live Quotes with Serverless On-Demand Support
         async function fetchLiveQuotes(isManual = false) {
             const refreshBtn = document.getElementById('manual-refresh-btn');
             const pollStatus = document.getElementById('poll-status');
             if (isManual && refreshBtn) {
                 refreshBtn.style.opacity = '0.6';
-                refreshBtn.querySelector('span:last-child').innerText = 'Updating...';
+                refreshBtn.querySelector('span:last-child').innerText = 'Fetching Live Exchange...';
             }
 
+            let data = null;
+            let sourceLabel = '';
+
+            // 1. Primary: Netlify Serverless Live Exchange API (Live on-demand, ~1s latency)
             try {
-                // Same-origin relative path with timestamp cache busting (Zero CORS!)
-                const resp = await fetch(`./live_quotes.json?_t=${Date.now()}`, { cache: 'no-store' });
-                if (resp.ok) {
-                    const data = await resp.json();
-                    if (data && data.stocks) {
-                        liveQuotesCache = Object.assign({}, liveQuotesCache, data.stocks);
-                        if (data.timestamp) lastQuotesTimestamp = data.timestamp;
-
-                        if (data.nifty) {
-                            document.getElementById('nifty-val').innerText = data.nifty.cmp.toLocaleString('en-IN', { minimumFractionDigits: 2 });
-                            const nchg = data.nifty.change_pct;
-                            const nel = document.getElementById('nifty-chg');
-                            nel.innerText = `${nchg >= 0 ? '+' : ''}${nchg.toFixed(2)}%`;
-                            nel.className = `badge-pill ${nchg >= 0 ? 'pill-up' : 'pill-down'}`;
-                        }
-
-                        if (data.vix) {
-                            document.getElementById('vix-val').innerText = data.vix.cmp.toFixed(2);
-                            const vchg = data.vix.change_pct;
-                            const vel = document.getElementById('vix-chg');
-                            vel.innerText = `${vchg >= 0 ? '+' : ''}${vchg.toFixed(2)}%`;
-                            vel.className = `badge-pill ${vchg >= 0 ? 'pill-up' : 'pill-down'}`;
-                        }
-
-                        document.getElementById('last-sync-time').innerText = lastQuotesTimestamp;
-                        renderTable();
-                        renderTickerTape();
-                        renderDefensives();
-
-                        if (pollStatus) {
-                            pollStatus.innerText = 'FEED SYNCHRONIZED (3s)';
-                            pollStatus.style.color = 'var(--green)';
-                        }
-                    }
+                const apiResp = await fetch(`/api/quotes?_t=${Date.now()}`, { cache: 'no-store' });
+                if (apiResp.ok) {
+                    data = await apiResp.json();
+                    sourceLabel = 'LIVE CLOUD SERVERLESS FEED';
                 }
-            } catch (err) {
-                console.warn('Auto-poll fetch note:', err);
+            } catch (e) {
+                // Ignore and fall back
+            }
+
+            // 2. Fallback: Local/GitHub Pages static JSON feed
+            if (!data || !data.stocks || Object.keys(data.stocks).length === 0) {
+                try {
+                    const jsonResp = await fetch(`./live_quotes.json?_t=${Date.now()}`, { cache: 'no-store' });
+                    if (jsonResp.ok) {
+                        data = await jsonResp.json();
+                        sourceLabel = 'STATIC EXCHANGE SNAPSHOT';
+                    }
+                } catch (e) {
+                    console.warn('Fallback quote error:', e);
+                }
+            }
+
+            if (data && data.stocks) {
+                liveQuotesCache = Object.assign({}, liveQuotesCache, data.stocks);
+                if (data.timestamp) lastQuotesTimestamp = data.timestamp;
+
+                if (data.nifty) {
+                    document.getElementById('nifty-val').innerText = data.nifty.cmp.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                    const nchg = data.nifty.change_pct;
+                    const nel = document.getElementById('nifty-chg');
+                    nel.innerText = `${nchg >= 0 ? '+' : ''}${nchg.toFixed(2)}%`;
+                    nel.className = `badge-pill ${nchg >= 0 ? 'pill-up' : 'pill-down'}`;
+                }
+
+                if (data.vix) {
+                    document.getElementById('vix-val').innerText = data.vix.cmp.toFixed(2);
+                    const vchg = data.vix.change_pct;
+                    const vel = document.getElementById('vix-chg');
+                    vel.innerText = `${vchg >= 0 ? '+' : ''}${vchg.toFixed(2)}%`;
+                    vel.className = `badge-pill ${vchg >= 0 ? 'pill-up' : 'pill-down'}`;
+                }
+
+                document.getElementById('last-sync-time').innerText = lastQuotesTimestamp;
+                renderTable();
+                renderTickerTape();
+                renderDefensives();
+
+                if (pollStatus) {
+                    pollStatus.innerText = `${sourceLabel} (LIVE)`;
+                    pollStatus.style.color = 'var(--green)';
+                }
+            } else {
                 if (pollStatus) {
                     pollStatus.innerText = 'OFFLINE CACHE ACTIVE';
                     pollStatus.style.color = '#f59e0b';
                 }
-            } finally {
-                if (isManual && refreshBtn) {
-                    refreshBtn.style.opacity = '1';
-                    refreshBtn.querySelector('span:last-child').innerText = 'Refresh Now';
-                }
+            }
+
+            if (isManual && refreshBtn) {
+                refreshBtn.style.opacity = '1';
+                refreshBtn.querySelector('span:last-child').innerText = 'Refresh Now';
             }
         }
 
