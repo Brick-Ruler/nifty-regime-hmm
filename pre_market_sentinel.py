@@ -181,9 +181,9 @@ def run_premarket_sentinel():
         bias_color = "#2563eb"
         indicative_mood = "Balanced global backdrop. Domestic morning cues will drive opening price action."
 
-    # 2. Gap Circuit Breaker Proximity
+    # 2. Gap Circuit Breaker Proximity (Calibrated -1.75% Cutoff)
     last_nifty = ledger.get('initial_nifty_close', 25387.40)
-    gap_cutoff_nifty = round(last_nifty * (1.0 - 0.015), 2)
+    gap_cutoff_nifty = round(last_nifty * (1.0 - 0.0175), 2)
     buffer_points = round(last_nifty - gap_cutoff_nifty, 1)
 
     # 3. Company Disclosures & News Filter (8 Active Champions + 8 Fortresses)
@@ -277,7 +277,7 @@ def run_premarket_sentinel():
                 <div class="card-title">2. Circuit Breaker Danger Threshold</div>
                 <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 12px; font-size: 13px;">
                     • <strong>NIFTY 50 Base Close:</strong> <strong>{last_nifty:,.1f}</strong><br>
-                    • <strong>-1.50% Emergency Cutoff:</strong> <strong style="color: #dc2626;">Rs. {gap_cutoff_nifty:,.1f}</strong> (Distance: {buffer_points} pts)<br>
+                    • <strong>-1.75% Emergency Cutoff:</strong> <strong style="color: #dc2626;">Rs. {gap_cutoff_nifty:,.1f}</strong> (Distance: {buffer_points} pts)<br>
                     • <strong>Threshold Status:</strong> Safe. NIFTY must drop > {buffer_points} pts at open to trigger emergency defense.
                 </div>
             </div>

@@ -86,7 +86,7 @@ def initialize_1lakh_ledger():
         'peak_portfolio_value': total_capital,
         'active_regime': 'AGGRESSIVE GROWTH',
         'volatility_targeting': {
-            'target_annualized_vol': 18.0,
+            'target_annualized_vol': 21.0,
             'rebalance_deadband': 0.15,
             'rolling_lookback_sessions': 20,
             'current_portfolio_realized_vol': 18.74,

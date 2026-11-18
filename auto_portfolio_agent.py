@@ -199,8 +199,8 @@ def run_morning_circuit_breaker():
     print(f"-> NIFTY 50 Opening Gap: {nifty_gap:+5.2f}% (Open: {nifty_open:,.1f} | Prev Close: {nifty_prev_close:,.1f})")
     print(f"-> India VIX:            {vix_open:5.2f} (Gap: {vix_gap:+5.2f}%)")
 
-    # 2. Check Optimal Threshold: Gap <= -1.50% OR (Gap <= -1.0% AND VIX > 18.0)
-    emergency_triggered = (nifty_gap <= -1.50) or (nifty_gap <= -1.00 and vix_open >= 18.0 and vix_gap >= 12.0)
+    # 2. Check Calibrated Optimal Threshold: Gap <= -1.75% OR (Gap <= -1.25% AND VIX >= 20.0)
+    emergency_triggered = (nifty_gap <= -1.75) or (nifty_gap <= -1.25 and vix_open >= 20.0 and vix_gap >= 15.0)
 
     if not emergency_triggered:
         print(f"Status: Market open within normal tolerance (Gap: {nifty_gap:+4.2f}%).")
@@ -487,21 +487,27 @@ def run_eod_agent():
 
     regime_flipped = (new_regime != prev_regime)
 
-    # 3b. Volatility Targeting Overlay (Target = 18.0%, 15% Deadband Buffer, 20d Rolling Lookback)
+    # 3b. Volatility Targeting Overlay (Calibrated B: Target = 21.0%, 15% Deadband, Asymmetric Shield)
     vol_cfg = ledger.get('volatility_targeting', {
-        'target_annualized_vol': 18.0,
+        'target_annualized_vol': 21.0,
         'rebalance_deadband': 0.15,
         'rolling_lookback_sessions': 20,
-        'current_portfolio_realized_vol': 17.72,
+        'current_portfolio_realized_vol': 18.25,
         'current_equity_weight': 1.0,
         'current_liquid_cash_weight': 0.0,
         'status': 'NORMAL_FULL_EXPOSURE'
     })
     realized_vol_20d = compute_portfolio_20d_realized_vol()
-    tgt_vol = vol_cfg.get('target_annualized_vol', 18.0)
+    tgt_vol = vol_cfg.get('target_annualized_vol', 21.0)
     deadband = vol_cfg.get('rebalance_deadband', 0.15)
     current_eq_w = vol_cfg.get('current_equity_weight', 1.0)
-    raw_target_eq_w = min(1.0, round(tgt_vol / max(realized_vol_20d, 5.0), 4))
+
+    # Calibrated B: Full 100% equity compounding in Calm Bull mode unless realized vol exceeds extreme ceiling (24.15%)
+    # In Panic Bear regime, scales equity down to preserve capital
+    if new_regime == "DEFENSIVE QUALITY" or realized_vol_20d > (tgt_vol * 1.15):
+        raw_target_eq_w = min(1.0, round(tgt_vol / max(realized_vol_20d, 5.0), 4))
+    else:
+        raw_target_eq_w = 1.0
 
     vol_rebalanced = False
     new_eq_w = current_eq_w
@@ -654,8 +660,8 @@ def run_eod_agent():
     top_gainers = active_stock_movers[:3]
     top_losers = active_stock_movers[-3:]
 
-    gap_cutoff_nifty = round(nifty_price * (1.0 - 0.015), 1)
-    vol_upper_trigger = round(18.0 / max(0.01, (new_eq_w - deadband)), 1)
+    gap_cutoff_nifty = round(nifty_price * (1.0 - 0.0175), 1)
+    vol_upper_trigger = round(21.0 / max(0.01, (new_eq_w - deadband)), 1)
 
     active_rows_html = ""
     for sym, name, ret, cmp, sh, val in active_stock_movers:
@@ -729,8 +735,8 @@ def run_eod_agent():
                     <tbody>
                         <tr><td><strong>Total Return</strong></td><td class="{'text-green' if port_total_return>=0 else 'text-red'}"><strong>{port_total_return:+5.2f}%</strong></td><td>{nifty_total_return:+5.2f}%</td><td class="{'text-green' if alpha>=0 else 'text-red'}"><strong>{alpha:+5.2f}% Alpha</strong></td></tr>
                         <tr><td><strong>Current Drawdown</strong></td><td class="text-green"><strong>{current_drawdown:.2f}%</strong></td><td>-</td><td>High Capital Protection</td></tr>
-                        <tr><td><strong>Overnight Circuit Breaker</strong></td><td colspan="3"><strong class="text-green">ACTIVE (9:25 AM Morning Gap Trigger <= -1.5%)</strong></td></tr>
-                        <tr><td><strong>Target Volatility Overlay</strong></td><td><strong class="text-green">{realized_vol_20d:.1f}% 20D Vol (Target 18.0%)</strong></td><td colspan="2">Gross Exposure: <strong>{new_eq_w*100:.0f}% Equity / {new_cash_w*100:.0f}% Liquid Cash</strong> (15% Deadband Protected)</td></tr>
+                        <tr><td><strong>Overnight Circuit Breaker</strong></td><td colspan="3"><strong class="text-green">ACTIVE (9:25 AM Morning Gap Trigger <= -1.75%)</strong></td></tr>
+                        <tr><td><strong>Target Volatility Overlay</strong></td><td><strong class="text-green">{realized_vol_20d:.1f}% 20D Vol (Target 21.0%)</strong></td><td colspan="2">Gross Exposure: <strong>{new_eq_w*100:.0f}% Equity / {new_cash_w*100:.0f}% Liquid Cash</strong> (15% Deadband Protected)</td></tr>
                     </tbody>
                 </table>
             </div>
