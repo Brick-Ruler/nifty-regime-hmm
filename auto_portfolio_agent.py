@@ -25,6 +25,10 @@ if BASE_DIR not in sys.path:
     sys.path.append(BASE_DIR)
 
 from daily_portfolio_advisor import AGG_STOCKS, DEF_STOCKS, fetch_latest_quote
+try:
+    from update_live_quotes import update_live_quotes
+except Exception:
+    update_live_quotes = None
 
 LEDGER_FILE = os.path.join(BASE_DIR, "portfolio_ledger.json")
 BRIEF_HTML_FILE = os.path.join(BASE_DIR, "latest_email_brief.html")
@@ -234,6 +238,12 @@ def run_morning_circuit_breaker():
         morning_html_file = os.path.join(BASE_DIR, "morning_normal_report.html")
         with open(morning_html_file, 'w', encoding='utf-8') as f:
             f.write(morning_html)
+
+        if update_live_quotes:
+            try:
+                update_live_quotes()
+            except Exception as e:
+                print(f"Live quotes sync notice: {e}")
 
         gap_display = f"{nifty_gap:+.2f}".replace('%', '') + " percent"
         safe_subject = f"☀️ NIFTY Morning Scan: Normal Open ({gap_display}) - Positions Held Steady"
@@ -629,6 +639,12 @@ def run_eod_agent():
         f.write(email_html)
 
     # 9. Send Email
+    if update_live_quotes:
+        try:
+            update_live_quotes()
+        except Exception as e:
+            print(f"Live quotes sync notice: {e}")
+
     subject = f"NIFTY Dynamic Concentration Portfolio Briefing ({datetime.now().strftime('%d %b %Y')})"
     send_email_report(subject, email_html)
 

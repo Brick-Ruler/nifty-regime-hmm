@@ -1,0 +1,95 @@
+{
+  "timestamp": "2026-11-18 12:31:27",
+  "stocks": {
+    "DIXON.NS": {
+      "cmp": 12666.0,
+      "prev_close": 13081.0,
+      "change_pct": -3.17
+    },
+    "CHOLAFIN.NS": {
+      "cmp": 1860.6,
+      "prev_close": 1884.7,
+      "change_pct": -1.28
+    },
+    "MANAPPURAM.NS": {
+      "cmp": 282.1,
+      "prev_close": 296.6,
+      "change_pct": -4.89
+    },
+    "AARTIIND.NS": {
+      "cmp": 464.55,
+      "prev_close": 470.8,
+      "change_pct": -1.33
+    },
+    "BHARATFORG.NS": {
+      "cmp": 1685.9,
+      "prev_close": 1714.7,
+      "change_pct": -1.68
+    },
+    "PERSISTENT.NS": {
+      "cmp": 5862.0,
+      "prev_close": 5911.0,
+      "change_pct": -0.83
+    },
+    "INDHOTEL.NS": {
+      "cmp": 879.45,
+      "prev_close": 901.55,
+      "change_pct": -2.45
+    },
+    "COFORGE.NS": {
+      "cmp": 2040.3,
+      "prev_close": 2041.0,
+      "change_pct": -0.03
+    },
+    "ABBOTINDIA.NS": {
+      "cmp": 25670.0,
+      "prev_close": 25815.0,
+      "change_pct": -0.56
+    },
+    "TORNTPHARM.NS": {
+      "cmp": 4685.0,
+      "prev_close": 4668.8,
+      "change_pct": 0.35
+    },
+    "IPCALAB.NS": {
+      "cmp": 1879.1,
+      "prev_close": 1834.4,
+      "change_pct": 2.44
+    },
+    "MARICO.NS": {
+      "cmp": 905.3,
+      "prev_close": 924.0,
+      "change_pct": -2.02
+    },
+    "ALKEM.NS": {
+      "cmp": 5208.5,
+      "prev_close": 5175.0,
+      "change_pct": 0.65
+    },
+    "COLPAL.NS": {
+      "cmp": 1695.6,
+      "prev_close": 1719.7,
+      "change_pct": -1.4
+    },
+    "DABUR.NS": {
+      "cmp": 379.75,
+      "prev_close": 384.3,
+      "change_pct": -1.18
+    },
+    "LUPIN.NS": {
+      "cmp": 1961.1,
+      "prev_close": 1950.0,
+      "change_pct": 0.57
+    }
+  },
+  "nifty": {
+    "cmp": 25208.75,
+    "prev_close": 25387.4,
+    "change_pct": -0.7
+  },
+  "vix": {
+    "cmp": 15.82,
+    "prev_close": 15.52,
+    "change_pct": 1.95
+  }
+}

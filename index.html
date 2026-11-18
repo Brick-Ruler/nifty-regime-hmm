@@ -542,66 +542,87 @@
             cash_buffer: -135.3,
             active_regime: "AGGRESSIVE GROWTH",
             holdings: {
-                "DIXON.NS": { name: "Dixon Technologies", sector: "EMS / Electronics", shares: 1, buy_price: 13081.0, cmp: 13081.0 },
-                "CHOLAFIN.NS": { name: "Cholamandalam Inv", sector: "High-Beta NBFC", shares: 7, buy_price: 1884.7, cmp: 1884.7 },
-                "MANAPPURAM.NS": { name: "Manappuram Finance", sector: "Gold NBFC", shares: 42, buy_price: 296.6, cmp: 296.6 },
-                "AARTIIND.NS": { name: "Aarti Industries", sector: "Specialty Chemicals", shares: 27, buy_price: 470.8, cmp: 470.8 },
-                "BHARATFORG.NS": { name: "Bharat Forge", sector: "Industrial / Forging", shares: 7, buy_price: 1714.7, cmp: 1714.7 },
-                "PERSISTENT.NS": { name: "Persistent Systems", sector: "Midcap IT / Tech", shares: 2, buy_price: 5911.0, cmp: 5911.0 },
-                "INDHOTEL.NS": { name: "Indian Hotels", sector: "Discretionary / Travel", shares: 14, buy_price: 901.55, cmp: 901.55 },
-                "COFORGE.NS": { name: "Coforge", sector: "Digital Solutions / IT", shares: 6, buy_price: 2041.0, cmp: 2041.0 }
+                "DIXON.NS": { name: "Dixon Technologies", sector: "EMS / Electronics", shares: 1, buy_price: 13081.0, cmp: 12685.0, prev_close: 13081.0 },
+                "CHOLAFIN.NS": { name: "Cholamandalam Inv", sector: "High-Beta NBFC", shares: 7, buy_price: 1884.7, cmp: 1861.2, prev_close: 1884.7 },
+                "MANAPPURAM.NS": { name: "Manappuram Finance", sector: "Gold NBFC", shares: 42, buy_price: 296.6, cmp: 282.45, prev_close: 296.6 },
+                "AARTIIND.NS": { name: "Aarti Industries", sector: "Specialty Chemicals", shares: 27, buy_price: 470.8, cmp: 465.05, prev_close: 470.8 },
+                "BHARATFORG.NS": { name: "Bharat Forge", sector: "Industrial / Forging", shares: 7, buy_price: 1714.7, cmp: 1684.9, prev_close: 1714.7 },
+                "PERSISTENT.NS": { name: "Persistent Systems", sector: "Midcap IT / Tech", shares: 2, buy_price: 5911.0, cmp: 5862.5, prev_close: 5911.0 },
+                "INDHOTEL.NS": { name: "Indian Hotels", sector: "Discretionary / Travel", shares: 14, buy_price: 901.55, cmp: 879.5, prev_close: 901.55 },
+                "COFORGE.NS": { name: "Coforge", sector: "Digital Solutions / IT", shares: 6, buy_price: 2041.0, cmp: 2040.4, prev_close: 2041.0 }
             }
         };
 
         let allocationChart = null;
 
-        // Fetch live quotes via proxy or fallback
+        // Fetch live quotes via same-origin live_quotes.json + parallel proxy fallback
         async function fetchLiveMarketData() {
             const btn = document.querySelector('.refresh-btn');
             if (btn) btn.innerHTML = `<span>⏳</span> Updating...`;
 
+            // 1. Fetch same-origin live_quotes.json (Guaranteed, zero CORS, instant)
             try {
-                // Try to load latest portfolio_ledger.json if hosted
-                const ledgerResp = await fetch('portfolio_ledger.json?t=' + Date.now()).catch(() => null);
-                if (ledgerResp && ledgerResp.ok) {
-                    const lData = await ledgerResp.json();
-                    if (lData.holdings) {
-                        for (let sym in lData.holdings) {
+                const resp = await fetch('live_quotes.json?t=' + Date.now());
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data.stocks) {
+                        for (const sym in data.stocks) {
                             if (portfolioData.holdings[sym]) {
-                                portfolioData.holdings[sym].shares = lData.holdings[sym].shares;
-                                portfolioData.holdings[sym].buy_price = lData.holdings[sym].buy_price || portfolioData.holdings[sym].buy_price;
-                                portfolioData.holdings[sym].cmp = lData.holdings[sym].cmp || portfolioData.holdings[sym].cmp;
+                                portfolioData.holdings[sym].cmp = Number(data.stocks[sym].cmp);
+                                portfolioData.holdings[sym].prev_close = Number(data.stocks[sym].prev_close);
                             }
                         }
                     }
-                }
-
-                // Query live prices for active stocks
-                const symbols = Object.keys(portfolioData.holdings);
-                for (const sym of symbols) {
-                    try {
-                        const targetUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=2d&interval=1d`;
-                        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
-                        const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(4000) });
-                        if (res.ok) {
-                            const yData = await res.json();
-                            const quotes = yData?.chart?.result?.[0]?.indicators?.quote?.[0];
-                            const closes = quotes?.close?.filter(c => c !== null);
-                            if (closes && closes.length >= 1) {
-                                const newCmp = closes[closes.length - 1];
-                                const prevCmp = closes.length >= 2 ? closes[closes.length - 2] : newCmp;
-                                portfolioData.holdings[sym].prev_close = prevCmp;
-                                portfolioData.holdings[sym].cmp = newCmp;
-                            }
+                    if (data.nifty) {
+                        const nEl = document.getElementById('sentinel-gap');
+                        if (nEl) {
+                            const sign = data.nifty.change_pct >= 0 ? '+' : '';
+                            nEl.innerText = `${sign}${data.nifty.change_pct.toFixed(2)}% (${data.nifty.cmp.toLocaleString('en-IN')})`;
+                            nEl.className = `mono ${data.nifty.change_pct >= 0 ? 'text-green' : 'text-red'}`;
                         }
-                    } catch (e) {
-                        // Keep last known CMP
                     }
+                    if (data.vix) {
+                        const vEl = document.getElementById('sentinel-vix');
+                        if (vEl) {
+                            const sign = data.vix.change_pct >= 0 ? '+' : '';
+                            vEl.innerText = `${data.vix.cmp.toFixed(2)} (${sign}${data.vix.change_pct.toFixed(2)}%)`;
+                        }
+                    }
+                    const statusPill = document.getElementById('market-status-pill');
+                    if (statusPill && data.timestamp) {
+                        statusPill.innerHTML = `<span>🟢</span> Quotes Synced: ${data.timestamp.split(' ')[1]}`;
+                    }
+                    renderDashboard();
                 }
-            } catch (err) {
-                console.log("Using cached/ledger quotes:", err);
+            } catch (e) {
+                console.warn('Could not load live_quotes.json:', e);
             }
 
+            // 2. Live intraday parallel fetch for real-time tick micro-updates
+            const symbols = Object.keys(portfolioData.holdings);
+            const fetchPromises = symbols.map(async (sym) => {
+                try {
+                    const yUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=1d&interval=5m`;
+                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(yUrl)}`;
+                    const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(5000) });
+                    if (res.ok) {
+                        const yData = await res.json();
+                        const meta = yData?.chart?.result?.[0]?.meta;
+                        const cmp = meta?.regularMarketPrice;
+                        const prev = meta?.chartPreviousClose || meta?.previousClose;
+                        if (cmp && prev) {
+                            const oldCmp = portfolioData.holdings[sym].cmp;
+                            portfolioData.holdings[sym].cmp = Number(cmp.toFixed(2));
+                            portfolioData.holdings[sym].prev_close = Number(prev.toFixed(2));
+                            if (oldCmp !== cmp) {
+                                portfolioData.holdings[sym].justUpdated = (cmp > oldCmp) ? 'up' : 'down';
+                            }
+                        }
+                    }
+                } catch (err) {}
+            });
+
+            await Promise.allSettled(fetchPromises);
             renderDashboard();
 
             if (btn) btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg> Refresh Now`;
@@ -637,8 +658,13 @@
                 chartLabels.push(sym.replace('.NS', ''));
                 chartData.push(Math.round(holdVal));
 
+                let flashClass = '';
+                if (item.justUpdated === 'up') flashClass = 'flash-up';
+                else if (item.justUpdated === 'down') flashClass = 'flash-down';
+                item.justUpdated = null;
+
                 tbodyHtml += `
-                    <tr>
+                    <tr class="${flashClass}">
                         <td>
                             <div class="stock-pill">
                                 <span class="stock-ticker">${sym.replace('.NS', '')}</span>
@@ -648,7 +674,7 @@
                         <td><span class="badge-sector">${item.sector}</span></td>
                         <td class="mono"><strong>${item.shares}</strong></td>
                         <td class="mono">Rs. ${item.buy_price.toLocaleString('en-IN', {minimumFractionDigits: 1, maximumFractionDigits: 1})}</td>
-                        <td class="mono" style="font-weight:700;">Rs. ${cmp.toLocaleString('en-IN', {minimumFractionDigits: 1, maximumFractionDigits: 1})}</td>
+                        <td class="mono" style="font-weight:700;">Rs. ${cmp.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                         <td class="mono">Rs. ${holdVal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                         <td class="mono ${dayRet >= 0 ? 'text-green' : 'text-red'}">${dayRet >= 0 ? '+' : ''}${dayRet.toFixed(2)}%</td>
                         <td class="mono ${itemPnl >= 0 ? 'text-green' : 'text-red'}">${itemPnl >= 0 ? '+' : ''}Rs. ${itemPnl.toLocaleString('en-IN', {minimumFractionDigits: 1, maximumFractionDigits: 1})}</td>
