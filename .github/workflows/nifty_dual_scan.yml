@@ -1,10 +1,12 @@
-name: NIFTY Autonomous Dual-Scan Portfolio Engine
+name: NIFTY Autonomous Triple-Scan Portfolio Engine
 
 on:
   schedule:
-    # 03:55 AM UTC is 09:25 AM IST (Monday to Friday)
+    # 03:20 AM UTC is 08:50 AM IST (Pre-Market Intelligence & News Filter)
+    - cron: '20 3 * * 1-5'
+    # 03:55 AM UTC is 09:25 AM IST (Morning Gap Circuit Breaker)
     - cron: '55 3 * * 1-5'
-    # 09:45 AM UTC is 03:15 PM IST (Monday to Friday)
+    # 09:45 AM UTC is 03:15 PM IST (EOD Markov & Volatility Rebalance)
     - cron: '45 9 * * 1-5'
   workflow_dispatch:
     inputs:
@@ -15,6 +17,7 @@ on:
         type: choice
         options:
           - auto
+          - premarket
           - morning
           - eod
 
@@ -42,15 +45,18 @@ jobs:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
         run: |
-          # Detect whether this is morning scan (03:55 UTC) or EOD scan (09:45 UTC)
           CURRENT_HOUR=$(date -u +%H)
+          CURRENT_MIN=$(date -u +%M)
           MODE="${{ github.event.inputs.scan_mode }}"
 
-          if [ "$MODE" = "morning" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -lt 7 ]); then
-            echo ">>> Executing Morning Gap Circuit Breaker (9:25 AM IST Scan)..."
+          if [ "$MODE" = "premarket" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -eq 3 ] && [ "$CURRENT_MIN" -le 35 ]); then
+            echo ">>> Executing Pre-Market Sentinel (08:50 AM IST Scan)..."
+            python pre_market_sentinel.py
+          elif [ "$MODE" = "morning" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -lt 7 ]); then
+            echo ">>> Executing Morning Gap Circuit Breaker (09:25 AM IST Scan)..."
             python auto_portfolio_agent.py --morning-check
           else
-            echo ">>> Executing EOD Markov Regime Rebalance Scan (3:15 PM IST Scan)..."
+            echo ">>> Executing EOD Markov Regime Rebalance Scan (03:15 PM IST Scan)..."
             python auto_portfolio_agent.py
           fi
 
