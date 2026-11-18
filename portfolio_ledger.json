@@ -10,115 +10,106 @@
     "target_annualized_vol": 18.0,
     "rebalance_deadband": 0.15,
     "rolling_lookback_sessions": 20,
-    "current_portfolio_realized_vol": 18.77,
+    "current_portfolio_realized_vol": 18.74,
     "current_equity_weight": 1.0,
     "current_liquid_cash_weight": 0.0,
     "status": "NORMAL_FULL_EXPOSURE",
     "last_rebalance_date": "2026-11-18"
   },
   "liquid_cash_buffer": 0.0,
-  "cash_buffer": 208.3,
-  "equity_value": 99791.7,
+  "cash_buffer": 933.7,
+  "equity_value": 99066.3,
   "total_portfolio_value": 100000.0,
   "cumulative_friction_paid": 0.0,
   "holdings": {
-    "DIXON.NS": {
-      "name": "Dixon Technologies",
-      "basket": "AGGRESSIVE",
-      "sector": "EMS / Electronics",
-      "shares": 1,
-      "buy_price": 12615.0,
-      "cmp": 12615.0,
-      "current_value": 12615.0
-    },
-    "TRENT.NS": {
-      "name": "Trent Ltd (Tata)",
-      "basket": "AGGRESSIVE",
-      "sector": "Consumer Discretionary",
-      "shares": 4,
-      "buy_price": 3190.0,
-      "cmp": 3190.0,
-      "current_value": 12760.0
-    },
-    "KAYNES.NS": {
-      "name": "Kaynes Technology",
-      "basket": "AGGRESSIVE",
-      "sector": "EMS / Electronics",
-      "shares": 4,
-      "buy_price": 2882.0,
-      "cmp": 2882.0,
-      "current_value": 11528.0
-    },
     "PERSISTENT.NS": {
       "name": "Persistent Systems",
       "basket": "AGGRESSIVE",
-      "sector": "Technology",
+      "sector": "Digital Engineering / IT",
       "shares": 2,
-      "buy_price": 5857.0,
-      "cmp": 5857.0,
-      "current_value": 11714.0
+      "buy_price": 5911.0,
+      "cmp": 5911.0,
+      "current_value": 11822.0
     },
     "CUMMINSIND.NS": {
       "name": "Cummins India",
       "basket": "AGGRESSIVE",
-      "sector": "Capital Goods",
+      "sector": "Capital Goods / Power",
       "shares": 3,
-      "buy_price": 4005.0,
-      "cmp": 4005.0,
-      "current_value": 12015.0
+      "buy_price": 4065.0,
+      "cmp": 4065.0,
+      "current_value": 12195.0
     },
-    "COFORGE.NS": {
-      "name": "Coforge Ltd",
+    "TRENT.NS": {
+      "name": "Trent Ltd (Tata)",
       "basket": "AGGRESSIVE",
-      "sector": "Technology",
-      "shares": 6,
-      "buy_price": 2049.0,
-      "cmp": 2049.0,
-      "current_value": 12294.0
-    },
-    "POLYCAB.NS": {
-      "name": "Polycab India",
-      "basket": "AGGRESSIVE",
-      "sector": "Capital Goods",
-      "shares": 2,
-      "buy_price": 7307.5,
-      "cmp": 7307.5,
-      "current_value": 14615.0
+      "sector": "Organized Retail / Fashion",
+      "shares": 4,
+      "buy_price": 3176.3,
+      "cmp": 3176.3,
+      "current_value": 12705.2
     },
     "INDHOTEL.NS": {
       "name": "Indian Hotels (Tata)",
       "basket": "AGGRESSIVE",
-      "sector": "Consumer Discretionary",
+      "sector": "Hospitality & Services",
       "shares": 14,
-      "buy_price": 875.05,
-      "cmp": 875.05,
-      "current_value": 12250.7
+      "buy_price": 901.55,
+      "cmp": 901.55,
+      "current_value": 12621.7
+    },
+    "BHARATFORG.NS": {
+      "name": "Bharat Forge",
+      "basket": "AGGRESSIVE",
+      "sector": "Heavy Industrials / Defense",
+      "shares": 7,
+      "buy_price": 1714.7,
+      "cmp": 1714.7,
+      "current_value": 12002.9
+    },
+    "DIXON.NS": {
+      "name": "Dixon Technologies",
+      "basket": "AGGRESSIVE",
+      "sector": "EMS & Electronics",
+      "shares": 1,
+      "buy_price": 13081.0,
+      "cmp": 13081.0,
+      "current_value": 13081.0
+    },
+    "CHOLAFIN.NS": {
+      "name": "Cholamandalam Inv",
+      "basket": "AGGRESSIVE",
+      "sector": "Credit & Asset Financing",
+      "shares": 7,
+      "buy_price": 1884.7,
+      "cmp": 1884.7,
+      "current_value": 13192.9
+    },
+    "NH.NS": {
+      "name": "Narayana Hrudayalaya",
+      "basket": "AGGRESSIVE",
+      "sector": "Healthcare & Hospitals",
+      "shares": 6,
+      "buy_price": 1907.6,
+      "cmp": 1907.6,
+      "current_value": 11445.6
     },
     "COLPAL.NS": {
       "name": "Colgate-Palmolive India",
       "basket": "DEFENSIVE",
-      "sector": "Consumer Staples FMCG",
+      "sector": "Oral Hygiene Staples",
       "shares": 0,
-      "buy_price": 1688.4,
-      "cmp": 1688.4,
-      "current_value": 0.0
-    },
-    "SANOFI.NS": {
-      "name": "Sanofi India",
-      "basket": "DEFENSIVE",
-      "sector": "MNC Healthcare",
-      "shares": 0,
-      "buy_price": 3231.8,
-      "cmp": 3231.8,
+      "buy_price": 1719.7,
+      "cmp": 1719.7,
       "current_value": 0.0
     },
     "GLAXO.NS": {
       "name": "GlaxoSmithKline Pharma",
       "basket": "DEFENSIVE",
-      "sector": "MNC Healthcare",
+      "sector": "MNC Healthcare / Vaccines",
       "shares": 0,
-      "buy_price": 2638.2,
-      "cmp": 2638.2,
+      "buy_price": 2687.6,
+      "cmp": 2687.6,
       "current_value": 0.0
     },
     "MARICO.NS": {
@@ -126,44 +117,53 @@
       "basket": "DEFENSIVE",
       "sector": "Consumer Staples FMCG",
       "shares": 0,
-      "buy_price": 906.05,
-      "cmp": 906.05,
+      "buy_price": 924.0,
+      "cmp": 924.0,
       "current_value": 0.0
     },
     "TORNTPHARM.NS": {
       "name": "Torrent Pharma",
       "basket": "DEFENSIVE",
-      "sector": "Specialty Pharma",
+      "sector": "Chronic Specialty Pharma",
       "shares": 0,
-      "buy_price": 4610.7,
-      "cmp": 4610.7,
+      "buy_price": 4668.8,
+      "cmp": 4668.8,
       "current_value": 0.0
     },
-    "AKZOINDIA.NS": {
-      "name": "Akzo Nobel India",
+    "KANSAINER.NS": {
+      "name": "Kansai Nerolac Paints",
       "basket": "DEFENSIVE",
-      "sector": "Staple Consumer",
+      "sector": "Decorative MNC Coatings",
       "shares": 0,
-      "buy_price": 1000.0,
-      "cmp": 1000.0,
-      "current_value": 0.0
-    },
-    "ALKEM.NS": {
-      "name": "Alkem Laboratories",
-      "basket": "DEFENSIVE",
-      "sector": "Specialty Pharma",
-      "shares": 0,
-      "buy_price": 5222.5,
-      "cmp": 5222.5,
+      "buy_price": 201.02,
+      "cmp": 201.02,
       "current_value": 0.0
     },
     "MGL.NS": {
       "name": "Mahanagar Gas",
       "basket": "DEFENSIVE",
-      "sector": "City Gas Utility",
+      "sector": "City Gas Distribution",
       "shares": 0,
-      "buy_price": 1115.5,
-      "cmp": 1115.5,
+      "buy_price": 1104.1,
+      "cmp": 1104.1,
+      "current_value": 0.0
+    },
+    "COROMANDEL.NS": {
+      "name": "Coromandel Int",
+      "basket": "DEFENSIVE",
+      "sector": "Agri Nutrients & Crop Care",
+      "shares": 0,
+      "buy_price": 1973.5,
+      "cmp": 1973.5,
+      "current_value": 0.0
+    },
+    "PETRONET.NS": {
+      "name": "Petronet LNG",
+      "basket": "DEFENSIVE",
+      "sector": "Energy Infrastructure",
+      "shares": 0,
+      "buy_price": 328.1,
+      "cmp": 328.1,
       "current_value": 0.0
     }
   },

@@ -1,22 +1,7 @@
 {
-  "timestamp": "2026-11-18 18:24:51",
+  "timestamp": "2026-11-19 01:31:57",
   "source": "FALLBACK_EXCHANGE_FEED",
   "stocks": {
-    "DIXON.NS": {
-      "cmp": 12615.0,
-      "prev_close": 13081.0,
-      "change_pct": -3.56
-    },
-    "TRENT.NS": {
-      "cmp": 3190.0,
-      "prev_close": 3176.3,
-      "change_pct": 0.43
-    },
-    "KAYNES.NS": {
-      "cmp": 2882.0,
-      "prev_close": 2858.0,
-      "change_pct": 0.84
-    },
     "PERSISTENT.NS": {
       "cmp": 5857.0,
       "prev_close": 5911.0,
@@ -27,30 +12,40 @@
       "prev_close": 4065.0,
       "change_pct": -1.48
     },
-    "COFORGE.NS": {
-      "cmp": 2049.0,
-      "prev_close": 2041.0,
-      "change_pct": 0.39
-    },
-    "POLYCAB.NS": {
-      "cmp": 7307.5,
-      "prev_close": 7702.0,
-      "change_pct": -5.12
+    "TRENT.NS": {
+      "cmp": 3190.0,
+      "prev_close": 3176.3,
+      "change_pct": 0.43
     },
     "INDHOTEL.NS": {
       "cmp": 875.05,
       "prev_close": 901.55,
       "change_pct": -2.94
     },
+    "BHARATFORG.NS": {
+      "cmp": 1684.5,
+      "prev_close": 1714.7,
+      "change_pct": -1.76
+    },
+    "DIXON.NS": {
+      "cmp": 12615.0,
+      "prev_close": 13081.0,
+      "change_pct": -3.56
+    },
+    "CHOLAFIN.NS": {
+      "cmp": 1875.0,
+      "prev_close": 1884.7,
+      "change_pct": -0.51
+    },
+    "NH.NS": {
+      "cmp": 1891.3,
+      "prev_close": 1907.6,
+      "change_pct": -0.85
+    },
     "COLPAL.NS": {
       "cmp": 1688.4,
       "prev_close": 1719.7,
       "change_pct": -1.82
-    },
-    "SANOFI.NS": {
-      "cmp": 3231.8,
-      "prev_close": 3223.9,
-      "change_pct": 0.25
     },
     "GLAXO.NS": {
       "cmp": 2638.2,
@@ -67,15 +62,25 @@
       "prev_close": 4668.8,
       "change_pct": -1.24
     },
-    "ALKEM.NS": {
-      "cmp": 5222.5,
-      "prev_close": 5175.0,
-      "change_pct": 0.92
+    "KANSAINER.NS": {
+      "cmp": 198.96,
+      "prev_close": 201.02,
+      "change_pct": -1.02
     },
     "MGL.NS": {
       "cmp": 1115.5,
       "prev_close": 1104.1,
       "change_pct": 1.03
+    },
+    "COROMANDEL.NS": {
+      "cmp": 1959.0,
+      "prev_close": 1973.5,
+      "change_pct": -0.73
+    },
+    "PETRONET.NS": {
+      "cmp": 325.5,
+      "prev_close": 328.1,
+      "change_pct": -0.79
     }
   },
   "nifty": {

@@ -17,28 +17,27 @@ import math
 import sys
 from datetime import datetime
 
-# INSTITUTIONAL MID & SMALL CAP ACTIVE PICKS (Vetted via 6 Quantitative + 4 Qualitative Forensic Gates)
-# Max 2 stocks per economic sector constraint strictly enforced.
+# INSTITUTIONAL 8-SECTOR UNCORRELATED ACTIVE PICKS (1 Stock per Sector)
 AGG_STOCKS = [
-    ('DIXON.NS', 'Dixon Technologies', 'EMS / Electronics'),
-    ('TRENT.NS', 'Trent Ltd (Tata)', 'Consumer Discretionary'),
-    ('KAYNES.NS', 'Kaynes Technology', 'EMS / Electronics'),
-    ('PERSISTENT.NS', 'Persistent Systems', 'Technology'),
-    ('CUMMINSIND.NS', 'Cummins India', 'Capital Goods'),
-    ('COFORGE.NS', 'Coforge Ltd', 'Technology'),
-    ('POLYCAB.NS', 'Polycab India', 'Capital Goods'),
-    ('INDHOTEL.NS', 'Indian Hotels (Tata)', 'Consumer Discretionary')
+    ('PERSISTENT.NS', 'Persistent Systems', 'Digital Engineering / IT'),
+    ('CUMMINSIND.NS', 'Cummins India', 'Capital Goods / Power'),
+    ('TRENT.NS', 'Trent Ltd (Tata)', 'Organized Retail / Fashion'),
+    ('INDHOTEL.NS', 'Indian Hotels (Tata)', 'Hospitality & Services'),
+    ('BHARATFORG.NS', 'Bharat Forge', 'Heavy Industrials / Defense'),
+    ('DIXON.NS', 'Dixon Technologies', 'EMS & Electronics'),
+    ('CHOLAFIN.NS', 'Cholamandalam Inv', 'Credit & Asset Financing'),
+    ('NH.NS', 'Narayana Hrudayalaya', 'Healthcare & Hospitals')
 ]
 
 DEF_STOCKS = [
-    ('COLPAL.NS', 'Colgate-Palmolive India', 'Consumer Staples FMCG'),
-    ('SANOFI.NS', 'Sanofi India', 'MNC Healthcare'),
-    ('GLAXO.NS', 'GlaxoSmithKline Pharma', 'MNC Healthcare'),
+    ('COLPAL.NS', 'Colgate-Palmolive India', 'Oral Hygiene Staples'),
+    ('GLAXO.NS', 'GlaxoSmithKline Pharma', 'MNC Healthcare / Vaccines'),
     ('MARICO.NS', 'Marico Ltd', 'Consumer Staples FMCG'),
-    ('TORNTPHARM.NS', 'Torrent Pharma', 'Specialty Pharma'),
-    ('AKZOINDIA.NS', 'Akzo Nobel India', 'Staple Consumer'),
-    ('ALKEM.NS', 'Alkem Laboratories', 'Specialty Pharma'),
-    ('MGL.NS', 'Mahanagar Gas', 'City Gas Utility')
+    ('TORNTPHARM.NS', 'Torrent Pharma', 'Chronic Specialty Pharma'),
+    ('KANSAINER.NS', 'Kansai Nerolac Paints', 'Decorative MNC Coatings'),
+    ('MGL.NS', 'Mahanagar Gas', 'City Gas Distribution'),
+    ('COROMANDEL.NS', 'Coromandel Int', 'Agri Nutrients & Crop Care'),
+    ('PETRONET.NS', 'Petronet LNG', 'Energy Infrastructure')
 ]
 
 def fetch_latest_quote(symbol):

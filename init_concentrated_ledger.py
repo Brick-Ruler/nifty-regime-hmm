@@ -40,7 +40,26 @@ def initialize_1lakh_ledger():
             'cmp': round(price, 2),
             'current_value': round(cost, 2)
         }
-        print(f"{sym:<14} | {name:<22} | Rs.{price:>8.1f} | {shares:>6} | Rs.{cost:>12,.2f}")
+
+    # Ensure cash buffer is non-negative: trim 1 share from the most over-allocated stock if needed
+    while spent_equity > total_capital:
+        # Find holding with largest positive deviation from target_per_stock with shares > 1
+        over_allocated = [
+            s for s in holdings
+            if holdings[s]['basket'] == 'AGGRESSIVE' and holdings[s]['shares'] > 1
+        ]
+        if not over_allocated:
+            break
+        worst_sym = max(over_allocated, key=lambda s: holdings[s]['current_value'] - target_per_stock)
+        holdings[worst_sym]['shares'] -= 1
+        p = holdings[worst_sym]['cmp']
+        holdings[worst_sym]['current_value'] = round(holdings[worst_sym]['shares'] * p, 2)
+        spent_equity -= p
+
+    spent_equity = round(sum(h['current_value'] for h in holdings.values()), 2)
+    for sym, h in holdings.items():
+        if h['basket'] == 'AGGRESSIVE':
+            print(f"{sym:<14} | {h['name']:<22} | Rs.{h['cmp']:>8.1f} | {h['shares']:>6} | Rs.{h['current_value']:>12,.2f}")
 
     # Defensives currently hold 0 shares in Bull mode
     for sym, name, sec in DEF_STOCKS:
