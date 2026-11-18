@@ -17,8 +17,8 @@
     "last_rebalance_date": "2026-11-18"
   },
   "liquid_cash_buffer": 0.0,
-  "cash_buffer": 933.7,
-  "equity_value": 99066.3,
+  "cash_buffer": 549.2,
+  "equity_value": 99450.8,
   "total_portfolio_value": 100000.0,
   "cumulative_friction_paid": 0.0,
   "holdings": {
@@ -31,23 +31,32 @@
       "cmp": 5911.0,
       "current_value": 11822.0
     },
-    "CUMMINSIND.NS": {
-      "name": "Cummins India",
+    "COFORGE.NS": {
+      "name": "Coforge Ltd",
       "basket": "AGGRESSIVE",
-      "sector": "Capital Goods / Power",
-      "shares": 3,
-      "buy_price": 4065.0,
-      "cmp": 4065.0,
-      "current_value": 12195.0
+      "sector": "Digital Engineering / IT",
+      "shares": 6,
+      "buy_price": 2041.0,
+      "cmp": 2041.0,
+      "current_value": 12246.0
     },
-    "TRENT.NS": {
-      "name": "Trent Ltd (Tata)",
+    "CHOLAFIN.NS": {
+      "name": "Cholamandalam Inv",
       "basket": "AGGRESSIVE",
-      "sector": "Organized Retail / Fashion",
-      "shares": 4,
-      "buy_price": 3176.3,
-      "cmp": 3176.3,
-      "current_value": 12705.2
+      "sector": "Financials & NBFC",
+      "shares": 7,
+      "buy_price": 1884.7,
+      "cmp": 1884.7,
+      "current_value": 13192.9
+    },
+    "FEDERALBNK.NS": {
+      "name": "Federal Bank",
+      "basket": "AGGRESSIVE",
+      "sector": "Financials & Banking",
+      "shares": 34,
+      "buy_price": 365.8,
+      "cmp": 365.8,
+      "current_value": 12437.2
     },
     "INDHOTEL.NS": {
       "name": "Indian Hotels (Tata)",
@@ -58,41 +67,32 @@
       "cmp": 901.55,
       "current_value": 12621.7
     },
-    "BHARATFORG.NS": {
-      "name": "Bharat Forge",
+    "EIHOTEL.NS": {
+      "name": "EIH Ltd (Oberoi)",
       "basket": "AGGRESSIVE",
-      "sector": "Heavy Industrials / Defense",
-      "shares": 7,
-      "buy_price": 1714.7,
-      "cmp": 1714.7,
-      "current_value": 12002.9
+      "sector": "Hospitality & Services",
+      "shares": 40,
+      "buy_price": 310.45,
+      "cmp": 310.45,
+      "current_value": 12418.0
+    },
+    "BALKRISIND.NS": {
+      "name": "Balkrishna Ind (BKT)",
+      "basket": "AGGRESSIVE",
+      "sector": "Auto Ancillary",
+      "shares": 5,
+      "buy_price": 2326.4,
+      "cmp": 2326.4,
+      "current_value": 11632.0
     },
     "DIXON.NS": {
       "name": "Dixon Technologies",
       "basket": "AGGRESSIVE",
-      "sector": "EMS & Electronics",
+      "sector": "EMS & Consumer Tech",
       "shares": 1,
       "buy_price": 13081.0,
       "cmp": 13081.0,
       "current_value": 13081.0
-    },
-    "CHOLAFIN.NS": {
-      "name": "Cholamandalam Inv",
-      "basket": "AGGRESSIVE",
-      "sector": "Credit & Asset Financing",
-      "shares": 7,
-      "buy_price": 1884.7,
-      "cmp": 1884.7,
-      "current_value": 13192.9
-    },
-    "NH.NS": {
-      "name": "Narayana Hrudayalaya",
-      "basket": "AGGRESSIVE",
-      "sector": "Healthcare & Hospitals",
-      "shares": 6,
-      "buy_price": 1907.6,
-      "cmp": 1907.6,
-      "current_value": 11445.6
     },
     "COLPAL.NS": {
       "name": "Colgate-Palmolive India",

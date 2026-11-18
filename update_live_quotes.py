@@ -15,9 +15,9 @@ OUTPUT_FILE = os.path.join(BASE_DIR, "live_quotes.json")
 
 SYMBOLS = [
     '^NSEI', '^INDIAVIX',
-    # 8 Distinct Aggressive Champions
-    'PERSISTENT.NS', 'CUMMINSIND.NS', 'TRENT.NS', 'INDHOTEL.NS',
-    'BHARATFORG.NS', 'DIXON.NS', 'CHOLAFIN.NS', 'NH.NS',
+    # 8 Aggressive Champions (Option B Top-5 Sector Rotation)
+    'PERSISTENT.NS', 'COFORGE.NS', 'CHOLAFIN.NS', 'FEDERALBNK.NS',
+    'INDHOTEL.NS', 'EIHOTEL.NS', 'BALKRISIND.NS', 'DIXON.NS',
     # 8 Distinct Defensive Fortresses
     'COLPAL.NS', 'GLAXO.NS', 'MARICO.NS', 'TORNTPHARM.NS',
     'KANSAINER.NS', 'MGL.NS', 'COROMANDEL.NS', 'PETRONET.NS'

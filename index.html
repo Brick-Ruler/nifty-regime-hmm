@@ -740,13 +740,13 @@
         // Institutional Master Portfolio Allocations (Vetted 8 Aggressive Champions)
         const PORTFOLIO_MASTER = [
             { symbol: 'PERSISTENT', name: 'Persistent Systems', sector: 'Digital IT', shares: 2, baseCost: 5911.0, ns: 'PERSISTENT.NS' },
-            { symbol: 'CUMMINSIND', name: 'Cummins India', sector: 'Cap Goods', shares: 3, baseCost: 4065.0, ns: 'CUMMINSIND.NS' },
-            { symbol: 'TRENT', name: 'Trent Ltd (Tata)', sector: 'Retail', shares: 4, baseCost: 3176.3, ns: 'TRENT.NS' },
+            { symbol: 'COFORGE', name: 'Coforge Ltd', sector: 'Digital IT', shares: 6, baseCost: 2041.0, ns: 'COFORGE.NS' },
+            { symbol: 'CHOLAFIN', name: 'Cholamandalam Inv', sector: 'Financials/NBFC', shares: 7, baseCost: 1884.7, ns: 'CHOLAFIN.NS' },
+            { symbol: 'FEDERALBNK', name: 'Federal Bank', sector: 'Banking', shares: 34, baseCost: 365.8, ns: 'FEDERALBNK.NS' },
             { symbol: 'INDHOTEL', name: 'Indian Hotels (Tata)', sector: 'Hospitality', shares: 14, baseCost: 901.5, ns: 'INDHOTEL.NS' },
-            { symbol: 'BHARATFORG', name: 'Bharat Forge', sector: 'Industrials/Defense', shares: 7, baseCost: 1714.7, ns: 'BHARATFORG.NS' },
-            { symbol: 'DIXON', name: 'Dixon Technologies', sector: 'EMS/Electronics', shares: 1, baseCost: 13081.0, ns: 'DIXON.NS' },
-            { symbol: 'CHOLAFIN', name: 'Cholamandalam Inv', sector: 'Fin/Credit', shares: 7, baseCost: 1884.7, ns: 'CHOLAFIN.NS' },
-            { symbol: 'NH', name: 'Narayana Hrudayalaya', sector: 'Healthcare', shares: 6, baseCost: 1907.6, ns: 'NH.NS' }
+            { symbol: 'EIHOTEL', name: 'EIH Ltd (Oberoi)', sector: 'Hospitality', shares: 40, baseCost: 310.4, ns: 'EIHOTEL.NS' },
+            { symbol: 'BALKRISIND', name: 'Balkrishna Ind (BKT)', sector: 'Auto Ancillary', shares: 5, baseCost: 2326.4, ns: 'BALKRISIND.NS' },
+            { symbol: 'DIXON', name: 'Dixon Technologies', sector: 'EMS/Tech', shares: 1, baseCost: 13081.0, ns: 'DIXON.NS' }
         ];
 
         // Institutional Defensive Fortresses (Added in Panic -> 16 Stocks Total)
@@ -764,13 +764,13 @@
         // In-memory price store (Initialized with latest verified NSE close/intraday quotes)
         let liveQuotesCache = {
             'PERSISTENT.NS': { cmp: 5911.0, prev_close: 5911.0, change_pct: 0.0 },
-            'CUMMINSIND.NS': { cmp: 4065.0, prev_close: 4065.0, change_pct: 0.0 },
-            'TRENT.NS': { cmp: 3176.3, prev_close: 3176.3, change_pct: 0.0 },
-            'INDHOTEL.NS': { cmp: 901.5, prev_close: 901.5, change_pct: 0.0 },
-            'BHARATFORG.NS': { cmp: 1714.7, prev_close: 1714.7, change_pct: 0.0 },
-            'DIXON.NS': { cmp: 13081.0, prev_close: 13081.0, change_pct: 0.0 },
+            'COFORGE.NS': { cmp: 2041.0, prev_close: 2041.0, change_pct: 0.0 },
             'CHOLAFIN.NS': { cmp: 1884.7, prev_close: 1884.7, change_pct: 0.0 },
-            'NH.NS': { cmp: 1907.6, prev_close: 1907.6, change_pct: 0.0 },
+            'FEDERALBNK.NS': { cmp: 365.8, prev_close: 365.8, change_pct: 0.0 },
+            'INDHOTEL.NS': { cmp: 901.5, prev_close: 901.5, change_pct: 0.0 },
+            'EIHOTEL.NS': { cmp: 310.4, prev_close: 310.4, change_pct: 0.0 },
+            'BALKRISIND.NS': { cmp: 2326.4, prev_close: 2326.4, change_pct: 0.0 },
+            'DIXON.NS': { cmp: 13081.0, prev_close: 13081.0, change_pct: 0.0 },
             'COLPAL.NS': { cmp: 2780.0, prev_close: 2795.0, change_pct: -0.54 },
             'GLAXO.NS': { cmp: 2380.0, prev_close: 2390.0, change_pct: -0.42 },
             'MARICO.NS': { cmp: 610.3, prev_close: 612.0, change_pct: -0.28 },

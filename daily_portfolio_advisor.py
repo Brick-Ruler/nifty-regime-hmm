@@ -17,16 +17,16 @@ import math
 import sys
 from datetime import datetime
 
-# INSTITUTIONAL 8-SECTOR UNCORRELATED ACTIVE PICKS (1 Stock per Sector)
+# INSTITUTIONAL TOP-5 SECTOR ROTATION ACTIVE PICKS (Option B: Leading Macro Sectors)
 AGG_STOCKS = [
     ('PERSISTENT.NS', 'Persistent Systems', 'Digital Engineering / IT'),
-    ('CUMMINSIND.NS', 'Cummins India', 'Capital Goods / Power'),
-    ('TRENT.NS', 'Trent Ltd (Tata)', 'Organized Retail / Fashion'),
+    ('COFORGE.NS', 'Coforge Ltd', 'Digital Engineering / IT'),
+    ('CHOLAFIN.NS', 'Cholamandalam Inv', 'Financials & NBFC'),
+    ('FEDERALBNK.NS', 'Federal Bank', 'Financials & Banking'),
     ('INDHOTEL.NS', 'Indian Hotels (Tata)', 'Hospitality & Services'),
-    ('BHARATFORG.NS', 'Bharat Forge', 'Heavy Industrials / Defense'),
-    ('DIXON.NS', 'Dixon Technologies', 'EMS & Electronics'),
-    ('CHOLAFIN.NS', 'Cholamandalam Inv', 'Credit & Asset Financing'),
-    ('NH.NS', 'Narayana Hrudayalaya', 'Healthcare & Hospitals')
+    ('EIHOTEL.NS', 'EIH Ltd (Oberoi)', 'Hospitality & Services'),
+    ('BALKRISIND.NS', 'Balkrishna Ind (BKT)', 'Auto Ancillary'),
+    ('DIXON.NS', 'Dixon Technologies', 'EMS & Consumer Tech')
 ]
 
 DEF_STOCKS = [
