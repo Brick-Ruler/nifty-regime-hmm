@@ -837,7 +837,7 @@ def run_eod_agent():
                 </a>
                 <div style="font-size: 11px; color: #64748b; margin-top: 6px;">Netlify Cloud Serverless Feed • Tap 'Refresh Now' anytime from your phone or PC.</div>
             </div>
-            <div class="footer">Automated by Antigravity Quantitative Regime Engine (Hamilton 1989 / Dual-Scan Gap Defense).<br>Next morning scan scheduled tomorrow at 9:25 AM IST.</div>
+            <div class="footer">Automated by Antigravity Quantitative Regime Engine (Hamilton 1989 EOD Regime Switch).<br>Next pre-market intelligence brief scheduled tomorrow at 08:50 AM IST.</div>
         </div>
     </body>
     </html>
@@ -857,6 +857,7 @@ def run_eod_agent():
 
 if __name__ == "__main__":
     if "--morning-check" in sys.argv:
-        run_morning_circuit_breaker()
+        print("[DECOMMISSIONED] Morning execution breaker eliminated to prevent whipsaw friction. The system executes solely at 03:15 PM EOD.")
+        sys.exit(0)
     else:
         run_eod_agent()

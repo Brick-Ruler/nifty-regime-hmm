@@ -294,7 +294,7 @@ def run_premarket_sentinel():
 
             <!-- 4. Tactical Opening Playbook -->
             <div class="card">
-                <div class="card-title" style="color: #7c3aed;">4. Today's Tactical Opening Playbook (09:25 AM Protocol)</div>
+                <div class="card-title" style="color: #7c3aed;">4. Market Strategy & EOD Execution Plan (03:15 PM Milestone)</div>
                 <div class="playbook-box">
                     <strong style="color: #16a34a;">🟢 Scenario A (Default - Open &gt; Rs. {gap_cutoff_nifty:,.1f}):</strong><br>
                     Model stays completely quiet. Retains <strong>100% equity concentration in the 8 Aggressive Champions</strong> (Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon). Zero turnover friction.<br><br>
@@ -305,7 +305,7 @@ def run_premarket_sentinel():
 
             <div class="footer">
                 Antigravity Quantitative Strategy Engine • Read-Only Pre-Market Intelligence.<br>
-                Next scheduled scan: <strong>09:25 AM IST</strong> (Opening Gap Execution Check).
+                Next scheduled decision milestone: <strong>03:15 PM IST</strong> (EOD Hamilton Markov Regime Decision).
             </div>
         </div>
     </body>
