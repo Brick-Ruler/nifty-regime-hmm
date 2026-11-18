@@ -213,6 +213,13 @@ def run_morning_circuit_breaker():
             </table>
         </div>
 
+        <div style="text-align: center; margin: 22px 0 16px 0;">
+            <a href="https://brick-ruler.github.io/nifty-regime-hmm/" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; text-decoration: none; padding: 13px 26px; border-radius: 8px; font-weight: 700; font-size: 14px; display: inline-block; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);">
+                📊 Open Live Real-Time Portfolio Tracker &rarr;
+            </a>
+            <div style="font-size: 11px; color: #64748b; margin-top: 6px;">Live ticks, mark-to-market valuations & real-time regime gauges.</div>
+        </div>
+
         <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin-bottom: 16px; font-size: 13px; color: #334155;">
             ⏰ <strong>Next Scan at 3:15 PM IST:</strong> The Hamilton Markov Model will execute its primary EOD regime classification and dispatch your full Daily Performance Briefing.
         </div>
@@ -317,7 +324,12 @@ def run_morning_circuit_breaker():
             <p style="font-size: 13px; color: #555; margin-top: 14px;">
                 <strong>Why This Was Done:</strong> Historically, when Nifty gaps down &gt; -1.5%, high-beta midcaps collapse an additional -3% to -6% intraday. Rotated at 9:25 AM to immunize your capital from the intraday sell-off.
             </p>
-            <div style="font-size: 12px; color: #888; margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
+            <div style="text-align: center; margin: 20px 0 10px 0;">
+                <a href="https://brick-ruler.github.io/nifty-regime-hmm/" style="background: #ef4444; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; display: inline-block;">
+                    🚨 Monitor Emergency Defense in Live Tracker &rarr;
+                </a>
+            </div>
+            <div style="font-size: 12px; color: #888; margin-top: 14px; border-top: 1px solid #eee; padding-top: 10px;">
                 Total Portfolio Value: <strong>Rs. {ledger['total_portfolio_value']:,.2f}</strong> | Normal 3:15 PM EOD scan will monitor recovery.
             </div>
         </div>
@@ -601,6 +613,12 @@ def run_eod_agent():
                     <div><strong class="text-green">Top Performers Today:</strong><br>{"<br>".join([f"• {g[1]}: <span class='text-green'>{g[2]:+4.2f}%</span> (Rs.{g[3]:,.1f})" for g in top_gainers])}</div>
                     <div><strong class="text-red">Laggards Today:</strong><br>{"<br>".join([f"• {l[1]}: <span class='text-red'>{l[2]:+4.2f}%</span> (Rs.{l[3]:,.1f})" for l in top_losers])}</div>
                 </div>
+            </div>
+            <div style="text-align: center; margin: 24px 0 16px 0;">
+                <a href="https://brick-ruler.github.io/nifty-regime-hmm/" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: #ffffff; text-decoration: none; padding: 13px 28px; border-radius: 8px; font-weight: 700; font-size: 14px; display: inline-block; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);">
+                    📊 Open Live Real-Time Portfolio Tracker &rarr;
+                </a>
+                <div style="font-size: 11px; color: #64748b; margin-top: 6px;">Live ticks, mark-to-market valuations & real-time regime gauges.</div>
             </div>
             <div class="footer">Automated by Antigravity Quantitative Regime Engine (Hamilton 1989 / Dual-Scan Gap Defense).<br>Next morning scan scheduled tomorrow at 9:25 AM IST.</div>
         </div>
