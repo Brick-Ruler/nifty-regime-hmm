@@ -9,3 +9,4 @@ run_daily.bat
 kite_session.json
 credentials.json
 *.token
+.netlify/

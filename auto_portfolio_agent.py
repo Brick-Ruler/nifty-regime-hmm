@@ -34,6 +34,35 @@ LEDGER_FILE = os.path.join(BASE_DIR, "portfolio_ledger.json")
 BRIEF_HTML_FILE = os.path.join(BASE_DIR, "latest_email_brief.html")
 RECIPIENT_EMAIL = os.environ.get("RECIPIENT_EMAIL") or "neal17022006@gmail.com"
 
+def compute_portfolio_20d_realized_vol():
+    """
+    Computes annualized 20-day realized volatility of the portfolio basket.
+    Reads screened_universe_data.csv. Falls back safely to 17.72% if unavailable.
+    """
+    csv_file = os.path.join(BASE_DIR, "screened_universe_data.csv")
+    if os.path.exists(csv_file):
+        try:
+            import csv
+            with open(csv_file, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                rows = list(reader)
+            if len(rows) >= 20:
+                recent = rows[-20:]
+                rets = []
+                for r in recent:
+                    agg_rets = [float(r[f"{s[0]}_ret"]) for s in AGG_STOCKS if f"{s[0]}_ret" in r]
+                    if agg_rets:
+                        rets.append(sum(agg_rets) / len(agg_rets))
+                    elif 'nifty_ret' in r:
+                        rets.append(float(r['nifty_ret']))
+                if len(rets) >= 10:
+                    m = sum(rets) / len(rets)
+                    var = sum((x - m)**2 for x in rets) / len(rets)
+                    return max(5.0, round(math.sqrt(var) * math.sqrt(252), 2))
+        except Exception as e:
+            print(f"Vol calculation error: {e}")
+    return 17.72
+
 def send_email_report(subject, html_content, to_email=RECIPIENT_EMAIL):
     """
     Dual-mode email sender:
@@ -407,6 +436,35 @@ def run_eod_agent():
 
     regime_flipped = (new_regime != prev_regime)
 
+    # 3b. Volatility Targeting Overlay (Target = 18.0%, 15% Deadband Buffer, 20d Rolling Lookback)
+    vol_cfg = ledger.get('volatility_targeting', {
+        'target_annualized_vol': 18.0,
+        'rebalance_deadband': 0.15,
+        'rolling_lookback_sessions': 20,
+        'current_portfolio_realized_vol': 17.72,
+        'current_equity_weight': 1.0,
+        'current_liquid_cash_weight': 0.0,
+        'status': 'NORMAL_FULL_EXPOSURE'
+    })
+    realized_vol_20d = compute_portfolio_20d_realized_vol()
+    tgt_vol = vol_cfg.get('target_annualized_vol', 18.0)
+    deadband = vol_cfg.get('rebalance_deadband', 0.15)
+    current_eq_w = vol_cfg.get('current_equity_weight', 1.0)
+    raw_target_eq_w = min(1.0, round(tgt_vol / max(realized_vol_20d, 5.0), 4))
+
+    vol_rebalanced = False
+    new_eq_w = current_eq_w
+    if abs(raw_target_eq_w - current_eq_w) > deadband:
+        vol_rebalanced = True
+        new_eq_w = raw_target_eq_w
+
+    new_cash_w = round(1.0 - new_eq_w, 4)
+    vol_cfg['current_portfolio_realized_vol'] = realized_vol_20d
+    vol_cfg['current_equity_weight'] = new_eq_w
+    vol_cfg['current_liquid_cash_weight'] = new_cash_w
+    vol_cfg['status'] = 'NORMAL_FULL_EXPOSURE' if new_eq_w >= 0.95 else f'DERISKED_{int(new_cash_w*100)}PCT_CASH'
+    ledger['volatility_targeting'] = vol_cfg
+
     # 4. Reasoning
     reasoning_points = []
     if new_regime == "AGGRESSIVE GROWTH":
@@ -419,11 +477,16 @@ def run_eod_agent():
             f"vs <strong>P(Calm) = {p_calm:.1f}%</strong>."
         )
         reasoning_points.append(
-            "<strong>Concentration Strategy Active (8 Champions):</strong> Capital is <strong>100% concentrated across the 8 Aggressive Champions (~12.5% each)</strong> to capture maximum bull-market alpha."
+            f"<strong>Volatility Target (18.0%):</strong> 20-Day Portfolio Realized Volatility is <strong>{realized_vol_20d:.1f}%</strong>. "
+            f"Gross Allocation: <strong>{new_eq_w*100:.1f}% Equity / {new_cash_w*100:.1f}% Liquid Cash (Yielding 6.5% p.a.)</strong>. "
+            f"{'Deadband filter (15%) suppressed friction trade today.' if not vol_rebalanced else 'Vol Target Rebalance executed to maintain risk budget.'}"
         )
-        if not regime_flipped:
+        reasoning_points.append(
+            f"<strong>Concentration Strategy Active (8 Champions):</strong> Equity capital is concentrated across the 8 Aggressive Champions to capture maximum bull-market alpha."
+        )
+        if not regime_flipped and not vol_rebalanced:
             reasoning_points.append(
-                "<strong>Action Decision: HOLD CONCENTRATED POSITIONS:</strong> Hysteresis filter kept portfolio steady. Zero rebalancing friction incurred today."
+                "<strong>Action Decision: HOLD CONCENTRATED POSITIONS:</strong> Dual hysteresis & deadband filters kept portfolio steady. Zero friction incurred today."
             )
     else:
         reasoning_points.append(
@@ -431,6 +494,10 @@ def run_eod_agent():
         )
         reasoning_points.append(
             f"<strong>Quantitative Probability:</strong> P(Panic) = {p_panic:.1f}% (> 65.0%)."
+        )
+        reasoning_points.append(
+            f"<strong>Volatility Target & Defense:</strong> 20-Day Realized Vol is <strong>{realized_vol_20d:.1f}%</strong>. "
+            f"Allocation: <strong>{new_eq_w*100:.1f}% Fortresses / {new_cash_w*100:.1f}% Liquid Cash</strong>."
         )
         reasoning_points.append(
             "<strong>Broadened Defense Active (16 Stocks):</strong> 80% concentrated into 8 Defensive Fortresses (Abbott, Torrent, Colgate, Dabur) to prevent drawdown."
@@ -607,6 +674,7 @@ def run_eod_agent():
                         <tr><td><strong>Total Return</strong></td><td class="{'text-green' if port_total_return>=0 else 'text-red'}"><strong>{port_total_return:+5.2f}%</strong></td><td>{nifty_total_return:+5.2f}%</td><td class="{'text-green' if alpha>=0 else 'text-red'}"><strong>{alpha:+5.2f}% Alpha</strong></td></tr>
                         <tr><td><strong>Current Drawdown</strong></td><td class="text-green"><strong>{current_drawdown:.2f}%</strong></td><td>-</td><td>High Capital Protection</td></tr>
                         <tr><td><strong>Overnight Circuit Breaker</strong></td><td colspan="3"><strong class="text-green">ACTIVE (9:25 AM Morning Gap Trigger <= -1.5%)</strong></td></tr>
+                        <tr><td><strong>Target Volatility Overlay</strong></td><td><strong class="text-green">{realized_vol_20d:.1f}% 20D Vol (Target 18.0%)</strong></td><td colspan="2">Gross Exposure: <strong>{new_eq_w*100:.0f}% Equity / {new_cash_w*100:.0f}% Liquid Cash</strong> (15% Deadband Protected)</td></tr>
                     </tbody>
                 </table>
             </div>

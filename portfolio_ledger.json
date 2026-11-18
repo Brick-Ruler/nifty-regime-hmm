@@ -6,9 +6,20 @@
   "initial_nifty_close": 25387.4,
   "peak_portfolio_value": 100000.0,
   "active_regime": "AGGRESSIVE GROWTH",
+  "volatility_targeting": {
+    "target_annualized_vol": 18.0,
+    "rebalance_deadband": 0.15,
+    "rolling_lookback_sessions": 20,
+    "current_portfolio_realized_vol": 19.98,
+    "current_equity_weight": 1.0,
+    "current_liquid_cash_weight": 0.0,
+    "status": "NORMAL_FULL_EXPOSURE",
+    "last_rebalance_date": "2026-11-17"
+  },
+  "liquid_cash_buffer": 0.0,
   "cash_buffer": -135.3,
-  "equity_value": 100135.3,
-  "total_portfolio_value": 100000.0,
+  "equity_value": 98438.8,
+  "total_portfolio_value": 98303.5,
   "cumulative_friction_paid": 0.0,
   "holdings": {
     "DIXON.NS": {
@@ -17,8 +28,8 @@
       "sector": "EMS / Electronics",
       "shares": 1,
       "buy_price": 13081.0,
-      "cmp": 13081.0,
-      "current_value": 13081.0
+      "cmp": 12698.0,
+      "current_value": 12698.0
     },
     "CHOLAFIN.NS": {
       "name": "Cholamandalam Inv",
@@ -26,8 +37,8 @@
       "sector": "High-Beta NBFC",
       "shares": 7,
       "buy_price": 1884.7,
-      "cmp": 1884.7,
-      "current_value": 13192.9
+      "cmp": 1864.4,
+      "current_value": 13050.8
     },
     "MANAPPURAM.NS": {
       "name": "Manappuram Finance",
@@ -35,8 +46,8 @@
       "sector": "Gold NBFC",
       "shares": 42,
       "buy_price": 296.6,
-      "cmp": 296.6,
-      "current_value": 12457.2
+      "cmp": 282.7,
+      "current_value": 11873.4
     },
     "AARTIIND.NS": {
       "name": "Aarti Industries",
@@ -44,8 +55,8 @@
       "sector": "Specialty Chemicals",
       "shares": 27,
       "buy_price": 470.8,
-      "cmp": 470.8,
-      "current_value": 12711.6
+      "cmp": 465.9,
+      "current_value": 12579.3
     },
     "BHARATFORG.NS": {
       "name": "Bharat Forge",
@@ -53,8 +64,8 @@
       "sector": "Industrial / Forging",
       "shares": 7,
       "buy_price": 1714.7,
-      "cmp": 1714.7,
-      "current_value": 12002.9
+      "cmp": 1691.2,
+      "current_value": 11838.4
     },
     "PERSISTENT.NS": {
       "name": "Persistent Systems",
@@ -62,8 +73,8 @@
       "sector": "Midcap IT / Tech",
       "shares": 2,
       "buy_price": 5911.0,
-      "cmp": 5911.0,
-      "current_value": 11822.0
+      "cmp": 5901.5,
+      "current_value": 11803.0
     },
     "INDHOTEL.NS": {
       "name": "Indian Hotels",
@@ -71,8 +82,8 @@
       "sector": "Discretionary / Travel",
       "shares": 14,
       "buy_price": 901.55,
-      "cmp": 901.55,
-      "current_value": 12621.7
+      "cmp": 876.95,
+      "current_value": 12277.3
     },
     "COFORGE.NS": {
       "name": "Coforge",
@@ -80,8 +91,8 @@
       "sector": "Digital Solutions / IT",
       "shares": 6,
       "buy_price": 2041.0,
-      "cmp": 2041.0,
-      "current_value": 12246.0
+      "cmp": 2053.1,
+      "current_value": 12318.6
     },
     "ABBOTINDIA.NS": {
       "name": "Abbott India",
@@ -89,7 +100,7 @@
       "sector": "MNC Healthcare",
       "shares": 0,
       "buy_price": 25815.0,
-      "cmp": 25815.0,
+      "cmp": 25765.0,
       "current_value": 0.0
     },
     "TORNTPHARM.NS": {
@@ -98,7 +109,7 @@
       "sector": "Chronic Formulations",
       "shares": 0,
       "buy_price": 4668.8,
-      "cmp": 4668.8,
+      "cmp": 4656.6,
       "current_value": 0.0
     },
     "IPCALAB.NS": {
@@ -107,7 +118,7 @@
       "sector": "API / Pain Mgmt",
       "shares": 0,
       "buy_price": 1834.4,
-      "cmp": 1834.4,
+      "cmp": 1859.3,
       "current_value": 0.0
     },
     "MARICO.NS": {
@@ -116,7 +127,7 @@
       "sector": "FMCG Consumer Staples",
       "shares": 0,
       "buy_price": 924.0,
-      "cmp": 924.0,
+      "cmp": 910.65,
       "current_value": 0.0
     },
     "ALKEM.NS": {
@@ -125,7 +136,7 @@
       "sector": "Anti-Infectives",
       "shares": 0,
       "buy_price": 5175.0,
-      "cmp": 5175.0,
+      "cmp": 5230.0,
       "current_value": 0.0
     },
     "COLPAL.NS": {
@@ -134,7 +145,7 @@
       "sector": "Oral Hygiene / Staples",
       "shares": 0,
       "buy_price": 1719.7,
-      "cmp": 1719.7,
+      "cmp": 1693.0,
       "current_value": 0.0
     },
     "DABUR.NS": {
@@ -143,7 +154,7 @@
       "sector": "Ayurvedic Consumer Goods",
       "shares": 0,
       "buy_price": 384.3,
-      "cmp": 384.3,
+      "cmp": 380.9,
       "current_value": 0.0
     },
     "LUPIN.NS": {
@@ -152,7 +163,7 @@
       "sector": "Pharma / Respiratory",
       "shares": 0,
       "buy_price": 1950.0,
-      "cmp": 1950.0,
+      "cmp": 1992.0,
       "current_value": 0.0
     }
   },
@@ -168,6 +179,12 @@
       "date": "2026-11-17",
       "value": 100000.0,
       "nifty_close": 25387.4,
+      "regime": "AGGRESSIVE GROWTH"
+    },
+    {
+      "date": "2026-11-18",
+      "value": 98303.5,
+      "nifty_close": 25239.25,
       "regime": "AGGRESSIVE GROWTH"
     }
   ]
