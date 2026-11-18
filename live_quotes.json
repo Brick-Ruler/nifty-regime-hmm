@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-18 16:37:07",
+  "timestamp": "2026-11-18 12:21:17",
   "source": "FALLBACK_EXCHANGE_FEED",
   "stocks": {
     "DIXON.NS": {
@@ -7,80 +7,75 @@
       "prev_close": 13081.0,
       "change_pct": -3.56
     },
-    "CHOLAFIN.NS": {
-      "cmp": 1875.0,
-      "prev_close": 1884.7,
-      "change_pct": -0.51
+    "TRENT.NS": {
+      "cmp": 3190.0,
+      "prev_close": 3176.3,
+      "change_pct": 0.43
     },
-    "MANAPPURAM.NS": {
-      "cmp": 283.0,
-      "prev_close": 296.6,
-      "change_pct": -4.59
-    },
-    "AARTIIND.NS": {
-      "cmp": 462.55,
-      "prev_close": 470.8,
-      "change_pct": -1.75
-    },
-    "BHARATFORG.NS": {
-      "cmp": 1684.5,
-      "prev_close": 1714.7,
-      "change_pct": -1.76
+    "KAYNES.NS": {
+      "cmp": 2882.0,
+      "prev_close": 2858.0,
+      "change_pct": 0.84
     },
     "PERSISTENT.NS": {
       "cmp": 5857.0,
       "prev_close": 5911.0,
       "change_pct": -0.91
     },
-    "INDHOTEL.NS": {
-      "cmp": 875.05,
-      "prev_close": 901.55,
-      "change_pct": -2.94
+    "CUMMINSIND.NS": {
+      "cmp": 4005.0,
+      "prev_close": 4065.0,
+      "change_pct": -1.48
     },
     "COFORGE.NS": {
       "cmp": 2049.0,
       "prev_close": 2041.0,
       "change_pct": 0.39
     },
-    "ABBOTINDIA.NS": {
-      "cmp": 25470.0,
-      "prev_close": 25815.0,
-      "change_pct": -1.34
+    "POLYCAB.NS": {
+      "cmp": 7307.5,
+      "prev_close": 7702.0,
+      "change_pct": -5.12
     },
-    "TORNTPHARM.NS": {
-      "cmp": 4610.7,
-      "prev_close": 4668.8,
-      "change_pct": -1.24
-    },
-    "IPCALAB.NS": {
-      "cmp": 1854.1,
-      "prev_close": 1834.4,
-      "change_pct": 1.07
-    },
-    "MARICO.NS": {
-      "cmp": 906.05,
-      "prev_close": 924.0,
-      "change_pct": -1.94
-    },
-    "ALKEM.NS": {
-      "cmp": 5222.5,
-      "prev_close": 5175.0,
-      "change_pct": 0.92
+    "INDHOTEL.NS": {
+      "cmp": 875.05,
+      "prev_close": 901.55,
+      "change_pct": -2.94
     },
     "COLPAL.NS": {
       "cmp": 1688.4,
       "prev_close": 1719.7,
       "change_pct": -1.82
     },
-    "DABUR.NS": {
-      "cmp": 379.25,
-      "prev_close": 384.3,
-      "change_pct": -1.31
+    "SANOFI.NS": {
+      "cmp": 3231.8,
+      "prev_close": 3223.9,
+      "change_pct": 0.25
     },
-    "LUPIN.NS": {
-      "cmp": 1971.9,
-      "prev_close": 1950.0,
-      "change_pct": 1.12
+    "GLAXO.NS": {
+      "cmp": 2638.2,
+      "prev_close": 2687.6,
+      "change_pct": -1.84
+    },
+    "MARICO.NS": {
+      "cmp": 906.05,
+      "prev_close": 924.0,
+      "change_pct": -1.94
+    },
+    "TORNTPHARM.NS": {
+      "cmp": 4610.7,
+      "prev_close": 4668.8,
+      "change_pct": -1.24
+    },
+    "ALKEM.NS": {
+      "cmp": 5222.5,
+      "prev_close": 5175.0,
+      "change_pct": 0.92
+    },
+    "MGL.NS": {
+      "cmp": 1115.5,
+      "prev_close": 1104.1,
+      "change_pct": 1.03
     }
   },
   "nifty": {
