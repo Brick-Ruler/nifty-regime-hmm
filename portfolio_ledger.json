@@ -18,8 +18,8 @@
   },
   "liquid_cash_buffer": 0.0,
   "cash_buffer": -135.3,
-  "equity_value": 98438.8,
-  "total_portfolio_value": 98303.5,
+  "equity_value": 98165.05,
+  "total_portfolio_value": 98029.75,
   "cumulative_friction_paid": 0.0,
   "holdings": {
     "DIXON.NS": {
@@ -28,8 +28,8 @@
       "sector": "EMS / Electronics",
       "shares": 1,
       "buy_price": 13081.0,
-      "cmp": 12698.0,
-      "current_value": 12698.0
+      "cmp": 12615.0,
+      "current_value": 12615.0
     },
     "CHOLAFIN.NS": {
       "name": "Cholamandalam Inv",
@@ -37,8 +37,8 @@
       "sector": "High-Beta NBFC",
       "shares": 7,
       "buy_price": 1884.7,
-      "cmp": 1864.4,
-      "current_value": 13050.8
+      "cmp": 1875.0,
+      "current_value": 13125.0
     },
     "MANAPPURAM.NS": {
       "name": "Manappuram Finance",
@@ -46,8 +46,8 @@
       "sector": "Gold NBFC",
       "shares": 42,
       "buy_price": 296.6,
-      "cmp": 282.7,
-      "current_value": 11873.4
+      "cmp": 283.0,
+      "current_value": 11886.0
     },
     "AARTIIND.NS": {
       "name": "Aarti Industries",
@@ -55,8 +55,8 @@
       "sector": "Specialty Chemicals",
       "shares": 27,
       "buy_price": 470.8,
-      "cmp": 465.9,
-      "current_value": 12579.3
+      "cmp": 462.55,
+      "current_value": 12488.85
     },
     "BHARATFORG.NS": {
       "name": "Bharat Forge",
@@ -64,8 +64,8 @@
       "sector": "Industrial / Forging",
       "shares": 7,
       "buy_price": 1714.7,
-      "cmp": 1691.2,
-      "current_value": 11838.4
+      "cmp": 1684.5,
+      "current_value": 11791.5
     },
     "PERSISTENT.NS": {
       "name": "Persistent Systems",
@@ -73,8 +73,8 @@
       "sector": "Midcap IT / Tech",
       "shares": 2,
       "buy_price": 5911.0,
-      "cmp": 5901.5,
-      "current_value": 11803.0
+      "cmp": 5857.0,
+      "current_value": 11714.0
     },
     "INDHOTEL.NS": {
       "name": "Indian Hotels",
@@ -82,8 +82,8 @@
       "sector": "Discretionary / Travel",
       "shares": 14,
       "buy_price": 901.55,
-      "cmp": 876.95,
-      "current_value": 12277.3
+      "cmp": 875.05,
+      "current_value": 12250.7
     },
     "COFORGE.NS": {
       "name": "Coforge",
@@ -91,8 +91,8 @@
       "sector": "Digital Solutions / IT",
       "shares": 6,
       "buy_price": 2041.0,
-      "cmp": 2053.1,
-      "current_value": 12318.6
+      "cmp": 2049.0,
+      "current_value": 12294.0
     },
     "ABBOTINDIA.NS": {
       "name": "Abbott India",
@@ -100,7 +100,7 @@
       "sector": "MNC Healthcare",
       "shares": 0,
       "buy_price": 25815.0,
-      "cmp": 25765.0,
+      "cmp": 25470.0,
       "current_value": 0.0
     },
     "TORNTPHARM.NS": {
@@ -109,7 +109,7 @@
       "sector": "Chronic Formulations",
       "shares": 0,
       "buy_price": 4668.8,
-      "cmp": 4656.6,
+      "cmp": 4610.7,
       "current_value": 0.0
     },
     "IPCALAB.NS": {
@@ -118,7 +118,7 @@
       "sector": "API / Pain Mgmt",
       "shares": 0,
       "buy_price": 1834.4,
-      "cmp": 1859.3,
+      "cmp": 1854.1,
       "current_value": 0.0
     },
     "MARICO.NS": {
@@ -127,7 +127,7 @@
       "sector": "FMCG Consumer Staples",
       "shares": 0,
       "buy_price": 924.0,
-      "cmp": 910.65,
+      "cmp": 906.05,
       "current_value": 0.0
     },
     "ALKEM.NS": {
@@ -136,7 +136,7 @@
       "sector": "Anti-Infectives",
       "shares": 0,
       "buy_price": 5175.0,
-      "cmp": 5230.0,
+      "cmp": 5222.5,
       "current_value": 0.0
     },
     "COLPAL.NS": {
@@ -145,7 +145,7 @@
       "sector": "Oral Hygiene / Staples",
       "shares": 0,
       "buy_price": 1719.7,
-      "cmp": 1693.0,
+      "cmp": 1688.4,
       "current_value": 0.0
     },
     "DABUR.NS": {
@@ -154,7 +154,7 @@
       "sector": "Ayurvedic Consumer Goods",
       "shares": 0,
       "buy_price": 384.3,
-      "cmp": 380.9,
+      "cmp": 379.25,
       "current_value": 0.0
     },
     "LUPIN.NS": {
@@ -163,7 +163,7 @@
       "sector": "Pharma / Respiratory",
       "shares": 0,
       "buy_price": 1950.0,
-      "cmp": 1992.0,
+      "cmp": 1971.9,
       "current_value": 0.0
     }
   },

@@ -246,6 +246,27 @@ def run_morning_circuit_breaker():
             </table>
         </div>
 
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #7c3aed; margin-bottom: 8px;">4. Prospective Actions & Decision Matrix (What Happens at 3:15 PM)</div>
+            <div style="font-size: 12px; color: #475569; margin-bottom: 8px; line-height: 1.5;">
+                Your model continuously tracks 3 quantitative tripwires. Here are the exact prospective actions scheduled for today:
+            </div>
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <tr style="border-bottom: 1px solid #e2e8f0;">
+                    <td style="padding: 6px 8px; width: 32%;"><strong>⚠️ If EOD P(Panic) > 65%:</strong></td>
+                    <td style="padding: 6px 8px; color: #b45309;">HMM triggers style rotation; reallocates 80% capital to Defensive Fortresses (Pharma & FMCG).</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;">
+                    <td style="padding: 6px 8px;"><strong>📉 If 20D Vol > 21.2%:</strong></td>
+                    <td style="padding: 6px 8px; color: #1d4ed8;">Exceeds 15% deadband; trims equity to ~85% and parks 15% in Liquid BeES (earning 6.5% p.a.).</td>
+                </tr>
+                <tr style="background: #f0fdf4;">
+                    <td style="padding: 6px 8px;"><strong>🟢 If Market Stays Calm:</strong></td>
+                    <td style="padding: 6px 8px; color: #15803d;">Hold 100% of the 8 Champions; zero transaction friction or churn incurred today.</td>
+                </tr>
+            </table>
+        </div>
+
         <div style="text-align: center; margin: 22px 0 16px 0;">
             <a href="https://nifty-portfolio-tracker.netlify.app/" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; text-decoration: none; padding: 13px 26px; border-radius: 8px; font-weight: 700; font-size: 14px; display: inline-block; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);">
                 📊 Open Live Portfolio Tracker (Instant Refresh) &rarr;
@@ -601,6 +622,9 @@ def run_eod_agent():
     top_gainers = active_stock_movers[:3]
     top_losers = active_stock_movers[-3:]
 
+    gap_cutoff_nifty = round(nifty_price * (1.0 - 0.015), 1)
+    vol_upper_trigger = round(18.0 / max(0.01, (new_eq_w - deadband)), 1)
+
     active_rows_html = ""
     for sym, name, ret, cmp, sh, val in active_stock_movers:
         active_rows_html += f"""
@@ -691,6 +715,71 @@ def run_eod_agent():
                     <div><strong class="text-green">Top Performers Today:</strong><br>{"<br>".join([f"• {g[1]}: <span class='text-green'>{g[2]:+4.2f}%</span> (Rs.{g[3]:,.1f})" for g in top_gainers])}</div>
                     <div><strong class="text-red">Laggards Today:</strong><br>{"<br>".join([f"• {l[1]}: <span class='text-red'>{l[2]:+4.2f}%</span> (Rs.{l[3]:,.1f})" for l in top_losers])}</div>
                 </div>
+            </div>
+            <div class="card">
+                <div class="card-title" style="color: #7c3aed;">5. Forward-Looking Action Roadmap (What Happens If Conditions Change)</div>
+                <div style="font-size: 12px; color: #475569; margin-bottom: 10px;">
+                    Your autonomous model continuously monitors 3 quantitative tripwires. Here are the exact prospective actions it will execute:
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 28%;">Scenario / Trigger Condition</th>
+                            <th style="width: 38%;">Model's Prospective Action</th>
+                            <th style="width: 34%;">Target Portfolio Reallocation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong style="color: #dc2626;">🚨 Overnight Shock</strong><br>
+                                NIFTY opens &le; <strong>-1.50%</strong> (at or below <strong>Rs. {gap_cutoff_nifty:,.1f}</strong>)
+                            </td>
+                            <td>
+                                <strong>09:25 AM Emergency De-risking:</strong> Intercept overnight shock. Liquidate 8 Champions immediately at market open.
+                            </td>
+                            <td>
+                                <strong>80% Defensive Fortresses</strong> (Pharma & FMCG) + 20% Champions. Portfolio Beta drops to ~0.45x.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong style="color: #d97706;">⚠️ Macro Regime Flip</strong><br>
+                                EOD Markov P(Panic) &gt; <strong>65.0%</strong> (currently {p_panic:.1f}%) or VIX &gt; 18.0
+                            </td>
+                            <td>
+                                <strong>03:15 PM EOD Style Rotation:</strong> HMM signals persistent bear market. Shift 60% of equity into low-beta quality.
+                            </td>
+                            <td>
+                                <strong>80% Fortresses / 20% Champions:</strong> Concentrates into Abbott, Torrent, Lupin, Colpal, Dabur.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong style="color: #2563eb;">📉 Volatility Spike</strong><br>
+                                20-Day Realized Vol climbs &gt; <strong>{vol_upper_trigger:.1f}%</strong> (exceeding 15% deadband from {realized_vol_20d:.1f}%)
+                            </td>
+                            <td>
+                                <strong>Vol Target Cash Buffer:</strong> Automatically trims equity exposure to maintain risk budget and cuts volatility.
+                            </td>
+                            <td>
+                                <strong>Trims to ~85% Equity / ~15% Liquid Cash:</strong> Funds parked into Liquid BeES earning 6.50% p.a. risk-free.
+                            </td>
+                        </tr>
+                        <tr style="background: #f0fdf4;">
+                            <td>
+                                <strong style="color: #16a34a;">🟢 Calm Bull Persistence</strong><br>
+                                Gap &gt; -1.5%, P(Panic) &le; 65%, Vol &le; {vol_upper_trigger:.1f}%
+                            </td>
+                            <td>
+                                <strong>Hold 100% Concentration:</strong> Dual hysteresis & deadband filters suppress trading. Zero friction incurred.
+                            </td>
+                            <td>
+                                <strong>100% Concentrated in 8 Champions:</strong> Full upside acceleration across Dixon, Cholafin, Persistent, etc.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div style="text-align: center; margin: 24px 0 16px 0;">
                 <a href="https://nifty-portfolio-tracker.netlify.app/" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: #ffffff; text-decoration: none; padding: 13px 28px; border-radius: 8px; font-weight: 700; font-size: 14px; display: inline-block; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);">
