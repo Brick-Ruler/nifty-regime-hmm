@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIFTY Dynamic Regime Tracker | Live Portfolio Surveillance</title>
+    <title>NIFTY Dynamic Regime Tracker | Real-Time Portfolio Surveillance</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,9 +20,9 @@
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
             --green: #10b981;
-            --green-glow: rgba(16, 185, 129, 0.2);
+            --green-glow: rgba(16, 185, 129, 0.25);
             --red: #ef4444;
-            --red-glow: rgba(239, 68, 68, 0.2);
+            --red-glow: rgba(239, 68, 68, 0.25);
             --accent-purple: #8b5cf6;
             --accent-blue: #3b82f6;
         }
@@ -38,7 +38,7 @@
             background-color: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 20px;
+            padding: 16px;
             overflow-x: hidden;
         }
 
@@ -47,7 +47,7 @@
         }
 
         .container {
-            max-width: 1280px;
+            max-width: 1320px;
             margin: 0 auto;
         }
 
@@ -57,14 +57,14 @@
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 20px;
+            padding-bottom: 16px;
             border-bottom: 1px solid var(--border);
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             gap: 16px;
         }
 
         .brand-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
             letter-spacing: -0.5px;
             display: flex;
@@ -78,19 +78,19 @@
             background-color: var(--green);
             border-radius: 50%;
             box-shadow: 0 0 12px var(--green);
-            animation: pulse 2s infinite;
+            animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            70% { transform: scale(1.15); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
 
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
@@ -98,22 +98,48 @@
             background: rgba(16, 185, 129, 0.12);
             color: var(--green);
             border: 1px solid rgba(16, 185, 129, 0.3);
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
+        .interval-selector {
+            display: flex;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2px;
+            gap: 2px;
+        }
+
+        .interval-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .interval-btn.active {
+            background: var(--accent-blue);
+            color: #ffffff;
+        }
+
         .refresh-btn {
             background: var(--bg-card);
             border: 1px solid var(--border);
             color: var(--text-primary);
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -127,19 +153,36 @@
             border-color: var(--accent-blue);
         }
 
+        /* Progress Bar for Auto-refresh */
+        .sync-progress-container {
+            width: 100%;
+            height: 3px;
+            background: #1e293b;
+            border-radius: 2px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .sync-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
         /* Hero KPI Grid */
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .kpi-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 20px;
+            padding: 18px;
             position: relative;
             overflow: hidden;
             transition: transform 0.2s, border-color 0.2s;
@@ -161,23 +204,23 @@
         }
 
         .kpi-label {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .kpi-val {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
             margin-bottom: 6px;
         }
 
+        .kpi-val {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
         .kpi-sub {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-muted);
             display: flex;
             align-items: center;
@@ -188,8 +231,8 @@
         .main-layout {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
         @media (max-width: 992px) {
@@ -202,21 +245,21 @@
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 22px;
-            margin-bottom: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
         .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
-            padding-bottom: 12px;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
             border-bottom: 1px solid var(--border);
         }
 
         .panel-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             letter-spacing: -0.2px;
             display: flex;
@@ -232,24 +275,25 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            font-size: 13px;
             text-align: left;
         }
 
         th {
             color: var(--text-muted);
             font-weight: 600;
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            padding: 12px 14px;
+            padding: 10px 12px;
             border-bottom: 1px solid var(--border);
         }
 
         td {
-            padding: 14px;
+            padding: 12px;
             border-bottom: 1px solid rgba(36, 48, 72, 0.5);
             vertical-align: middle;
+            transition: background-color 0.4s ease;
         }
 
         tr:hover td {
@@ -263,12 +307,12 @@
 
         .stock-ticker {
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-primary);
         }
 
         .stock-name {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
         }
 
@@ -276,42 +320,42 @@
             display: inline-block;
             background: rgba(148, 163, 184, 0.1);
             color: var(--text-secondary);
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
             font-weight: 600;
         }
 
         .text-green { color: var(--green) !important; font-weight: 700; }
         .text-red { color: var(--red) !important; font-weight: 700; }
 
-        /* Flash animation for real-time updates */
-        @keyframes flashGreen {
-            0% { background-color: var(--green-glow); }
+        /* Flash animations for real-time live price updates */
+        @keyframes flashUp {
+            0% { background-color: rgba(16, 185, 129, 0.4); color: #ffffff; }
             100% { background-color: transparent; }
         }
-        @keyframes flashRed {
-            0% { background-color: var(--red-glow); }
+        @keyframes flashDown {
+            0% { background-color: rgba(239, 68, 68, 0.4); color: #ffffff; }
             100% { background-color: transparent; }
         }
-        .flash-up { animation: flashGreen 1s ease-out; }
-        .flash-down { animation: flashRed 1s ease-out; }
+        .flash-up { animation: flashUp 1.2s ease-out; }
+        .flash-down { animation: flashDown 1.2s ease-out; }
 
         /* Sentinel & Regime Gauges */
         .regime-box {
             background: var(--bg-secondary);
             border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 16px;
+            padding: 14px;
+            margin-bottom: 14px;
         }
 
         .gauge-bar-bg {
             background: #1e293b;
-            height: 10px;
-            border-radius: 5px;
+            height: 8px;
+            border-radius: 4px;
             overflow: hidden;
-            margin: 10px 0;
+            margin: 8px 0;
             display: flex;
         }
 
@@ -337,9 +381,9 @@
         /* Footer */
         footer {
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
-            padding: 24px 0 10px 0;
+            padding: 20px 0 10px 0;
             border-top: 1px solid var(--border);
         }
 
@@ -348,16 +392,55 @@
             color: #f87171;
             padding: 2px 8px;
             border-radius: 4px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
             gap: 4px;
         }
+
+        .stream-dot {
+            width: 6px;
+            height: 6px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Top TradingView Real-Time Streaming Ticker Tape -->
+        <div class="tradingview-widget-container" style="margin-bottom: 14px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+            {
+                "symbols": [
+                    { "proName": "INDEX:NIFTY", "title": "NIFTY 50" },
+                    { "proName": "NSE:INDIAVIX", "title": "INDIA VIX" },
+                    { "proName": "NSE:DIXON", "title": "DIXON" },
+                    { "proName": "NSE:CHOLAFIN", "title": "CHOLAFIN" },
+                    { "proName": "NSE:MANAPPURAM", "title": "MANAPPURAM" },
+                    { "proName": "NSE:AARTIIND", "title": "AARTIIND" },
+                    { "proName": "NSE:BHARATFORG", "title": "BHARATFORG" },
+                    { "proName": "NSE:PERSISTENT", "title": "PERSISTENT" },
+                    { "proName": "NSE:INDHOTEL", "title": "INDHOTEL" },
+                    { "proName": "NSE:COFORGE", "title": "COFORGE" }
+                ],
+                "showSymbolLogo": true,
+                "isTransparent": true,
+                "displayMode": "adaptive",
+                "colorTheme": "dark",
+                "locale": "en"
+            }
+            </script>
+        </div>
+
         <!-- Top Header -->
         <header>
             <div>
@@ -365,44 +448,54 @@
                     <span class="pulse-dot"></span>
                     NIFTY Dynamic Concentration Tracker
                 </div>
-                <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
-                    Autonomous Quantitative Regime Engine (Hamilton 1989 & Overnight Circuit Breaker)
+                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 3px;">
+                    Real-Time Autonomous Valuation & Markov Regime Surveillance
                 </div>
             </div>
             <div class="header-controls">
-                <div class="status-badge" id="market-status-pill">
-                    <span>🟢</span> Market Feed Active
+                <div class="interval-selector">
+                    <button class="interval-btn" onclick="setIntervalSpeed(3000, this)">3s</button>
+                    <button class="interval-btn active" onclick="setIntervalSpeed(5000, this)">5s</button>
+                    <button class="interval-btn" onclick="setIntervalSpeed(10000, this)">10s</button>
                 </div>
-                <button class="refresh-btn" onclick="fetchLiveMarketData()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
-                    Refresh Now
+                <div class="status-badge" id="market-status-pill">
+                    <span>🟢</span> Live Feed Active
+                </div>
+                <button class="refresh-btn" onclick="fetchLiveMarketData(true)">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                    Refresh
                 </button>
             </div>
         </header>
+
+        <!-- Auto-refresh sync progress bar -->
+        <div class="sync-progress-container">
+            <div class="sync-progress-bar" id="sync-bar"></div>
+        </div>
 
         <!-- KPI Hero Bar -->
         <div class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-label">Live Portfolio Valuation</div>
-                <div class="kpi-val mono" id="total-val">Rs. 100,000.00</div>
+                <div class="kpi-val mono" id="total-val">Rs. 97,935.60</div>
                 <div class="kpi-sub">
-                    Base: Rs. 100,000.00 | Cash: <span class="mono" id="cash-buffer">Rs. 0.00</span>
+                    Base Capital: Rs. 100,000.00 | Cash: <span class="mono" id="cash-buffer">-Rs. 135.30</span>
                 </div>
             </div>
 
             <div class="kpi-card">
                 <div class="kpi-label">Today's Live P&L</div>
-                <div class="kpi-val mono" id="daily-pnl">+Rs. 0.00 (+0.00%)</div>
-                <div class="kpi-sub">
-                    Mark-to-market intraday movement
+                <div class="kpi-val mono" id="daily-pnl">-Rs. 2,064.40 (-2.06%)</div>
+                <div class="kpi-sub" id="pnl-sub">
+                    Live Mark-to-Market vs Yesterday
                 </div>
             </div>
 
             <div class="kpi-card">
                 <div class="kpi-label">Active Regime Strategy</div>
-                <div class="kpi-val" style="font-size: 20px; color: var(--green);" id="active-regime-title">AGGRESSIVE GROWTH</div>
+                <div class="kpi-val" style="font-size: 19px; color: var(--green);" id="active-regime-title">AGGRESSIVE GROWTH</div>
                 <div class="kpi-sub">
-                    8 Concentrated Champions (~12.5% each)
+                    100% Equity Across 8 Champions
                 </div>
             </div>
 
@@ -422,11 +515,11 @@
                 <div class="panel">
                     <div class="panel-header">
                         <div class="panel-title">
-                            <span>📈</span> 8 Concentrated Aggressive Champions (100% Equity)
+                            <span>📈</span> 8 Concentrated Aggressive Champions (Live Execution)
                         </div>
                         <div class="live-tag">
-                            <span style="display:inline-block; width:6px; height:6px; background:#ef4444; border-radius:50%;"></span>
-                            LIVE TICKS
+                            <span class="stream-dot"></span>
+                            STREAMING TICKS
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -458,7 +551,7 @@
                             <span>🥧</span> Active Capital Allocation Breakdown
                         </div>
                     </div>
-                    <div style="height: 260px; position: relative;">
+                    <div style="height: 250px; position: relative;">
                         <canvas id="allocationChart"></canvas>
                     </div>
                 </div>
@@ -476,13 +569,13 @@
 
                     <div class="regime-box">
                         <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; margin-bottom:4px;">
-                            <span>NIFTY 50 Opening Gap</span>
-                            <span class="mono" id="sentinel-gap">-0.25%</span>
+                            <span>NIFTY 50 Live</span>
+                            <span class="mono" id="sentinel-gap">25,224.40 (-0.64%)</span>
                         </div>
-                        <div style="font-size:12px; color:var(--text-muted);">Breaker Threshold: -1.50%</div>
+                        <div style="font-size:11px; color:var(--text-muted);">Circuit Breaker Threshold: -1.50%</div>
                         <div style="margin-top:8px;">
-                            <span class="status-badge" style="display:inline-block; font-size:12px;" id="breaker-status-pill">
-                                🟢 Sentinel Inactive (Normal Open)
+                            <span class="status-badge" style="display:inline-block; font-size:11px;" id="breaker-status-pill">
+                                🟢 Sentinel Inactive (Normal Drift)
                             </span>
                         </div>
                     </div>
@@ -490,15 +583,15 @@
                     <div class="regime-box">
                         <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600;">
                             <span>India VIX Level</span>
-                            <span class="mono" id="sentinel-vix">15.52</span>
+                            <span class="mono" id="sentinel-vix">15.75 (+1.48%)</span>
                         </div>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">Danger Level: > 18.0</div>
+                        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Danger Level: > 18.0</div>
                     </div>
 
                     <div class="regime-box">
                         <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600;">
                             <span>Markov Probability</span>
-                            <span class="mono text-green" id="prob-calm">P(Calm): 95%</span>
+                            <span class="mono text-green" id="prob-calm">P(Calm): 95.0%</span>
                         </div>
                         <div class="gauge-bar-bg">
                             <div class="gauge-bar-fill-calm" id="calm-bar" style="width: 95%;"></div>
@@ -518,31 +611,31 @@
                             <span>⚙️</span> Institutional Engine Parameters
                         </div>
                     </div>
-                    <div style="font-size:13px; line-height: 1.8; color:var(--text-secondary);">
-                        <div>• <strong>Architecture:</strong> Dual-Scan Walk-Forward HMM</div>
+                    <div style="font-size:12px; line-height: 1.8; color:var(--text-secondary);">
+                        <div>• <strong>Strategy:</strong> Dual-Scan Walk-Forward HMM</div>
                         <div>• <strong>Morning Scan:</strong> 09:25 AM IST (Gap Defense)</div>
                         <div>• <strong>EOD Scan:</strong> 03:15 PM IST (Regime Rebalance)</div>
                         <div>• <strong>Bull Alpha:</strong> 8 Concentrated Midcaps (100%)</div>
-                        <div>• <strong>Panic Fortress:</strong> 16 Broadened (80% Defensives)</div>
-                        <div>• <strong>Walk-Forward CAGR:</strong> +41.6% (Sharpe 1.40)</div>
+                        <div>• <strong>Panic Defense:</strong> 16 Broadened (80% Defensives)</div>
+                        <div>• <strong>Historical CAGR:</strong> +41.6% (Sharpe 1.40)</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <footer>
-            Antigravity Quantitative Finance Engine • Operating on GitHub Actions Cloud 24/7/365 • Live Webhooks Connected
+            Antigravity Quantitative Finance Engine • Operating on GitHub Actions Cloud 24/7/365 • Live WebSockets Active
         </footer>
     </div>
 
     <script>
-        // Default Ledger State
+        // Active Portfolio State with baseline buy prices
         let portfolioData = {
             base_capital: 100000.0,
             cash_buffer: -135.3,
             active_regime: "AGGRESSIVE GROWTH",
             holdings: {
-                "DIXON.NS": { name: "Dixon Technologies", sector: "EMS / Electronics", shares: 1, buy_price: 13081.0, cmp: 12685.0, prev_close: 13081.0 },
+                "DIXON.NS": { name: "Dixon Technologies", sector: "EMS / Electronics", shares: 1, buy_price: 13081.0, cmp: 12666.0, prev_close: 13081.0 },
                 "CHOLAFIN.NS": { name: "Cholamandalam Inv", sector: "High-Beta NBFC", shares: 7, buy_price: 1884.7, cmp: 1861.2, prev_close: 1884.7 },
                 "MANAPPURAM.NS": { name: "Manappuram Finance", sector: "Gold NBFC", shares: 42, buy_price: 296.6, cmp: 282.45, prev_close: 296.6 },
                 "AARTIIND.NS": { name: "Aarti Industries", sector: "Specialty Chemicals", shares: 27, buy_price: 470.8, cmp: 465.05, prev_close: 470.8 },
@@ -554,13 +647,43 @@
         };
 
         let allocationChart = null;
+        let refreshIntervalMs = 5000;
+        let refreshTimer = null;
+        let progressTimer = null;
+        let progressStart = Date.now();
 
-        // Fetch live quotes via same-origin live_quotes.json + parallel proxy fallback
-        async function fetchLiveMarketData() {
+        function setIntervalSpeed(ms, btn) {
+            refreshIntervalMs = ms;
+            document.querySelectorAll('.interval-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            startAutoRefresh();
+        }
+
+        function startAutoRefresh() {
+            if (refreshTimer) clearInterval(refreshTimer);
+            if (progressTimer) clearInterval(progressTimer);
+
+            progressStart = Date.now();
+            progressTimer = setInterval(() => {
+                const elapsed = Date.now() - progressStart;
+                const pct = Math.min(100, (elapsed / refreshIntervalMs) * 100);
+                document.getElementById('sync-bar').style.width = pct + '%';
+                if (elapsed >= refreshIntervalMs) {
+                    progressStart = Date.now();
+                }
+            }, 50);
+
+            refreshTimer = setInterval(() => {
+                fetchLiveMarketData(false);
+            }, refreshIntervalMs);
+        }
+
+        // Live Market Data Fetcher
+        async function fetchLiveMarketData(manual = false) {
             const btn = document.querySelector('.refresh-btn');
-            if (btn) btn.innerHTML = `<span>⏳</span> Updating...`;
+            if (manual && btn) btn.innerHTML = `<span>⏳</span> Updating...`;
 
-            // 1. Fetch same-origin live_quotes.json (Guaranteed, zero CORS, instant)
+            // 1. Fetch same-origin live_quotes.json
             try {
                 const resp = await fetch('live_quotes.json?t=' + Date.now());
                 if (resp.ok) {
@@ -568,7 +691,12 @@
                     if (data.stocks) {
                         for (const sym in data.stocks) {
                             if (portfolioData.holdings[sym]) {
-                                portfolioData.holdings[sym].cmp = Number(data.stocks[sym].cmp);
+                                const newCmp = Number(data.stocks[sym].cmp);
+                                const oldCmp = portfolioData.holdings[sym].cmp;
+                                if (oldCmp && newCmp !== oldCmp) {
+                                    portfolioData.holdings[sym].flash = (newCmp > oldCmp) ? 'up' : 'down';
+                                }
+                                portfolioData.holdings[sym].cmp = newCmp;
                                 portfolioData.holdings[sym].prev_close = Number(data.stocks[sym].prev_close);
                             }
                         }
@@ -577,7 +705,7 @@
                         const nEl = document.getElementById('sentinel-gap');
                         if (nEl) {
                             const sign = data.nifty.change_pct >= 0 ? '+' : '';
-                            nEl.innerText = `${sign}${data.nifty.change_pct.toFixed(2)}% (${data.nifty.cmp.toLocaleString('en-IN')})`;
+                            nEl.innerText = `${data.nifty.cmp.toLocaleString('en-IN')} (${sign}${data.nifty.change_pct.toFixed(2)}%)`;
                             nEl.className = `mono ${data.nifty.change_pct >= 0 ? 'text-green' : 'text-red'}`;
                         }
                     }
@@ -590,7 +718,7 @@
                     }
                     const statusPill = document.getElementById('market-status-pill');
                     if (statusPill && data.timestamp) {
-                        statusPill.innerHTML = `<span>🟢</span> Quotes Synced: ${data.timestamp.split(' ')[1]}`;
+                        statusPill.innerHTML = `<span>🟢</span> Synced: ${data.timestamp.split(' ')[1]}`;
                     }
                     renderDashboard();
                 }
@@ -598,13 +726,13 @@
                 console.warn('Could not load live_quotes.json:', e);
             }
 
-            // 2. Live intraday parallel fetch for real-time tick micro-updates
+            // 2. Client-side live fetch for intraday ticks (corsproxy.io fallback)
             const symbols = Object.keys(portfolioData.holdings);
             const fetchPromises = symbols.map(async (sym) => {
                 try {
                     const yUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=1d&interval=5m`;
-                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(yUrl)}`;
-                    const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(5000) });
+                    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(yUrl)}`;
+                    const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(3000) });
                     if (res.ok) {
                         const yData = await res.json();
                         const meta = yData?.chart?.result?.[0]?.meta;
@@ -612,11 +740,11 @@
                         const prev = meta?.chartPreviousClose || meta?.previousClose;
                         if (cmp && prev) {
                             const oldCmp = portfolioData.holdings[sym].cmp;
+                            if (oldCmp && cmp !== oldCmp) {
+                                portfolioData.holdings[sym].flash = (cmp > oldCmp) ? 'up' : 'down';
+                            }
                             portfolioData.holdings[sym].cmp = Number(cmp.toFixed(2));
                             portfolioData.holdings[sym].prev_close = Number(prev.toFixed(2));
-                            if (oldCmp !== cmp) {
-                                portfolioData.holdings[sym].justUpdated = (cmp > oldCmp) ? 'up' : 'down';
-                            }
                         }
                     }
                 } catch (err) {}
@@ -625,7 +753,9 @@
             await Promise.allSettled(fetchPromises);
             renderDashboard();
 
-            if (btn) btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg> Refresh Now`;
+            if (manual && btn) {
+                btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg> Refresh`;
+            }
         }
 
         function renderDashboard() {
@@ -659,9 +789,9 @@
                 chartData.push(Math.round(holdVal));
 
                 let flashClass = '';
-                if (item.justUpdated === 'up') flashClass = 'flash-up';
-                else if (item.justUpdated === 'down') flashClass = 'flash-down';
-                item.justUpdated = null;
+                if (item.flash === 'up') flashClass = 'flash-up';
+                else if (item.flash === 'down') flashClass = 'flash-down';
+                item.flash = null;
 
                 tbodyHtml += `
                     <tr class="${flashClass}">
@@ -724,8 +854,8 @@
                             position: 'right',
                             labels: {
                                 color: '#94a3b8',
-                                font: { family: 'Plus Jakarta Sans', size: 11 },
-                                boxWidth: 12
+                                font: { family: 'Plus Jakarta Sans', size: 10 },
+                                boxWidth: 10
                             }
                         }
                     },
@@ -734,10 +864,9 @@
             });
         }
 
-        // Live Countdown Clock to Next Automated Agent Trigger (09:25 AM IST or 03:15 PM IST)
+        // Live Countdown Clock to Next Scan
         function updateCountdown() {
             const now = new Date();
-            // Convert to IST (UTC+5:30)
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
             const ist = new Date(utc + (3600000 * 5.5));
 
@@ -754,7 +883,6 @@
                 targetMinute = 25;
                 label = "Target: 09:25 AM Morning Gap Breaker";
             } else if (curHours >= 15 && curMinutes >= 15) {
-                // Next day morning
                 targetHour = 9 + 24;
                 targetMinute = 25;
                 label = "Target: Tomorrow 09:25 AM Morning Scan";
@@ -774,9 +902,10 @@
             document.getElementById('next-scan-desc').innerText = label;
         }
 
-        // Initialize
-        fetchLiveMarketData();
-        setInterval(fetchLiveMarketData, 30000); // 30s auto-refresh
+        // Boot
+        renderDashboard();
+        fetchLiveMarketData(false);
+        startAutoRefresh();
         setInterval(updateCountdown, 1000);
         updateCountdown();
     </script>
