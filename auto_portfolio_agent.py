@@ -807,13 +807,13 @@ def run_eod_agent():
                                 <strong>Hold 8 Champions (100% Equity):</strong> Dual hysteresis & deadband suppress churn. Zero friction incurred.
                             </td>
                             <td>
-                                <strong>Concentrated in 8 Champions (12.5% each):</strong> Dixon, Trent, Kaynes, Persistent, Cummins, Coforge, Polycab, Indian Hotels.
+                                <strong>Concentrated in 8 Champions (12.5% each):</strong> Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon.
                             </td>
                         </tr>
                         <tr style="background: #faf5ff;">
                             <td>
                                 <strong style="color: #7c3aed;">🔄 Quarterly Universe Scan</strong><br>
-                                End of calendar quarter (63 sessions)
+                                Semi-Annual Sector Reconstitution (126 sessions)
                             </td>
                             <td>
                                 <strong>Dynamic Bench Evaluation:</strong> Re-ranks 40-stock universe by Momentum/ROCE/Beta and checks 200-day EMA.

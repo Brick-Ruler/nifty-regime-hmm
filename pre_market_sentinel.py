@@ -297,9 +297,9 @@ def run_premarket_sentinel():
                 <div class="card-title" style="color: #7c3aed;">4. Today's Tactical Opening Playbook (09:25 AM Protocol)</div>
                 <div class="playbook-box">
                     <strong style="color: #16a34a;">🟢 Scenario A (Default - Open &gt; Rs. {gap_cutoff_nifty:,.1f}):</strong><br>
-                    Model stays completely quiet. Retains <strong>100% equity concentration in the 8 Aggressive Champions</strong> (Dixon, Trent, Kaynes, Persistent, Cummins, Coforge, Polycab, Indian Hotels). Zero turnover friction.<br><br>
+                    Model stays completely quiet. Retains <strong>100% equity concentration in the 8 Aggressive Champions</strong> (Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon). Zero turnover friction.<br><br>
                     <strong style="color: #dc2626;">🚨 Scenario B (Black Swan - Open &le; Rs. {gap_cutoff_nifty:,.1f}):</strong><br>
-                    09:25 AM Circuit Breaker activates. Automatically trims Champions to 6.25% and expands into the 8 Defensive Fortresses (Colpal, Sanofi, Glaxo, Marico, Torrent, Akzo, Alkem, MGL) to immunize capital.
+                    09:25 AM Circuit Breaker activates. Automatically trims Champions to 6.25% and expands into the 8 Defensive Fortresses (Colpal, Glaxo, Marico, Torrent Pharma, Kansai Nerolac, MGL, Coromandel, Petronet) to immunize capital.
                 </div>
             </div>
 
