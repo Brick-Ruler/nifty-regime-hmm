@@ -1,5 +1,5 @@
 {
-  "initialized_at": "2026-11-17 22:35:00",
+  "initialized_at": "2026-11-18 16:30:00",
   "portfolio_mode": "DYNAMIC_CONCENTRATION_PAPER_TRADING",
   "strategy_name": "HMM Dynamic Concentration (8 in Bull / 16 in Panic)",
   "initial_portfolio_value": 100000.0,
@@ -10,16 +10,16 @@
     "target_annualized_vol": 18.0,
     "rebalance_deadband": 0.15,
     "rolling_lookback_sessions": 20,
-    "current_portfolio_realized_vol": 19.98,
+    "current_portfolio_realized_vol": 18.77,
     "current_equity_weight": 1.0,
     "current_liquid_cash_weight": 0.0,
     "status": "NORMAL_FULL_EXPOSURE",
-    "last_rebalance_date": "2026-11-17"
+    "last_rebalance_date": "2026-11-18"
   },
   "liquid_cash_buffer": 0.0,
-  "cash_buffer": -135.3,
-  "equity_value": 98165.05,
-  "total_portfolio_value": 98029.75,
+  "cash_buffer": 208.3,
+  "equity_value": 99791.7,
+  "total_portfolio_value": 100000.0,
   "cumulative_friction_paid": 0.0,
   "holdings": {
     "DIXON.NS": {
@@ -27,164 +27,166 @@
       "basket": "AGGRESSIVE",
       "sector": "EMS / Electronics",
       "shares": 1,
-      "buy_price": 13081.0,
+      "buy_price": 12615.0,
       "cmp": 12615.0,
       "current_value": 12615.0
     },
-    "CHOLAFIN.NS": {
-      "name": "Cholamandalam Inv",
+    "TRENT.NS": {
+      "name": "Trent Ltd (Tata)",
       "basket": "AGGRESSIVE",
-      "sector": "High-Beta NBFC",
-      "shares": 7,
-      "buy_price": 1884.7,
-      "cmp": 1875.0,
-      "current_value": 13125.0
+      "sector": "Consumer Discretionary",
+      "shares": 4,
+      "buy_price": 3190.0,
+      "cmp": 3190.0,
+      "current_value": 12760.0
     },
-    "MANAPPURAM.NS": {
-      "name": "Manappuram Finance",
+    "KAYNES.NS": {
+      "name": "Kaynes Technology",
       "basket": "AGGRESSIVE",
-      "sector": "Gold NBFC",
-      "shares": 42,
-      "buy_price": 296.6,
-      "cmp": 283.0,
-      "current_value": 11886.0
-    },
-    "AARTIIND.NS": {
-      "name": "Aarti Industries",
-      "basket": "AGGRESSIVE",
-      "sector": "Specialty Chemicals",
-      "shares": 27,
-      "buy_price": 470.8,
-      "cmp": 462.55,
-      "current_value": 12488.85
-    },
-    "BHARATFORG.NS": {
-      "name": "Bharat Forge",
-      "basket": "AGGRESSIVE",
-      "sector": "Industrial / Forging",
-      "shares": 7,
-      "buy_price": 1714.7,
-      "cmp": 1684.5,
-      "current_value": 11791.5
+      "sector": "EMS / Electronics",
+      "shares": 4,
+      "buy_price": 2882.0,
+      "cmp": 2882.0,
+      "current_value": 11528.0
     },
     "PERSISTENT.NS": {
       "name": "Persistent Systems",
       "basket": "AGGRESSIVE",
-      "sector": "Midcap IT / Tech",
+      "sector": "Technology",
       "shares": 2,
-      "buy_price": 5911.0,
+      "buy_price": 5857.0,
       "cmp": 5857.0,
       "current_value": 11714.0
     },
-    "INDHOTEL.NS": {
-      "name": "Indian Hotels",
+    "CUMMINSIND.NS": {
+      "name": "Cummins India",
       "basket": "AGGRESSIVE",
-      "sector": "Discretionary / Travel",
-      "shares": 14,
-      "buy_price": 901.55,
-      "cmp": 875.05,
-      "current_value": 12250.7
+      "sector": "Capital Goods",
+      "shares": 3,
+      "buy_price": 4005.0,
+      "cmp": 4005.0,
+      "current_value": 12015.0
     },
     "COFORGE.NS": {
-      "name": "Coforge",
+      "name": "Coforge Ltd",
       "basket": "AGGRESSIVE",
-      "sector": "Digital Solutions / IT",
+      "sector": "Technology",
       "shares": 6,
-      "buy_price": 2041.0,
+      "buy_price": 2049.0,
       "cmp": 2049.0,
       "current_value": 12294.0
     },
-    "ABBOTINDIA.NS": {
-      "name": "Abbott India",
+    "POLYCAB.NS": {
+      "name": "Polycab India",
+      "basket": "AGGRESSIVE",
+      "sector": "Capital Goods",
+      "shares": 2,
+      "buy_price": 7307.5,
+      "cmp": 7307.5,
+      "current_value": 14615.0
+    },
+    "INDHOTEL.NS": {
+      "name": "Indian Hotels (Tata)",
+      "basket": "AGGRESSIVE",
+      "sector": "Consumer Discretionary",
+      "shares": 14,
+      "buy_price": 875.05,
+      "cmp": 875.05,
+      "current_value": 12250.7
+    },
+    "COLPAL.NS": {
+      "name": "Colgate-Palmolive India",
+      "basket": "DEFENSIVE",
+      "sector": "Consumer Staples FMCG",
+      "shares": 0,
+      "buy_price": 1688.4,
+      "cmp": 1688.4,
+      "current_value": 0.0
+    },
+    "SANOFI.NS": {
+      "name": "Sanofi India",
       "basket": "DEFENSIVE",
       "sector": "MNC Healthcare",
       "shares": 0,
-      "buy_price": 25815.0,
-      "cmp": 25470.0,
+      "buy_price": 3231.8,
+      "cmp": 3231.8,
+      "current_value": 0.0
+    },
+    "GLAXO.NS": {
+      "name": "GlaxoSmithKline Pharma",
+      "basket": "DEFENSIVE",
+      "sector": "MNC Healthcare",
+      "shares": 0,
+      "buy_price": 2638.2,
+      "cmp": 2638.2,
+      "current_value": 0.0
+    },
+    "MARICO.NS": {
+      "name": "Marico Ltd",
+      "basket": "DEFENSIVE",
+      "sector": "Consumer Staples FMCG",
+      "shares": 0,
+      "buy_price": 906.05,
+      "cmp": 906.05,
       "current_value": 0.0
     },
     "TORNTPHARM.NS": {
       "name": "Torrent Pharma",
       "basket": "DEFENSIVE",
-      "sector": "Chronic Formulations",
+      "sector": "Specialty Pharma",
       "shares": 0,
-      "buy_price": 4668.8,
+      "buy_price": 4610.7,
       "cmp": 4610.7,
       "current_value": 0.0
     },
-    "IPCALAB.NS": {
-      "name": "Ipca Laboratories",
+    "AKZOINDIA.NS": {
+      "name": "Akzo Nobel India",
       "basket": "DEFENSIVE",
-      "sector": "API / Pain Mgmt",
+      "sector": "Staple Consumer",
       "shares": 0,
-      "buy_price": 1834.4,
-      "cmp": 1854.1,
-      "current_value": 0.0
-    },
-    "MARICO.NS": {
-      "name": "Marico",
-      "basket": "DEFENSIVE",
-      "sector": "FMCG Consumer Staples",
-      "shares": 0,
-      "buy_price": 924.0,
-      "cmp": 906.05,
+      "buy_price": 1000.0,
+      "cmp": 1000.0,
       "current_value": 0.0
     },
     "ALKEM.NS": {
       "name": "Alkem Laboratories",
       "basket": "DEFENSIVE",
-      "sector": "Anti-Infectives",
+      "sector": "Specialty Pharma",
       "shares": 0,
-      "buy_price": 5175.0,
+      "buy_price": 5222.5,
       "cmp": 5222.5,
       "current_value": 0.0
     },
-    "COLPAL.NS": {
-      "name": "Colgate-Palmolive",
+    "MGL.NS": {
+      "name": "Mahanagar Gas",
       "basket": "DEFENSIVE",
-      "sector": "Oral Hygiene / Staples",
+      "sector": "City Gas Utility",
       "shares": 0,
-      "buy_price": 1719.7,
-      "cmp": 1688.4,
-      "current_value": 0.0
-    },
-    "DABUR.NS": {
-      "name": "Dabur India",
-      "basket": "DEFENSIVE",
-      "sector": "Ayurvedic Consumer Goods",
-      "shares": 0,
-      "buy_price": 384.3,
-      "cmp": 379.25,
-      "current_value": 0.0
-    },
-    "LUPIN.NS": {
-      "name": "Lupin",
-      "basket": "DEFENSIVE",
-      "sector": "Pharma / Respiratory",
-      "shares": 0,
-      "buy_price": 1950.0,
-      "cmp": 1971.9,
+      "buy_price": 1115.5,
+      "cmp": 1115.5,
       "current_value": 0.0
     }
   },
+  "universe_bench_summary": {
+    "total_universe_size": 40,
+    "active_in_calm": 8,
+    "active_in_panic": 16,
+    "bench_reserves_monitored": 24,
+    "quarterly_scan_interval_days": 63,
+    "last_quarterly_scan": "2026-11-18"
+  },
   "trade_log": [
     {
-      "date": "2026-11-17 22:35",
-      "action": "PORTFOLIO_INIT",
-      "note": "Initial allocation of Rs. 1 Lakh into 8 Aggressive Champions (12.5% each)"
+      "date": "2026-11-18 16:30",
+      "action": "PORTFOLIO_INIT_V2",
+      "note": "Initial allocation of Rs. 1 Lakh into 8 Institutional Aggressive Champions (12.5% each)"
     }
   ],
   "history": [
     {
-      "date": "2026-11-17",
+      "date": "2026-11-18",
       "value": 100000.0,
       "nifty_close": 25387.4,
-      "regime": "AGGRESSIVE GROWTH"
-    },
-    {
-      "date": "2026-11-18",
-      "value": 98303.5,
-      "nifty_close": 25239.25,
       "regime": "AGGRESSIVE GROWTH"
     }
   ]

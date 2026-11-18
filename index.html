@@ -737,48 +737,48 @@
 
     <!-- 7. Robust Real-Time Engine (Zero External Dependencies, Zero CORS) -->
     <script>
-        // Static Master Portfolio Allocations
+        // Institutional Master Portfolio Allocations (Vetted 8 Aggressive Champions)
         const PORTFOLIO_MASTER = [
-            { symbol: 'DIXON', name: 'Dixon Technologies', sector: 'EMS', shares: 1, baseCost: 13081.0, ns: 'DIXON.NS' },
-            { symbol: 'CHOLAFIN', name: 'Cholamandalam Inv', sector: 'NBFC', shares: 7, baseCost: 1884.7, ns: 'CHOLAFIN.NS' },
-            { symbol: 'MANAPPURAM', name: 'Manappuram Finance', sector: 'Gold Fin', shares: 42, baseCost: 296.6, ns: 'MANAPPURAM.NS' },
-            { symbol: 'AARTIIND', name: 'Aarti Industries', sector: 'Chemicals', shares: 27, baseCost: 470.8, ns: 'AARTIIND.NS' },
-            { symbol: 'BHARATFORG', name: 'Bharat Forge', sector: 'Forging', shares: 7, baseCost: 1714.7, ns: 'BHARATFORG.NS' },
-            { symbol: 'PERSISTENT', name: 'Persistent Systems', sector: 'IT Services', shares: 2, baseCost: 5911.0, ns: 'PERSISTENT.NS' },
-            { symbol: 'INDHOTEL', name: 'Indian Hotels', sector: 'Travel', shares: 14, baseCost: 901.55, ns: 'INDHOTEL.NS' },
-            { symbol: 'COFORGE', name: 'Coforge Ltd', sector: 'IT Solutions', shares: 6, baseCost: 2041.0, ns: 'COFORGE.NS' }
+            { symbol: 'DIXON', name: 'Dixon Technologies', sector: 'EMS', shares: 1, baseCost: 12615.0, ns: 'DIXON.NS' },
+            { symbol: 'TRENT', name: 'Trent Ltd (Tata)', sector: 'Retail', shares: 4, baseCost: 3190.0, ns: 'TRENT.NS' },
+            { symbol: 'KAYNES', name: 'Kaynes Technology', sector: 'EMS/Def', shares: 4, baseCost: 2882.0, ns: 'KAYNES.NS' },
+            { symbol: 'PERSISTENT', name: 'Persistent Systems', sector: 'Tech', shares: 2, baseCost: 5857.0, ns: 'PERSISTENT.NS' },
+            { symbol: 'CUMMINSIND', name: 'Cummins India', sector: 'Cap Goods', shares: 3, baseCost: 4005.0, ns: 'CUMMINSIND.NS' },
+            { symbol: 'COFORGE', name: 'Coforge Ltd', sector: 'Tech', shares: 6, baseCost: 2049.0, ns: 'COFORGE.NS' },
+            { symbol: 'POLYCAB', name: 'Polycab India', sector: 'Cap Goods', shares: 2, baseCost: 7307.5, ns: 'POLYCAB.NS' },
+            { symbol: 'INDHOTEL', name: 'Indian Hotels (Tata)', sector: 'Discretionary', shares: 14, baseCost: 875.0, ns: 'INDHOTEL.NS' }
         ];
 
-        // Defensive Basket Watchlist
+        // Institutional Defensive Fortresses (Added in Panic -> 16 Stocks Total)
         const DEFENSIVE_WATCHLIST = [
-            { symbol: 'ABBOTINDIA', name: 'Abbott India', ns: 'ABBOTINDIA.NS' },
-            { symbol: 'TORNTPHARM', name: 'Torrent Pharma', ns: 'TORNTPHARM.NS' },
-            { symbol: 'IPCALAB', name: 'Ipca Labs', ns: 'IPCALAB.NS' },
-            { symbol: 'MARICO', name: 'Marico', ns: 'MARICO.NS' },
-            { symbol: 'ALKEM', name: 'Alkem Labs', ns: 'ALKEM.NS' },
             { symbol: 'COLPAL', name: 'Colgate-Palmolive', ns: 'COLPAL.NS' },
-            { symbol: 'DABUR', name: 'Dabur India', ns: 'DABUR.NS' },
-            { symbol: 'LUPIN', name: 'Lupin', ns: 'LUPIN.NS' }
+            { symbol: 'SANOFI', name: 'Sanofi India', ns: 'SANOFI.NS' },
+            { symbol: 'GLAXO', name: 'GSK Pharma', ns: 'GLAXO.NS' },
+            { symbol: 'MARICO', name: 'Marico Ltd', ns: 'MARICO.NS' },
+            { symbol: 'TORNTPHARM', name: 'Torrent Pharma', ns: 'TORNTPHARM.NS' },
+            { symbol: 'AKZOINDIA', name: 'Akzo Nobel India', ns: 'AKZOINDIA.NS' },
+            { symbol: 'ALKEM', name: 'Alkem Laboratories', ns: 'ALKEM.NS' },
+            { symbol: 'MGL', name: 'Mahanagar Gas', ns: 'MGL.NS' }
         ];
 
         // In-memory price store (Initialized with latest verified NSE close/intraday quotes)
         let liveQuotesCache = {
-            'DIXON.NS': { cmp: 12616.0, prev_close: 13081.0, change_pct: -3.55 },
-            'CHOLAFIN.NS': { cmp: 1858.4, prev_close: 1884.7, change_pct: -1.40 },
-            'MANAPPURAM.NS': { cmp: 281.05, prev_close: 296.6, change_pct: -5.24 },
-            'AARTIIND.NS': { cmp: 466.55, prev_close: 470.8, change_pct: -0.90 },
-            'BHARATFORG.NS': { cmp: 1685.5, prev_close: 1714.7, change_pct: -1.70 },
-            'PERSISTENT.NS': { cmp: 5860.0, prev_close: 5911.0, change_pct: -0.86 },
-            'INDHOTEL.NS': { cmp: 877.2, prev_close: 901.55, change_pct: -2.70 },
-            'COFORGE.NS': { cmp: 2038.6, prev_close: 2041.0, change_pct: -0.12 },
-            'ABBOTINDIA.NS': { cmp: 25670.0, prev_close: 25815.0, change_pct: -0.56 },
-            'TORNTPHARM.NS': { cmp: 4665.2, prev_close: 4680.0, change_pct: -0.32 },
-            'IPCALAB.NS': { cmp: 1420.5, prev_close: 1435.0, change_pct: -1.01 },
-            'MARICO.NS': { cmp: 610.3, prev_close: 612.0, change_pct: -0.28 },
-            'ALKEM.NS': { cmp: 5320.0, prev_close: 5345.0, change_pct: -0.47 },
+            'DIXON.NS': { cmp: 12615.0, prev_close: 12615.0, change_pct: 0.0 },
+            'TRENT.NS': { cmp: 3190.0, prev_close: 3190.0, change_pct: 0.0 },
+            'KAYNES.NS': { cmp: 2882.0, prev_close: 2882.0, change_pct: 0.0 },
+            'PERSISTENT.NS': { cmp: 5857.0, prev_close: 5857.0, change_pct: 0.0 },
+            'CUMMINSIND.NS': { cmp: 4005.0, prev_close: 4005.0, change_pct: 0.0 },
+            'COFORGE.NS': { cmp: 2049.0, prev_close: 2049.0, change_pct: 0.0 },
+            'POLYCAB.NS': { cmp: 7307.5, prev_close: 7307.5, change_pct: 0.0 },
+            'INDHOTEL.NS': { cmp: 875.0, prev_close: 875.0, change_pct: 0.0 },
             'COLPAL.NS': { cmp: 2780.0, prev_close: 2795.0, change_pct: -0.54 },
-            'DABUR.NS': { cmp: 512.4, prev_close: 515.0, change_pct: -0.50 },
-            'LUPIN.NS': { cmp: 1980.0, prev_close: 1995.0, change_pct: -0.75 }
+            'SANOFI.NS': { cmp: 6450.0, prev_close: 6470.0, change_pct: -0.31 },
+            'GLAXO.NS': { cmp: 2380.0, prev_close: 2390.0, change_pct: -0.42 },
+            'MARICO.NS': { cmp: 610.3, prev_close: 612.0, change_pct: -0.28 },
+            'TORNTPHARM.NS': { cmp: 4665.2, prev_close: 4680.0, change_pct: -0.32 },
+            'AKZOINDIA.NS': { cmp: 3120.0, prev_close: 3140.0, change_pct: -0.64 },
+            'ALKEM.NS': { cmp: 5320.0, prev_close: 5345.0, change_pct: -0.47 },
+            'MGL.NS': { cmp: 1420.0, prev_close: 1435.0, change_pct: -1.05 }
         };
 
         let lastQuotesTimestamp = "2026-11-18 12:52:39";

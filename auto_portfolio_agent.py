@@ -310,35 +310,27 @@ def run_morning_circuit_breaker():
     transactions = []
     turnover_val = 0.0
 
-    # Sell all concentrated Aggressive stocks
+    # Trim 8 Aggressive Champions from 12.5% to 6.25% (Sell half to fund defensive expansion)
     for sym, name, _ in AGG_STOCKS:
         curr_sh = ledger['holdings'][sym]['shares']
-        if curr_sh > 0:
-            cmp, _ = fetch_latest_quote(sym)
-            cmp = cmp or ledger['holdings'][sym]['cmp']
-            transactions.append({'ticker': sym, 'name': name, 'action': 'EMERGENCY_SELL', 'shares': curr_sh, 'price': cmp})
-            ledger['cash_buffer'] += (curr_sh * cmp)
-            ledger['holdings'][sym]['shares'] = 0
-            turnover_val += (curr_sh * cmp)
+        target_amt = total_cap * 0.0625
+        cmp, _ = fetch_latest_quote(sym)
+        cmp = cmp or ledger['holdings'][sym]['cmp']
+        target_sh = max(1, round(target_amt / cmp))
+        diff = target_sh - curr_sh
+        if diff < 0:
+            transactions.append({'ticker': sym, 'name': name, 'action': 'TRIM_AGGRESSIVE', 'shares': abs(diff), 'price': cmp})
+            ledger['cash_buffer'] += (abs(diff) * cmp)
+            ledger['holdings'][sym]['shares'] = target_sh
+            turnover_val += (abs(diff) * cmp)
 
-    # Buy Defensive Fortresses (80% across 8 Defensives = 10% each)
+    # Add 8 Defensive Fortresses at 6.25% each -> Expanding portfolio to 16 stocks!
     for sym, name, _ in DEF_STOCKS:
-        target_amt = total_cap * 0.10
+        target_amt = total_cap * 0.0625
         cmp, _ = fetch_latest_quote(sym)
         cmp = cmp or ledger['holdings'][sym]['cmp']
         target_sh = max(1, round(target_amt / cmp))
-        transactions.append({'ticker': sym, 'name': name, 'action': 'EMERGENCY_BUY', 'shares': target_sh, 'price': cmp})
-        ledger['holdings'][sym]['shares'] = target_sh
-        ledger['cash_buffer'] -= (target_sh * cmp)
-        turnover_val += (target_sh * cmp)
-
-    # Buy small 20% residual in Aggressives (2.5% each)
-    for sym, name, _ in AGG_STOCKS:
-        target_amt = total_cap * 0.025
-        cmp, _ = fetch_latest_quote(sym)
-        cmp = cmp or ledger['holdings'][sym]['cmp']
-        target_sh = max(1, round(target_amt / cmp))
-        transactions.append({'ticker': sym, 'name': name, 'action': 'REDUCE_CORE_BUY', 'shares': target_sh, 'price': cmp})
+        transactions.append({'ticker': sym, 'name': name, 'action': 'ADD_DEFENSIVE', 'shares': target_sh, 'price': cmp})
         ledger['holdings'][sym]['shares'] = target_sh
         ledger['cash_buffer'] -= (target_sh * cmp)
         turnover_val += (target_sh * cmp)
@@ -553,39 +545,41 @@ def run_eod_agent():
         total_cap = ledger['total_portfolio_value']
         turnover_val = 0.0
         if new_regime == "DEFENSIVE QUALITY":
-            for sym, name, _ in DEF_STOCKS:
-                target_amt = total_cap * 0.10
+            # PANIC REGIME: ADD 8 Defensive Fortresses, expanding to 16 stocks total (6.25% each * new_eq_w)
+            for sym, name, _ in AGG_STOCKS:
+                target_amt = total_cap * (new_eq_w / 16.0)
                 cmp = ledger['holdings'][sym]['cmp']
                 target_sh = max(1, round(target_amt / cmp))
                 curr_sh = ledger['holdings'][sym]['shares']
                 diff = target_sh - curr_sh
                 if diff != 0:
-                    transactions.append({'ticker': sym, 'name': name, 'action': 'BUY', 'shares': abs(diff), 'price': cmp})
+                    transactions.append({'ticker': sym, 'name': name, 'action': 'TRIM_AGGRESSIVE' if diff < 0 else 'BUY', 'shares': abs(diff), 'price': cmp})
                     ledger['holdings'][sym]['shares'] = target_sh
                     ledger['cash_buffer'] -= (diff * cmp)
                     turnover_val += abs(diff) * cmp
-            for sym, name, _ in AGG_STOCKS:
-                target_amt = total_cap * 0.025
+            for sym, name, _ in DEF_STOCKS:
+                target_amt = total_cap * (new_eq_w / 16.0)
                 cmp = ledger['holdings'][sym]['cmp']
                 target_sh = max(1, round(target_amt / cmp))
                 curr_sh = ledger['holdings'][sym]['shares']
                 diff = target_sh - curr_sh
                 if diff != 0:
-                    transactions.append({'ticker': sym, 'name': name, 'action': 'BUY' if diff > 0 else 'SELL', 'shares': abs(diff), 'price': cmp})
+                    transactions.append({'ticker': sym, 'name': name, 'action': 'ADD_DEFENSIVE', 'shares': abs(diff), 'price': cmp})
                     ledger['holdings'][sym]['shares'] = target_sh
                     ledger['cash_buffer'] -= (diff * cmp)
                     turnover_val += abs(diff) * cmp
         else:
+            # BULL REGIME: Liquidate 8 Defensives, Concentrate into 8 Aggressive Champions (12.5% each * new_eq_w)
             for sym, name, _ in DEF_STOCKS:
                 curr_sh = ledger['holdings'][sym]['shares']
                 if curr_sh > 0:
                     cmp = ledger['holdings'][sym]['cmp']
-                    transactions.append({'ticker': sym, 'name': name, 'action': 'SELL', 'shares': curr_sh, 'price': cmp})
+                    transactions.append({'ticker': sym, 'name': name, 'action': 'EXIT_DEFENSIVE', 'shares': curr_sh, 'price': cmp})
                     ledger['cash_buffer'] += (curr_sh * cmp)
                     ledger['holdings'][sym]['shares'] = 0
                     turnover_val += (curr_sh * cmp)
             for sym, name, _ in AGG_STOCKS:
-                target_amt = total_cap * 0.125
+                target_amt = total_cap * (new_eq_w / 8.0)
                 cmp = ledger['holdings'][sym]['cmp']
                 target_sh = max(1, round(target_amt / cmp))
                 curr_sh = ledger['holdings'][sym]['shares']
@@ -736,10 +730,10 @@ def run_eod_agent():
                                 NIFTY opens &le; <strong>-1.50%</strong> (at or below <strong>Rs. {gap_cutoff_nifty:,.1f}</strong>)
                             </td>
                             <td>
-                                <strong>09:25 AM Emergency De-risking:</strong> Intercept overnight shock. Liquidate 8 Champions immediately at market open.
+                                <strong>09:25 AM Emergency Defense:</strong> Intercept overnight shock. Trim 8 Champions to 6.25% and ADD 8 Defensive Fortresses.
                             </td>
                             <td>
-                                <strong>80% Defensive Fortresses</strong> (Pharma & FMCG) + 20% Champions. Portfolio Beta drops to ~0.45x.
+                                <strong>16 Stocks Total (50% Champions / 50% Fortresses):</strong> Halves company variance and cuts portfolio beta to ~0.45x.
                             </td>
                         </tr>
                         <tr>
@@ -748,10 +742,10 @@ def run_eod_agent():
                                 EOD Markov P(Panic) &gt; <strong>65.0%</strong> (currently {p_panic:.1f}%) or VIX &gt; 18.0
                             </td>
                             <td>
-                                <strong>03:15 PM EOD Style Rotation:</strong> HMM signals persistent bear market. Shift 60% of equity into low-beta quality.
+                                <strong>03:15 PM EOD Style Expansion:</strong> HMM signals persistent bear turbulence. Add 8 Fortresses at 6.25% each.
                             </td>
                             <td>
-                                <strong>80% Fortresses / 20% Champions:</strong> Concentrates into Abbott, Torrent, Lupin, Colpal, Dabur.
+                                <strong>16 Stocks Total:</strong> Holds 8 Champions + 8 Fortresses (Colpal, Sanofi, GSK, Marico, Torrent, Alkem, Akzo, MGL).
                             </td>
                         </tr>
                         <tr>
@@ -760,10 +754,10 @@ def run_eod_agent():
                                 20-Day Realized Vol climbs &gt; <strong>{vol_upper_trigger:.1f}%</strong> (exceeding 15% deadband from {realized_vol_20d:.1f}%)
                             </td>
                             <td>
-                                <strong>Vol Target Cash Buffer:</strong> Automatically trims equity exposure to maintain risk budget and cuts volatility.
+                                <strong>Vol Target Cash Buffer:</strong> Automatically trims equity exposure to maintain 18.0% risk budget.
                             </td>
                             <td>
-                                <strong>Trims to ~85% Equity / ~15% Liquid Cash:</strong> Funds parked into Liquid BeES earning 6.50% p.a. risk-free.
+                                <strong>Trims to ~85% Equity / ~15% Liquid Cash:</strong> Excess capital parked in Liquid BeES earning 6.50% p.a.
                             </td>
                         </tr>
                         <tr style="background: #f0fdf4;">
@@ -772,10 +766,22 @@ def run_eod_agent():
                                 Gap &gt; -1.5%, P(Panic) &le; 65%, Vol &le; {vol_upper_trigger:.1f}%
                             </td>
                             <td>
-                                <strong>Hold 100% Concentration:</strong> Dual hysteresis & deadband filters suppress trading. Zero friction incurred.
+                                <strong>Hold 8 Champions (100% Equity):</strong> Dual hysteresis & deadband suppress churn. Zero friction incurred.
                             </td>
                             <td>
-                                <strong>100% Concentrated in 8 Champions:</strong> Full upside acceleration across Dixon, Cholafin, Persistent, etc.
+                                <strong>Concentrated in 8 Champions (12.5% each):</strong> Dixon, Trent, Kaynes, Persistent, Cummins, Coforge, Polycab, Indian Hotels.
+                            </td>
+                        </tr>
+                        <tr style="background: #faf5ff;">
+                            <td>
+                                <strong style="color: #7c3aed;">🔄 Quarterly Universe Scan</strong><br>
+                                End of calendar quarter (63 sessions)
+                            </td>
+                            <td>
+                                <strong>Dynamic Bench Evaluation:</strong> Re-ranks 40-stock universe by Momentum/ROCE/Beta and checks 200-day EMA.
+                            </td>
+                            <td>
+                                <strong>Eviction & Promotion:</strong> Displaces any stock ranked &gt; #12 or below 200 EMA with the top sector bench candidate.
                             </td>
                         </tr>
                     </tbody>

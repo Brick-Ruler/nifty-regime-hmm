@@ -17,26 +17,28 @@ import math
 import sys
 from datetime import datetime
 
+# INSTITUTIONAL MID & SMALL CAP ACTIVE PICKS (Vetted via 6 Quantitative + 4 Qualitative Forensic Gates)
+# Max 2 stocks per economic sector constraint strictly enforced.
 AGG_STOCKS = [
     ('DIXON.NS', 'Dixon Technologies', 'EMS / Electronics'),
-    ('CHOLAFIN.NS', 'Cholamandalam Inv', 'High-Beta NBFC'),
-    ('MANAPPURAM.NS', 'Manappuram Finance', 'Gold NBFC'),
-    ('AARTIIND.NS', 'Aarti Industries', 'Specialty Chemicals'),
-    ('BHARATFORG.NS', 'Bharat Forge', 'Industrial / Forging'),
-    ('PERSISTENT.NS', 'Persistent Systems', 'Midcap IT / Tech'),
-    ('INDHOTEL.NS', 'Indian Hotels', 'Discretionary / Travel'),
-    ('COFORGE.NS', 'Coforge', 'Digital Solutions / IT')
+    ('TRENT.NS', 'Trent Ltd (Tata)', 'Consumer Discretionary'),
+    ('KAYNES.NS', 'Kaynes Technology', 'EMS / Electronics'),
+    ('PERSISTENT.NS', 'Persistent Systems', 'Technology'),
+    ('CUMMINSIND.NS', 'Cummins India', 'Capital Goods'),
+    ('COFORGE.NS', 'Coforge Ltd', 'Technology'),
+    ('POLYCAB.NS', 'Polycab India', 'Capital Goods'),
+    ('INDHOTEL.NS', 'Indian Hotels (Tata)', 'Consumer Discretionary')
 ]
 
 DEF_STOCKS = [
-    ('ABBOTINDIA.NS', 'Abbott India', 'MNC Healthcare'),
-    ('TORNTPHARM.NS', 'Torrent Pharma', 'Chronic Formulations'),
-    ('IPCALAB.NS', 'Ipca Laboratories', 'API / Pain Mgmt'),
-    ('MARICO.NS', 'Marico', 'FMCG Consumer Staples'),
-    ('ALKEM.NS', 'Alkem Laboratories', 'Anti-Infectives'),
-    ('COLPAL.NS', 'Colgate-Palmolive', 'Oral Hygiene / Staples'),
-    ('DABUR.NS', 'Dabur India', 'Ayurvedic Consumer Goods'),
-    ('LUPIN.NS', 'Lupin', 'Pharma / Respiratory')
+    ('COLPAL.NS', 'Colgate-Palmolive India', 'Consumer Staples FMCG'),
+    ('SANOFI.NS', 'Sanofi India', 'MNC Healthcare'),
+    ('GLAXO.NS', 'GlaxoSmithKline Pharma', 'MNC Healthcare'),
+    ('MARICO.NS', 'Marico Ltd', 'Consumer Staples FMCG'),
+    ('TORNTPHARM.NS', 'Torrent Pharma', 'Specialty Pharma'),
+    ('AKZOINDIA.NS', 'Akzo Nobel India', 'Staple Consumer'),
+    ('ALKEM.NS', 'Alkem Laboratories', 'Specialty Pharma'),
+    ('MGL.NS', 'Mahanagar Gas', 'City Gas Utility')
 ]
 
 def fetch_latest_quote(symbol):

@@ -15,10 +15,12 @@ OUTPUT_FILE = os.path.join(BASE_DIR, "live_quotes.json")
 
 SYMBOLS = [
     '^NSEI', '^INDIAVIX',
-    'DIXON.NS', 'CHOLAFIN.NS', 'MANAPPURAM.NS', 'AARTIIND.NS',
-    'BHARATFORG.NS', 'PERSISTENT.NS', 'INDHOTEL.NS', 'COFORGE.NS',
-    'ABBOTINDIA.NS', 'TORNTPHARM.NS', 'IPCALAB.NS', 'MARICO.NS',
-    'ALKEM.NS', 'COLPAL.NS', 'DABUR.NS', 'LUPIN.NS'
+    # 8 Aggressive Champions
+    'DIXON.NS', 'TRENT.NS', 'KAYNES.NS', 'PERSISTENT.NS',
+    'CUMMINSIND.NS', 'COFORGE.NS', 'POLYCAB.NS', 'INDHOTEL.NS',
+    # 8 Defensive Fortresses
+    'COLPAL.NS', 'SANOFI.NS', 'GLAXO.NS', 'MARICO.NS',
+    'TORNTPHARM.NS', 'AKZOINDIA.NS', 'ALKEM.NS', 'MGL.NS'
 ]
 
 def fetch_symbol_meta_yahoo(symbol):
