@@ -10,7 +10,7 @@ with open(LEDGER_FILE, 'r', encoding='utf-8') as f:
 
 holdings = ledger.get('holdings', {})
 
-# Today Morning 09:15 AM Base (Yesterday's Official Close establishing today's morning base)
+# Today Morning 09:15 AM Cost Basis (Actual capital deployed into equities)
 MORNING_BASE_PRICES = {
     'PERSISTENT.NS': 5857.00,
     'COFORGE.NS': 2049.00,
@@ -22,19 +22,22 @@ MORNING_BASE_PRICES = {
     'DIXON.NS': 12615.00
 }
 
-total_morning_equity = 0.0
+# 1. Compute exact capital deployed into equities
+total_invested_cost = 0.0
 for sym, price in MORNING_BASE_PRICES.items():
     sh = holdings[sym]['shares']
-    total_morning_equity += sh * price
+    total_invested_cost += round(sh * price, 2)
+total_invested_cost = round(total_invested_cost, 2)
 
-cash_buffer = round(100000.0 - total_morning_equity, 2)
-INITIAL_CAPITAL = 100000.0
+CASH_BUFFER = round(100000.0 - total_invested_cost, 2) # Rs. 1,779.40
 
-print(f"Morning Base Equity: Rs. {total_morning_equity:,.2f}")
-print(f"Morning Cash Buffer: Rs. {cash_buffer:,.2f}")
-print(f"Total Starting Capital (Today 09:15 AM): Rs. {INITIAL_CAPITAL:,.2f}")
+print("=" * 95)
+print(f"Invested Equity Base (Excluding Cash): Rs. {total_invested_cost:,.2f}")
+print(f"Unallocated Liquid Cash Buffer:       Rs. {CASH_BUFFER:,.2f}")
+print(f"Total Initial Account Capital:        Rs. 100,000.00")
+print("=" * 95)
 
-print("\nFetching Live CMP to compute pure today morning-to-now action...")
+print("\nFetching Live CMP to compute pure equity performance...")
 total_current_equity = 0.0
 stock_summary = []
 
@@ -43,14 +46,14 @@ for sym, info in holdings.items():
     if sh <= 0:
         continue
     
-    morning_base = MORNING_BASE_PRICES.get(sym, info.get('buy_price'))
+    buy_price = MORNING_BASE_PRICES.get(sym, info.get('buy_price'))
     
     # Fetch live CMP
     encoded = urllib.parse.quote(sym)
     url = f"https://query1.finance.yahoo.com/v8/finance/chart/{encoded}?range=1d&interval=5m"
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     
-    cmp = morning_base
+    cmp = buy_price
     try:
         with urllib.request.urlopen(req, timeout=5) as resp:
             data = json.loads(resp.read().decode('utf-8'))
@@ -61,17 +64,19 @@ for sym, info in holdings.items():
     except Exception as e:
         print(f"Notice fetching {sym}: {e}")
 
-    cost = round(sh * morning_base, 2)
+    cost = round(sh * buy_price, 2)
     cur_val = round(sh * cmp, 2)
     pnl = round(cur_val - cost, 2)
-    pct = round(((cmp - morning_base) / morning_base) * 100.0, 2)
+    # Return strictly on actual capital deployed in this equity
+    pct = round(((cmp - buy_price) / buy_price) * 100.0, 2)
 
     total_current_equity += cur_val
 
-    # Update ledger holding record
-    info['buy_price'] = morning_base
-    info['prev_close'] = morning_base
+    # Update ledger record
+    info['buy_price'] = buy_price
+    info['prev_close'] = buy_price
     info['cmp'] = cmp
+    info['invested_cost'] = cost
     info['current_value'] = cur_val
     info['day_change_pct'] = pct
     info['day_pnl'] = pnl
@@ -83,17 +88,22 @@ for sym, info in holdings.items():
         'name': info.get('name'),
         'sector': info.get('sector'),
         'shares': sh,
-        'morning_base': morning_base,
+        'buy_price': buy_price,
         'cmp': cmp,
         'cost': cost,
         'current_val': cur_val,
-        'today_pnl': pnl,
-        'today_pct': pct
+        'pnl': pnl,
+        'pct': pct
     })
 
-total_portfolio_nav = round(total_current_equity + cash_buffer, 2)
-today_total_pnl = round(total_portfolio_nav - INITIAL_CAPITAL, 2)
-today_total_pct = round((today_total_pnl / INITIAL_CAPITAL) * 100.0, 2)
+total_current_equity = round(total_current_equity, 2)
+
+# PURE EQUITY RETURN (Strictly on Invested Equity Capital, cash excluded!)
+equity_net_pnl = round(total_current_equity - total_invested_cost, 2)
+equity_return_pct = round((equity_net_pnl / total_invested_cost) * 100.0, 2)
+
+# TOTAL ACCOUNT NAV (Invested Equity + Cash Buffer)
+total_account_nav = round(total_current_equity + CASH_BUFFER, 2)
 
 now_str = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -138,15 +148,14 @@ model_thinking = (
 )
 
 ledger['initialized_at'] = "2026-11-19 09:15:00"
-ledger['initial_portfolio_value'] = INITIAL_CAPITAL
-ledger['equity_value'] = round(total_current_equity, 2)
-ledger['cash_buffer'] = cash_buffer
-ledger['total_portfolio_value'] = total_portfolio_nav
+ledger['invested_equity_cost'] = total_invested_cost
+ledger['current_equity_value'] = total_current_equity
+ledger['equity_pnl'] = equity_net_pnl
+ledger['equity_pnl_pct'] = equity_return_pct
+ledger['cash_buffer'] = CASH_BUFFER
+ledger['total_portfolio_value'] = total_account_nav
+ledger['total_account_nav'] = total_account_nav
 ledger['last_updated'] = now_str
-ledger['day_pnl'] = today_total_pnl
-ledger['day_pnl_pct'] = today_total_pct
-ledger['overall_pnl'] = today_total_pnl
-ledger['overall_pnl_pct'] = today_total_pct
 
 ledger['regime_intel'] = {
     'active_regime': 'CALM BULL (AGGRESSIVE GROWTH)',
@@ -166,19 +175,18 @@ with open(LEDGER_FILE, 'w', encoding='utf-8') as f:
     json.dump(ledger, f, indent=2)
 
 print("\n" + "=" * 95)
-print(f"   PORTFOLIO VALUATION AUDIT (BASELINE: TODAY MORNING 09:15 AM - {now_str} IST)")
+print(f"   PURE EQUITY PERFORMANCE AUDIT (EXCLUDING CASH BUFFER) - {now_str} IST")
 print("=" * 95)
-print(f"Starting Capital This Morning: Rs. {INITIAL_CAPITAL:>10,.2f}")
-print(f"Current Equity Value:          Rs. {total_current_equity:>10,.2f}  ({(total_current_equity / total_portfolio_nav)*100:.1f}%)")
-print(f"Cash Buffer Reserve:           Rs. {cash_buffer:>10,.2f}  ({(cash_buffer / total_portfolio_nav)*100:.1f}%)")
+print(f"Total Capital Deployed in Equities:  Rs. {total_invested_cost:>10,.2f}")
+print(f"Current Value of Equities:           Rs. {total_current_equity:>10,.2f}")
+print(f"Net Equity Profit / Loss:            Rs. {equity_net_pnl:>+10,.2f}  ({equity_return_pct:+5.2f}% on deployed equity)")
 print(f"-----------------------------------------------------------------------------------------------")
-print(f"CURRENT PORTFOLIO TOTAL NAV:   Rs. {total_portfolio_nav:>10,.2f}")
-print(f"Today's Net Gain / Loss:       Rs. {today_total_pnl:>+10,.2f}  ({today_total_pct:+5.2f}%)")
-print(f"Lifetime P&L (Pure Today):     Rs. {today_total_pnl:>+10,.2f}  ({today_total_pct:+5.2f}%)")
+print(f"Unallocated Liquid Cash Buffer:      Rs. {CASH_BUFFER:>10,.2f}")
+print(f"TOTAL ACCOUNT VALUE (Equity + Cash): Rs. {total_account_nav:>10,.2f}")
 print("=" * 95)
 
-print(f"{'SYMBOL':<12} | {'SECTOR':<22} | {'SH':<3} | {'MORNING':>8} | {'CMP':>8} | {'VAL (Rs)':>9} | {'TODAY P&L':>11} | {'TODAY %':>7}")
+print(f"{'SYMBOL':<12} | {'SECTOR':<20} | {'SH':<3} | {'BUY':>8} | {'CMP':>8} | {'COST (Rs)':>9} | {'VAL (Rs)':>9} | {'NET P&L':>10} | {'RETURN %':>7}")
 print("-" * 95)
 for s in stock_summary:
-    print(f"{s['symbol']:<12} | {s['sector'][:22]:<22} | {s['shares']:>3} | {s['morning_base']:>8.1f} | {s['cmp']:>8.1f} | {s['current_val']:>9.2f} | Rs.{s['today_pnl']:>+8.2f} | {s['today_pct']:>+6.2f}%")
+    print(f"{s['symbol']:<12} | {s['sector'][:20]:<20} | {s['shares']:>3} | {s['buy_price']:>8.1f} | {s['cmp']:>8.1f} | {s['cost']:>9.2f} | {s['current_val']:>9.2f} | Rs.{s['pnl']:>+7.2f} | {s['pct']:>+6.2f}%")
 print("=" * 95)
