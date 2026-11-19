@@ -303,6 +303,16 @@ def run_premarket_sentinel():
                 </div>
             </div>
 
+            <!-- 5. Real-Time Netlify Live Tracker Link -->
+            <div style="text-align: center; margin: 22px 0 12px 0;">
+                <a href="https://nifty-portfolio-tracker.netlify.app/" target="_blank" style="background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: #ffffff; text-decoration: none; padding: 14px 30px; border-radius: 8px; font-weight: 800; font-size: 14px; display: inline-block; box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4); letter-spacing: 0.3px;">
+                    🌐 Open Live Portfolio Dashboard (Real-Time NSE Streaming) &rarr;
+                </a>
+                <div style="font-size: 11px; color: #64748b; margin-top: 6px;">
+                    Serverless Live Feed • Auto-polling every 3s • View live MTM valuations & Option B Sector weights
+                </div>
+            </div>
+
             <div class="footer">
                 Antigravity Quantitative Strategy Engine • Read-Only Pre-Market Intelligence.<br>
                 Next scheduled decision milestone: <strong>03:15 PM IST</strong> (EOD Hamilton Markov Regime Decision).

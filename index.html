@@ -564,9 +564,9 @@
                 <span class="badge-pill pill-up" id="vix-chg">+0.96%</span>
             </div>
             <div class="sentinel-item">
-                <span class="sentinel-tag">09:25 AM Circuit Breaker:</span>
+                <span class="sentinel-tag">Execution Architecture:</span>
                 <span class="badge-pill pill-up" style="background: rgba(16, 185, 129, 0.15); color: var(--green);">
-                    NORMAL OPEN (Gap -0.25% vs Cutoff -1.50%)
+                    PURE 03:15 PM EOD MARKOV (WHIPSAW PROTECTED)
                 </span>
             </div>
             <div class="sentinel-item">
@@ -706,12 +706,16 @@
                         <span class="spec-val">Windows Task Scheduler (WakeToRun = true)</span>
                     </div>
                     <div class="spec-row">
-                        <span class="spec-label">Morning Gap Circuit Breaker:</span>
-                        <span class="spec-val">09:25 AM IST (Trigger: -1.50% NIFTY Gap)</span>
+                        <span class="spec-label">Morning Intelligence Radar:</span>
+                        <span class="spec-val">08:50 AM IST (Global Cues & Forensics)</span>
                     </div>
                     <div class="spec-row">
-                        <span class="spec-label">EOD Markov Rebalance:</span>
-                        <span class="spec-val">03:15 PM IST (2-State Gaussian HMM)</span>
+                        <span class="spec-label">Sole Execution Milestone:</span>
+                        <span class="spec-val" style="color: var(--green);">03:15 PM IST (Hamilton Markov Regime EOD)</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Sector Rotation Engine:</span>
+                        <span class="spec-val" style="color: #a855f7;">Option B (Top-5 Leading Momentum Sectors)</span>
                     </div>
                     <div class="spec-row">
                         <span class="spec-label">Target Volatility Overlay:</span>
@@ -722,8 +726,8 @@
                         <span class="spec-val">neal17022006@gmail.com (Cloud SMTP)</span>
                     </div>
                     <div class="spec-row">
-                        <span class="spec-label">Backtested Performance:</span>
-                        <span class="spec-val" style="color: var(--green);">+41.6% CAGR • Sharpe 1.40</span>
+                        <span class="spec-label">Walk-Forward Backtest:</span>
+                        <span class="spec-val" style="color: var(--green);">+33.16% CAGR • Sharpe 1.36 • Max DD -24.4%</span>
                     </div>
                 </div>
             </div>
@@ -1039,7 +1043,7 @@
             fetchLiveQuotes(true);
         }
 
-        // Countdown Timer to Next Scheduled Action (09:25 AM or 03:15 PM IST)
+        // Countdown Timer to Next Scheduled Action (08:50 AM Radar or 03:15 PM EOD Rebalance)
         function updateCountdown() {
             const now = new Date();
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
@@ -1051,16 +1055,20 @@
 
             let targetHour = 15;
             let targetMinute = 15;
-            let label = "Target: 03:15 PM EOD Markov Rebalance";
+            let label = "Target: 03:15 PM EOD Hamilton Markov Decision";
 
-            if (curHours < 9 || (curHours === 9 && curMinutes < 25)) {
-                targetHour = 9;
-                targetMinute = 25;
-                label = "Target: 09:25 AM Morning Gap Breaker";
-            } else if (curHours >= 15 && curMinutes >= 15) {
-                targetHour = 9 + 24;
-                targetMinute = 25;
-                label = "Target: Tomorrow 09:25 AM Morning Scan";
+            if (curHours < 8 || (curHours === 8 && curMinutes < 50)) {
+                targetHour = 8;
+                targetMinute = 50;
+                label = "Target: 08:50 AM Pre-Market Intelligence Radar";
+            } else if (curHours < 15 || (curHours === 15 && curMinutes < 15)) {
+                targetHour = 15;
+                targetMinute = 15;
+                label = "Target: 03:15 PM EOD Hamilton Markov Decision";
+            } else {
+                targetHour = 8 + 24;
+                targetMinute = 50;
+                label = "Target: Tomorrow 08:50 AM Pre-Market Radar";
             }
 
             const nowSecs = curHours * 3600 + curMinutes * 60 + curSeconds;
