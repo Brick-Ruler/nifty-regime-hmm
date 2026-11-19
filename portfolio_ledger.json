@@ -4,7 +4,7 @@
   "strategy_name": "HMM Dynamic Concentration (8 in Bull / 16 in Panic)",
   "initial_portfolio_value": 100000.0,
   "initial_nifty_close": 25387.4,
-  "peak_portfolio_value": 100000.0,
+  "peak_portfolio_value": 100949.3,
   "active_regime": "AGGRESSIVE GROWTH",
   "volatility_targeting": {
     "target_annualized_vol": 21.0,
@@ -18,8 +18,8 @@
   },
   "liquid_cash_buffer": 0.0,
   "cash_buffer": 1779.4,
-  "equity_value": 98641.0,
-  "total_portfolio_value": 100454.3,
+  "equity_value": 99111.6,
+  "total_portfolio_value": 100891.0,
   "cumulative_friction_paid": 0.0,
   "holdings": {
     "PERSISTENT.NS": {
@@ -28,13 +28,13 @@
       "sector": "Digital Engineering / IT",
       "shares": 2,
       "buy_price": 5857.0,
-      "cmp": 5805.5,
-      "current_value": 11611.0,
+      "cmp": 5880.0,
+      "current_value": 11760.0,
       "prev_close": 5857.0,
       "day_change_pct": -0.88,
       "day_pnl": -103.0,
-      "unrealized_pnl": -103.0,
-      "unrealized_pnl_pct": -0.88,
+      "unrealized_pnl": 46.0,
+      "unrealized_pnl_pct": 0.39,
       "invested_cost": 11714.0
     },
     "COFORGE.NS": {
@@ -43,12 +43,12 @@
       "sector": "Digital Engineering / IT",
       "shares": 6,
       "buy_price": 2049.0,
-      "cmp": 2041.1,
-      "current_value": 12246.6,
+      "cmp": 2041.0,
+      "current_value": 12246.0,
       "prev_close": 2049.0,
       "day_change_pct": -0.39,
       "day_pnl": -47.4,
-      "unrealized_pnl": -47.4,
+      "unrealized_pnl": -48.0,
       "unrealized_pnl_pct": -0.39,
       "invested_cost": 12294.0
     },
@@ -58,13 +58,13 @@
       "sector": "Financials & NBFC",
       "shares": 7,
       "buy_price": 1875.0,
-      "cmp": 1869.7,
-      "current_value": 13087.9,
+      "cmp": 1875.0,
+      "current_value": 13125.0,
       "prev_close": 1875.0,
       "day_change_pct": -0.28,
       "day_pnl": -37.1,
-      "unrealized_pnl": -37.1,
-      "unrealized_pnl_pct": -0.28,
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_pct": 0.0,
       "invested_cost": 13125.0
     },
     "FEDERALBNK.NS": {
@@ -73,13 +73,13 @@
       "sector": "Financials & Banking",
       "shares": 34,
       "buy_price": 360.35,
-      "cmp": 363.15,
-      "current_value": 12347.1,
+      "cmp": 364.5,
+      "current_value": 12393.0,
       "prev_close": 360.35,
       "day_change_pct": 0.78,
       "day_pnl": 95.2,
-      "unrealized_pnl": 95.2,
-      "unrealized_pnl_pct": 0.78,
+      "unrealized_pnl": 141.1,
+      "unrealized_pnl_pct": 1.15,
       "invested_cost": 12251.9
     },
     "INDHOTEL.NS": {
@@ -88,13 +88,13 @@
       "sector": "Hospitality & Services",
       "shares": 14,
       "buy_price": 875.05,
-      "cmp": 885.95,
-      "current_value": 12403.3,
+      "cmp": 889.65,
+      "current_value": 12455.1,
       "prev_close": 875.05,
       "day_change_pct": 1.25,
       "day_pnl": 152.6,
-      "unrealized_pnl": 152.6,
-      "unrealized_pnl_pct": 1.25,
+      "unrealized_pnl": 204.4,
+      "unrealized_pnl_pct": 1.67,
       "invested_cost": 12250.7
     },
     "EIHOTEL.NS": {
@@ -103,13 +103,13 @@
       "sector": "Hospitality & Services",
       "shares": 40,
       "buy_price": 313.45,
-      "cmp": 307.35,
-      "current_value": 12294.0,
+      "cmp": 310.5,
+      "current_value": 12420.0,
       "prev_close": 313.45,
       "day_change_pct": -1.95,
       "day_pnl": -244.0,
-      "unrealized_pnl": -244.0,
-      "unrealized_pnl_pct": -1.95,
+      "unrealized_pnl": -118.0,
+      "unrealized_pnl_pct": -0.94,
       "invested_cost": 12538.0
     },
     "BALKRISIND.NS": {
@@ -118,13 +118,13 @@
       "sector": "Auto Ancillary",
       "shares": 5,
       "buy_price": 2286.4,
-      "cmp": 2325.0,
-      "current_value": 11625.0,
+      "cmp": 2331.7,
+      "current_value": 11658.5,
       "prev_close": 2286.4,
       "day_change_pct": 1.69,
       "day_pnl": 193.0,
-      "unrealized_pnl": 193.0,
-      "unrealized_pnl_pct": 1.69,
+      "unrealized_pnl": 226.5,
+      "unrealized_pnl_pct": 1.98,
       "invested_cost": 11432.0
     },
     "DIXON.NS": {
@@ -133,13 +133,13 @@
       "sector": "EMS & Consumer Tech",
       "shares": 1,
       "buy_price": 12615.0,
-      "cmp": 13060.0,
-      "current_value": 13060.0,
+      "cmp": 13054.0,
+      "current_value": 13054.0,
       "prev_close": 12615.0,
       "day_change_pct": 3.53,
       "day_pnl": 445.0,
-      "unrealized_pnl": 445.0,
-      "unrealized_pnl_pct": 3.53,
+      "unrealized_pnl": 439.0,
+      "unrealized_pnl_pct": 3.48,
       "invested_cost": 12615.0
     },
     "COLPAL.NS": {
@@ -148,8 +148,9 @@
       "sector": "Oral Hygiene Staples",
       "shares": 0,
       "buy_price": 1719.7,
-      "cmp": 1764.3,
-      "current_value": 0.0
+      "cmp": 1776.6,
+      "current_value": 0.0,
+      "invested_cost": 0.0
     },
     "GLAXO.NS": {
       "name": "GlaxoSmithKline Pharma",
@@ -157,8 +158,9 @@
       "sector": "MNC Healthcare / Vaccines",
       "shares": 0,
       "buy_price": 2687.6,
-      "cmp": 2664.9,
-      "current_value": 0.0
+      "cmp": 2710.4,
+      "current_value": 0.0,
+      "invested_cost": 0.0
     },
     "MARICO.NS": {
       "name": "Marico Ltd",
@@ -166,8 +168,9 @@
       "sector": "Consumer Staples FMCG",
       "shares": 0,
       "buy_price": 924.0,
-      "cmp": 908.85,
-      "current_value": 0.0
+      "cmp": 918.8,
+      "current_value": 0.0,
+      "invested_cost": 0.0
     },
     "TORNTPHARM.NS": {
       "name": "Torrent Pharma",
@@ -175,8 +178,9 @@
       "sector": "Chronic Specialty Pharma",
       "shares": 0,
       "buy_price": 4668.8,
-      "cmp": 4661.6,
-      "current_value": 0.0
+      "cmp": 4611.0,
+      "current_value": 0.0,
+      "invested_cost": 0.0
     },
     "KANSAINER.NS": {
       "name": "Kansai Nerolac Paints",
@@ -184,8 +188,9 @@
       "sector": "Decorative MNC Coatings",
       "shares": 0,
       "buy_price": 201.02,
-      "cmp": 198.03,
-      "current_value": 0.0
+      "cmp": 195.75,
+      "current_value": 0.0,
+      "invested_cost": 0.0
     },
     "MGL.NS": {
       "name": "Mahanagar Gas",
@@ -193,8 +198,9 @@
       "sector": "City Gas Distribution",
       "shares": 0,
       "buy_price": 1104.1,
-      "cmp": 1104.4,
-      "current_value": 0.0
+      "cmp": 1102.0,
+      "current_value": 0.0,
+      "invested_cost": 0.0
     },
     "COROMANDEL.NS": {
       "name": "Coromandel Int",
@@ -202,8 +208,9 @@
       "sector": "Agri Nutrients & Crop Care",
       "shares": 0,
       "buy_price": 1973.5,
-      "cmp": 1963.3,
-      "current_value": 0.0
+      "cmp": 1972.0,
+      "current_value": 0.0,
+      "invested_cost": 0.0
     },
     "PETRONET.NS": {
       "name": "Petronet LNG",
@@ -211,8 +218,9 @@
       "sector": "Energy Infrastructure",
       "shares": 0,
       "buy_price": 328.1,
-      "cmp": 328.25,
-      "current_value": 0.0
+      "cmp": 330.8,
+      "current_value": 0.0,
+      "invested_cost": 0.0
     }
   },
   "universe_bench_summary": {
@@ -251,20 +259,20 @@
   "overall_pnl_pct": 0.42,
   "regime_intel": {
     "active_regime": "CALM BULL (AGGRESSIVE GROWTH)",
-    "p_calm": 95.2,
-    "p_panic": 4.8,
+    "p_calm": 88.4,
+    "p_panic": 11.6,
     "panic_threshold": 65.0,
     "realized_vol_20d": 19.34,
     "target_vol": 21.0,
     "equity_weight_pct": 100.0,
     "cash_weight_pct": 0.0,
-    "nifty_cmp": 25352.099609375,
-    "vix_cmp": 16.202499389648438,
-    "model_thinking": "Hamilton forward filter indicates 95.2% Calm Bull confidence. With 20-day realized volatility (19.3%) safely under the 21.0% target, the system maintains 100% equity concentration in the 8 Aggressive Champions with zero cash drag."
+    "nifty_cmp": 25514.30078125,
+    "vix_cmp": 15.912500381469727,
+    "model_thinking": "Hamilton forward filter indicates 88.4% Calm Bull confidence. With 20-day realized volatility (19.3%) safely under the 21.0% target, the system maintains 100% equity concentration in the 8 Aggressive Champions with zero cash drag."
   },
   "invested_equity_cost": 98220.6,
-  "current_equity_value": 98674.9,
-  "equity_pnl": 454.3,
-  "equity_pnl_pct": 0.46,
-  "total_account_nav": 100454.3
+  "current_equity_value": 99111.6,
+  "equity_pnl": 891.0,
+  "equity_pnl_pct": 0.91,
+  "total_account_nav": 100891.0
 }

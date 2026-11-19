@@ -24,6 +24,32 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 if BASE_DIR not in sys.path:
     sys.path.append(BASE_DIR)
 
+# Dedicated Dual Logging for Task Scheduler / Cron Traceability
+LOG_FILE = os.path.join(BASE_DIR, "eod_cron.log")
+class SafeLogger:
+    def __init__(self, filepath):
+        self.terminal = sys.stdout
+        self.log = open(filepath, "a", encoding="utf-8")
+    def write(self, message):
+        if self.terminal is not None:
+            try:
+                self.terminal.write(message)
+            except Exception:
+                pass
+        self.log.write(message)
+        self.log.flush()
+    def flush(self):
+        if self.terminal is not None:
+            try:
+                self.terminal.flush()
+            except Exception:
+                pass
+        self.log.flush()
+
+_logger = SafeLogger(LOG_FILE)
+sys.stdout = _logger
+sys.stderr = _logger
+
 from daily_portfolio_advisor import AGG_STOCKS, DEF_STOCKS, fetch_latest_quote
 try:
     from update_live_quotes import update_live_quotes
@@ -103,8 +129,14 @@ def send_email_report(subject, html_content, to_email=RECIPIENT_EMAIL):
             "--body-file", tmp_file
         ]
         res = subprocess.run(cmd, capture_output=True, text=True, shell=True)
-        print(f"Report emailed via local Gmail CLI! ({res.stdout.strip()})")
-        return True
+        out = (res.stdout or "").strip()
+        err = (res.stderr or "").strip()
+        if res.returncode == 0:
+            print(f"Report emailed via local Gmail CLI! ({out or 'Message Dispatched'})")
+            return True
+        else:
+            print(f"Gmail CLI warning (code {res.returncode}): {err or out}")
+            return False
     except Exception as e:
         print(f"Gmail CLI error: {e}")
         return False
@@ -560,33 +592,71 @@ def run_eod_agent():
             "<strong>Broadened Defense Active (16 Stocks):</strong> 80% concentrated into 8 Defensive Fortresses (Abbott, Torrent, Colgate, Dabur) to prevent drawdown."
         )
 
-    # 5. Mark to Market
+    # 5. Mark to Market (Pure Equity Accounting Convention)
     total_equity_value = 0.0
+    total_invested_cost = 0.0
     active_stock_movers = []
     for sym in ledger['holdings']:
+        h = ledger['holdings'][sym]
         cmp, daily_r = fetch_latest_quote(sym)
-        cmp = cmp or ledger['holdings'][sym]['cmp']
-        ledger['holdings'][sym]['cmp'] = round(cmp, 2)
-        val = ledger['holdings'][sym]['shares'] * cmp
-        ledger['holdings'][sym]['current_value'] = round(val, 2)
+        cmp = cmp or h['cmp']
+        h['cmp'] = round(cmp, 2)
+        val = round(h['shares'] * cmp, 2)
+        h['current_value'] = val
         total_equity_value += val
-        if ledger['holdings'][sym]['shares'] > 0:
-            active_stock_movers.append((sym, ledger['holdings'][sym]['name'], daily_r, cmp, ledger['holdings'][sym]['shares'], val))
+        
+        buy_p = h.get('buy_price', cmp)
+        inv_cost = round(h['shares'] * buy_p, 2)
+        h['invested_cost'] = inv_cost
+        
+        if h['shares'] > 0:
+            total_invested_cost += inv_cost
+            pnl = round(val - inv_cost, 2)
+            pnl_pct = round((pnl / inv_cost) * 100.0, 2) if inv_cost > 0 else 0.0
+            h['unrealized_pnl'] = pnl
+            h['unrealized_pnl_pct'] = pnl_pct
+            active_stock_movers.append({
+                'sym': sym,
+                'name': h['name'],
+                'shares': h['shares'],
+                'buy_price': buy_p,
+                'cmp': cmp,
+                'cost': inv_cost,
+                'val': val,
+                'pnl': pnl,
+                'pnl_pct': pnl_pct,
+                'daily_r': daily_r
+            })
 
-    prev_portfolio_val = ledger['total_portfolio_value']
-    ledger['equity_value'] = round(total_equity_value, 2)
-    ledger['total_portfolio_value'] = round(total_equity_value + ledger['cash_buffer'], 2)
+    # Pure Deployed Equity Metrics (Cash Buffer completely segregated!)
+    total_invested_cost = round(total_invested_cost, 2)
+    total_equity_value = round(total_equity_value, 2)
+    net_equity_pnl = round(total_equity_value - total_invested_cost, 2)
+    equity_return_pct = round((net_equity_pnl / total_invested_cost) * 100.0, 2) if total_invested_cost > 0 else 0.0
+    
+    cash_buffer = round(ledger.get('cash_buffer', 1779.40), 2)
+    total_account_nav = round(total_equity_value + cash_buffer, 2)
+    account_return_pct = round((net_equity_pnl / 100000.0) * 100.0, 2)
+
+    ledger['invested_equity_cost'] = total_invested_cost
+    ledger['current_equity_value'] = total_equity_value
+    ledger['equity_value'] = total_equity_value
+    ledger['equity_pnl'] = net_equity_pnl
+    ledger['equity_pnl_pct'] = equity_return_pct
+    ledger['cash_buffer'] = cash_buffer
+    ledger['total_account_nav'] = total_account_nav
+    ledger['total_portfolio_value'] = total_account_nav
     ledger['active_regime'] = new_regime
 
-    if ledger['total_portfolio_value'] > ledger['peak_portfolio_value']:
-        ledger['peak_portfolio_value'] = ledger['total_portfolio_value']
+    if ledger['total_account_nav'] > ledger.get('peak_portfolio_value', 100000.0):
+        ledger['peak_portfolio_value'] = ledger['total_account_nav']
     peak_val = ledger['peak_portfolio_value']
-    current_drawdown = ((ledger['total_portfolio_value'] - peak_val) / peak_val) * 100.0
+    current_drawdown = round(((ledger['total_account_nav'] - peak_val) / peak_val) * 100.0, 2)
 
     # 6. Execute Rebalance if regime flipped
     transactions = []
     if regime_flipped:
-        total_cap = ledger['total_portfolio_value']
+        total_cap = ledger['total_account_nav']
         turnover_val = 0.0
         if new_regime == "DEFENSIVE QUALITY":
             # PANIC REGIME: ADD 8 Defensive Fortresses, expanding to 16 stocks total (6.25% each * new_eq_w)
@@ -638,41 +708,66 @@ def run_eod_agent():
         ledger['cumulative_friction_paid'] += fee
         ledger['cash_buffer'] -= fee
         ledger['total_portfolio_value'] = round(ledger['equity_value'] + ledger['cash_buffer'], 2)
+        ledger['total_account_nav'] = ledger['total_portfolio_value']
 
-    # 7. Metrics
-    init_val = ledger['initial_portfolio_value']
-    curr_val = ledger['total_portfolio_value']
-    port_total_return = ((curr_val - init_val) / init_val) * 100.0
-    init_nifty = ledger['initial_nifty_close']
-    nifty_total_return = ((nifty_price - init_nifty) / init_nifty) * 100.0
-    alpha = port_total_return - nifty_total_return
-    daily_pnl = curr_val - prev_portfolio_val
-    daily_pnl_pct = (daily_pnl / prev_portfolio_val) * 100.0 if prev_portfolio_val > 0 else 0.0
+    # 7. Metrics & Ledger Persistence
+    init_nifty = ledger.get('initial_nifty_close', 25300.0)
+    nifty_total_return = round(((nifty_price - init_nifty) / init_nifty) * 100.0, 2)
+    alpha = round(equity_return_pct - nifty_total_return, 2)
+
+    ledger['regime_intel'] = {
+        'active_regime': f"CALM BULL (AGGRESSIVE GROWTH)" if new_regime != "DEFENSIVE QUALITY" else "PANIC BEAR (DEFENSIVE FORTRESS)",
+        'p_calm': round(p_calm, 1),
+        'p_panic': round(p_panic, 1),
+        'panic_threshold': 65.0,
+        'realized_vol_20d': round(realized_vol_20d, 2),
+        'target_vol': 21.0,
+        'equity_weight_pct': round(new_eq_w * 100, 1),
+        'cash_weight_pct': round(new_cash_w * 100, 1),
+        'nifty_cmp': nifty_price,
+        'vix_cmp': vix_price,
+        'model_thinking': (
+            f"Hamilton forward filter indicates {p_calm:.1f}% Calm Bull confidence. With 20-day realized volatility ({realized_vol_20d:.1f}%) "
+            f"safely under the 21.0% target, the system maintains 100% equity concentration in the 8 Aggressive Champions with zero cash drag."
+        ) if new_regime != "DEFENSIVE QUALITY" else (
+            f"P(Panic) breached the 65.0% threshold ({p_panic:.1f}%). Deployed 8 Defensive Fortresses for portfolio capital protection."
+        )
+    }
 
     if not ledger.get('history') or ledger['history'][-1]['date'] != today_str:
-        ledger.setdefault('history', []).append({'date': today_str, 'value': curr_val, 'nifty_close': nifty_price, 'regime': new_regime})
+        ledger.setdefault('history', []).append({'date': today_str, 'value': total_account_nav, 'nifty_close': nifty_price, 'regime': new_regime})
 
     with open(LEDGER_FILE, 'w', encoding='utf-8') as f:
         json.dump(ledger, f, indent=2)
 
-    # 8. Email HTML
-    active_stock_movers.sort(key=lambda x: x[2], reverse=True)
+    # 8. Email HTML Construction
+    active_stock_movers.sort(key=lambda x: x['pnl_pct'], reverse=True)
     top_gainers = active_stock_movers[:3]
     top_losers = active_stock_movers[-3:]
 
     gap_cutoff_nifty = round(nifty_price * (1.0 - 0.0175), 1)
     vol_upper_trigger = round(21.0 / max(0.01, (new_eq_w - deadband)), 1)
 
+    foot_pnl_class = "text-green" if net_equity_pnl >= 0 else "text-red"
+    foot_sign = "+" if net_equity_pnl >= 0 else ""
+
     active_rows_html = ""
-    for sym, name, ret, cmp, sh, val in active_stock_movers:
+    for item in active_stock_movers:
+        pnl_class = "text-green" if item['pnl'] >= 0 else "text-red"
+        sign = "+" if item['pnl'] >= 0 else ""
         active_rows_html += f"""
         <tr>
-            <td><strong>{sym.replace('.NS','')}</strong></td>
-            <td>{name}</td>
-            <td>{sh}</td>
-            <td>Rs. {cmp:,.1f}</td>
-            <td>Rs. {val:,.2f}</td>
-            <td style="color:{'#16a34a' if ret>=0 else '#dc2626'}; font-weight:600;">{ret:+4.2f}%</td>
+            <td>
+                <strong>{item['sym'].replace('.NS','')}</strong><br>
+                <span style="font-size: 11px; color: #64748b;">{item['name']}</span>
+            </td>
+            <td style="text-align: right;"><strong>{item['shares']}</strong></td>
+            <td style="text-align: right; color: #64748b;">Rs. {item['buy_price']:,.2f}</td>
+            <td style="text-align: right; font-weight: 700;">Rs. {item['cmp']:,.2f}</td>
+            <td style="text-align: right; color: #64748b;">Rs. {item['cost']:,.2f}</td>
+            <td style="text-align: right; font-weight: 700;">Rs. {item['val']:,.2f}</td>
+            <td style="text-align: right;" class="{pnl_class}"><strong>{sign}Rs. {item['pnl']:,.2f}</strong></td>
+            <td style="text-align: right;" class="{pnl_class}"><strong>{sign}{item['pnl_pct']:.2f}%</strong></td>
         </tr>
         """
 
@@ -683,7 +778,7 @@ def run_eod_agent():
         <meta charset="UTF-8">
         <style>
             body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; color: #1c1e21; margin: 0; padding: 20px; }}
-            .container {{ max-width: 650px; margin: 0 auto; background: #ffffff; border-radius: 10px; border: 1px solid #dcdfe4; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }}
+            .container {{ max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 10px; border: 1px solid #dcdfe4; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }}
             .header {{ border-bottom: 2px solid #7c3aed; padding-bottom: 14px; margin-bottom: 20px; }}
             .title {{ font-size: 21px; font-weight: 700; color: #0f172a; margin: 0; }}
             .meta {{ font-size: 13px; color: #64748b; margin-top: 5px; }}
@@ -691,11 +786,11 @@ def run_eod_agent():
             .card-title {{ font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; margin-bottom: 8px; }}
             .badge-purple {{ background: #f3e8ff; color: #7e22ce; border: 1px solid #d8b4fe; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 12px; }}
             .grid-2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }}
-            .val-large {{ font-size: 24px; font-weight: 800; color: #0f172a; }}
-            .val-sub {{ font-size: 12px; color: #64748b; margin-top: 3px; }}
-            table {{ width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }}
-            th, td {{ padding: 8px 10px; text-align: left; border-bottom: 1px solid #e2e8f0; }}
-            th {{ background: #f1f5f9; color: #475569; font-weight: 600; font-size: 12px; }}
+            .val-large {{ font-size: 20px; font-weight: 800; color: #0f172a; margin-top: 3px; }}
+            .val-sub {{ font-size: 11px; color: #64748b; }}
+            table {{ width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }}
+            th, td {{ padding: 8px 8px; text-align: left; border-bottom: 1px solid #e2e8f0; }}
+            th {{ background: #f1f5f9; color: #475569; font-weight: 600; font-size: 11px; }}
             .text-green {{ color: #16a34a; font-weight: 600; }}
             .text-red {{ color: #dc2626; font-weight: 600; }}
             .reasoning-box {{ background: #faf5ff; border-left: 4px solid #7c3aed; padding: 12px; border-radius: 4px; font-size: 13px; line-height: 1.6; color: #4c1d95; }}
@@ -705,53 +800,106 @@ def run_eod_agent():
     <body>
         <div class="container">
             <div class="header">
-                <div class="title">NIFTY Dynamic Concentration Portfolio (Rs. 1 Lakh)</div>
-                <div class="meta">8 Champions in Bull / 16 Fortresses in Panic • Dual-Scan Protected (9:25 AM + 3:15 PM)</div>
+                <div class="title">NIFTY Dynamic Quantitative Portfolio Briefing</div>
+                <div class="meta">8 Champions in Bull / 16 Fortresses in Panic • 08:50 AM Pre-Market Radar & 03:15 PM EOD Hamilton Markov</div>
             </div>
+
+            <!-- 1. System Brain & Regime Card -->
             <div class="card">
-                <div class="card-title">1. Quantitative Rationale & Macro Attribution</div>
+                <div class="card-title">1. Quantitative Rationale & Regime Brain</div>
                 <div style="margin-bottom: 10px;">
                     Active Mode: <span class="badge-purple">{new_regime} (8 CONCENTRATED STOCKS)</span>
-                    <span style="font-size: 12px; color: #64748b; margin-left: 8px;">P(Panic): <strong>{p_panic:.1f}%</strong> | P(Calm): <strong>{p_calm:.1f}%</strong></span>
+                    <span style="font-size: 12px; color: #64748b; margin-left: 8px;">
+                        P(Calm Bull): <strong style="color: #16a34a;">{p_calm:.1f}%</strong> | 
+                        P(Panic Bear): <strong style="color: #dc2626;">{p_panic:.1f}%</strong> | 
+                        Barrier: <strong>65.0% Panic</strong>
+                    </span>
                 </div>
                 <div class="reasoning-box">{"<br>• ".join(["• " + p for p in reasoning_points])}</div>
             </div>
+
+            <!-- 2. Pure Equity Performance Audit (Cash Buffer Segregated) -->
             <div class="card">
-                <div class="card-title">2. Live Portfolio Performance Audit</div>
+                <div class="card-title">2. Pure Equity Performance Audit (Excluding Cash Buffer)</div>
                 <div class="grid-2">
-                    <div>
-                        <div class="val-sub">Total Portfolio Valuation</div>
-                        <div class="val-large">Rs. {ledger['total_portfolio_value']:,.2f}</div>
-                        <div class="val-sub">Base: Rs. 1,00,000 | Cash Buffer: Rs. {ledger['cash_buffer']:,.2f}</div>
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
+                        <div class="val-sub">Current Invested Equities</div>
+                        <div class="val-large">Rs. {total_equity_value:,.2f}</div>
+                        <div class="val-sub"><span class="{foot_pnl_class}">{foot_sign}Rs. {net_equity_pnl:,.2f} ({foot_sign}{equity_return_pct:.2f}%)</span> vs Rs. {total_invested_cost:,.2f} Cost</div>
                     </div>
-                    <div>
-                        <div class="val-sub">Today's Daily P&L</div>
-                        <div class="val-large {'text-green' if daily_pnl >= 0 else 'text-red'}">{daily_pnl:+,.2f} ({daily_pnl_pct:+4.2f}%)</div>
-                        <div class="val-sub">Mark-to-market daily movement</div>
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
+                        <div class="val-sub">Net Equity Profit / Loss</div>
+                        <div class="val-large {foot_pnl_class}">{foot_sign}Rs. {net_equity_pnl:,.2f}</div>
+                        <div class="val-sub"><span class="{foot_pnl_class}">{foot_sign}{equity_return_pct:.2f}% Return</span> on Deployed Equities</div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
+                        <div class="val-sub">Unallocated Cash Buffer</div>
+                        <div class="val-large" style="color: #2563eb;">Rs. {cash_buffer:,.2f}</div>
+                        <div class="val-sub">1.8% Liquid Cash • Zero Market Risk</div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
+                        <div class="val-sub">Total Account Value (NAV)</div>
+                        <div class="val-large" style="color: #7c3aed;">Rs. {total_account_nav:,.2f}</div>
+                        <div class="val-sub">Equities (Rs. {round(total_equity_value):,}) + Cash (Rs. {round(cash_buffer):,})</div>
                     </div>
                 </div>
-                <table>
-                    <thead><tr><th>Metric</th><th>Dynamic Portfolio</th><th>NIFTY 50 Benchmark</th><th>Alpha</th></tr></thead>
-                    <tbody>
-                        <tr><td><strong>Total Return</strong></td><td class="{'text-green' if port_total_return>=0 else 'text-red'}"><strong>{port_total_return:+5.2f}%</strong></td><td>{nifty_total_return:+5.2f}%</td><td class="{'text-green' if alpha>=0 else 'text-red'}"><strong>{alpha:+5.2f}% Alpha</strong></td></tr>
-                        <tr><td><strong>Current Drawdown</strong></td><td class="text-green"><strong>{current_drawdown:.2f}%</strong></td><td>-</td><td>High Capital Protection</td></tr>
-                        <tr><td><strong>Execution Architecture</strong></td><td colspan="3"><strong class="text-green">PURE 03:15 PM EOD MARKOV (Whipsaw Protected • Zero Midday Churn)</strong></td></tr>
-                        <tr><td><strong>Target Volatility Overlay</strong></td><td><strong class="text-green">{realized_vol_20d:.1f}% 20D Vol (Target 21.0%)</strong></td><td colspan="2">Gross Exposure: <strong>{new_eq_w*100:.0f}% Equity / {new_cash_w*100:.0f}% Liquid Cash</strong> (15% Deadband Protected)</td></tr>
-                    </tbody>
-                </table>
             </div>
+
+            <!-- 3. Active Portfolio Holdings Table -->
             <div class="card">
                 <div class="card-title">3. Active Stock Holdings Breakdown (100% Equity)</div>
                 <table>
-                    <thead><tr><th>Symbol</th><th>Company Name</th><th>Shares</th><th>CMP</th><th>Total Value</th><th>Today %</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>Holding</th>
+                            <th style="text-align: right;">Shares</th>
+                            <th style="text-align: right;">Buy Price</th>
+                            <th style="text-align: right;">Live CMP</th>
+                            <th style="text-align: right;">Invested Cost</th>
+                            <th style="text-align: right;">Current Value</th>
+                            <th style="text-align: right;">Net P&L</th>
+                            <th style="text-align: right;">Return %</th>
+                        </tr>
+                    </thead>
                     <tbody>{active_rows_html}</tbody>
+                    <tfoot>
+                        <tr style="font-weight: 800; background: #e2e8f0; border-top: 2px solid #cbd5e1;">
+                            <td colspan="4">TOTAL INVESTED EQUITIES (Pure Stock Movement)</td>
+                            <td style="text-align: right;">Rs. {total_invested_cost:,.2f}</td>
+                            <td style="text-align: right;">Rs. {total_equity_value:,.2f}</td>
+                            <td style="text-align: right;" class="{foot_pnl_class}">{foot_sign}Rs. {net_equity_pnl:,.2f}</td>
+                            <td style="text-align: right;" class="{foot_pnl_class}">{foot_sign}{equity_return_pct:.2f}%</td>
+                        </tr>
+                        <tr style="font-weight: 600; background: #f8fafc;">
+                            <td colspan="4">Liquid Cash Buffer Reserve (Unallocated)</td>
+                            <td style="text-align: right;">Rs. {cash_buffer:,.2f}</td>
+                            <td style="text-align: right;">Rs. {cash_buffer:,.2f}</td>
+                            <td style="text-align: right; color: #64748b;">Rs. 0.00</td>
+                            <td style="text-align: right; color: #64748b;">0.00%</td>
+                        </tr>
+                        <tr style="font-weight: 800; font-size: 13px; border-top: 2px solid #cbd5e1; background: #f1f5f9;">
+                            <td colspan="4">TOTAL ACCOUNT NET ASSET VALUE (NAV)</td>
+                            <td style="text-align: right;">Rs. 100,000.00</td>
+                            <td style="text-align: right;">Rs. {total_account_nav:,.2f}</td>
+                            <td style="text-align: right;" class="{foot_pnl_class}">{foot_sign}Rs. {net_equity_pnl:,.2f}</td>
+                            <td style="text-align: right;" class="{foot_pnl_class}">{foot_sign}{account_return_pct:.2f}%</td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
+
+            <!-- Prominent Live Netlify Dashboard Button -->
+            <div style="text-align: center; margin: 24px 0 16px 0;">
+                <a href="https://nifty-portfolio-tracker.netlify.app/" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: #ffffff; text-decoration: none; padding: 13px 28px; border-radius: 8px; font-weight: 700; font-size: 14px; display: inline-block; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);">
+                    📊 OPEN LIVE NETLIFY DASHBOARD (INSTANT REFRESH) &rarr;
+                </a>
+                <div style="font-size: 11px; color: #64748b; margin-top: 6px;">Live Quantitative Feed • Tap to open and view real-time tick-by-tick updates.</div>
+            </div>
             <div class="card">
-                <div class="card-title">4. Today's Factor Movers</div>
+                <div class="card-title">4. Today's Factor Movers (Session P&L)</div>
                 <div class="grid-2" style="font-size: 12px;">
-                    <div><strong class="text-green">Top Performers Today:</strong><br>{"<br>".join([f"• {g[1]}: <span class='text-green'>{g[2]:+4.2f}%</span> (Rs.{g[3]:,.1f})" for g in top_gainers])}</div>
-                    <div><strong class="text-red">Laggards Today:</strong><br>{"<br>".join([f"• {l[1]}: <span class='text-red'>{l[2]:+4.2f}%</span> (Rs.{l[3]:,.1f})" for l in top_losers])}</div>
+                    <div><strong class="text-green">Top Performers Today:</strong><br>{"<br>".join([f"• {g['name']}: <span class='text-green'>{g['pnl_pct']:+4.2f}%</span> (Rs.{g['cmp']:,.1f})" for g in top_gainers])}</div>
+                    <div><strong class="text-red">Laggards Today:</strong><br>{"<br>".join([f"• {l['name']}: <span class='text-red'>{l['pnl_pct']:+4.2f}%</span> (Rs.{l['cmp']:,.1f})" for l in top_losers])}</div>
                 </div>
             </div>
             <div class="card">

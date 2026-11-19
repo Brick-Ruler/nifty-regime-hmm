@@ -30,6 +30,32 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 if BASE_DIR not in sys.path:
     sys.path.append(BASE_DIR)
 
+# Dedicated Dual Logging for Pre-Market Cron Traceability
+LOG_FILE = os.path.join(BASE_DIR, "premarket_cron.log")
+class SafeLogger:
+    def __init__(self, filepath):
+        self.terminal = sys.stdout
+        self.log = open(filepath, "a", encoding="utf-8")
+    def write(self, message):
+        if self.terminal is not None:
+            try:
+                self.terminal.write(message)
+            except Exception:
+                pass
+        self.log.write(message)
+        self.log.flush()
+    def flush(self):
+        if self.terminal is not None:
+            try:
+                self.terminal.flush()
+            except Exception:
+                pass
+        self.log.flush()
+
+_logger = SafeLogger(LOG_FILE)
+sys.stdout = _logger
+sys.stderr = _logger
+
 from daily_portfolio_advisor import AGG_STOCKS, DEF_STOCKS, fetch_latest_quote
 from auto_portfolio_agent import send_email_report
 
