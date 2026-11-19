@@ -18,8 +18,8 @@
   },
   "liquid_cash_buffer": 0.0,
   "cash_buffer": 549.2,
-  "equity_value": 98727.2,
-  "total_portfolio_value": 99276.4,
+  "equity_value": 98665.7,
+  "total_portfolio_value": 99214.9,
   "cumulative_friction_paid": 0.0,
   "holdings": {
     "PERSISTENT.NS": {
@@ -28,13 +28,13 @@
       "sector": "Digital Engineering / IT",
       "shares": 2,
       "buy_price": 5911.0,
-      "cmp": 5826.0,
-      "current_value": 11652.0,
+      "cmp": 5804.0,
+      "current_value": 11608.0,
       "prev_close": 5857.0,
-      "day_change_pct": -0.53,
-      "day_pnl": -62.0,
-      "unrealized_pnl": -170.0,
-      "unrealized_pnl_pct": -1.44
+      "day_change_pct": -0.9,
+      "day_pnl": -106.0,
+      "unrealized_pnl": -214.0,
+      "unrealized_pnl_pct": -1.81
     },
     "COFORGE.NS": {
       "name": "Coforge Ltd",
@@ -42,13 +42,13 @@
       "sector": "Digital Engineering / IT",
       "shares": 6,
       "buy_price": 2041.0,
-      "cmp": 2040.0,
-      "current_value": 12240.0,
+      "cmp": 2043.1,
+      "current_value": 12258.6,
       "prev_close": 2049.0,
-      "day_change_pct": -0.44,
-      "day_pnl": -54.0,
-      "unrealized_pnl": -6.0,
-      "unrealized_pnl_pct": -0.05
+      "day_change_pct": -0.29,
+      "day_pnl": -35.4,
+      "unrealized_pnl": 12.6,
+      "unrealized_pnl_pct": 0.1
     },
     "CHOLAFIN.NS": {
       "name": "Cholamandalam Inv",
@@ -56,13 +56,13 @@
       "sector": "Financials & NBFC",
       "shares": 7,
       "buy_price": 1884.7,
-      "cmp": 1867.4,
-      "current_value": 13071.8,
+      "cmp": 1870.4,
+      "current_value": 13092.8,
       "prev_close": 1875.0,
-      "day_change_pct": -0.41,
-      "day_pnl": -53.2,
-      "unrealized_pnl": -121.1,
-      "unrealized_pnl_pct": -0.92
+      "day_change_pct": -0.25,
+      "day_pnl": -32.2,
+      "unrealized_pnl": -100.1,
+      "unrealized_pnl_pct": -0.76
     },
     "FEDERALBNK.NS": {
       "name": "Federal Bank",
@@ -70,13 +70,13 @@
       "sector": "Financials & Banking",
       "shares": 34,
       "buy_price": 365.8,
-      "cmp": 361.5,
-      "current_value": 12291.0,
+      "cmp": 362.35,
+      "current_value": 12319.9,
       "prev_close": 360.35,
-      "day_change_pct": 0.32,
-      "day_pnl": 39.1,
-      "unrealized_pnl": -146.2,
-      "unrealized_pnl_pct": -1.18
+      "day_change_pct": 0.56,
+      "day_pnl": 68.0,
+      "unrealized_pnl": -117.3,
+      "unrealized_pnl_pct": -0.94
     },
     "INDHOTEL.NS": {
       "name": "Indian Hotels (Tata)",
@@ -84,13 +84,13 @@
       "sector": "Hospitality & Services",
       "shares": 14,
       "buy_price": 901.55,
-      "cmp": 891.1,
-      "current_value": 12475.4,
+      "cmp": 886.6,
+      "current_value": 12412.4,
       "prev_close": 875.05,
-      "day_change_pct": 1.83,
-      "day_pnl": 224.7,
-      "unrealized_pnl": -146.3,
-      "unrealized_pnl_pct": -1.16
+      "day_change_pct": 1.32,
+      "day_pnl": 161.7,
+      "unrealized_pnl": -209.3,
+      "unrealized_pnl_pct": -1.66
     },
     "EIHOTEL.NS": {
       "name": "EIH Ltd (Oberoi)",
@@ -98,13 +98,13 @@
       "sector": "Hospitality & Services",
       "shares": 40,
       "buy_price": 310.45,
-      "cmp": 307.45,
-      "current_value": 12298.0,
+      "cmp": 306.4,
+      "current_value": 12256.0,
       "prev_close": 313.45,
-      "day_change_pct": -1.91,
-      "day_pnl": -240.0,
-      "unrealized_pnl": -120.0,
-      "unrealized_pnl_pct": -0.97
+      "day_change_pct": -2.25,
+      "day_pnl": -282.0,
+      "unrealized_pnl": -162.0,
+      "unrealized_pnl_pct": -1.3
     },
     "BALKRISIND.NS": {
       "name": "Balkrishna Ind (BKT)",
@@ -112,13 +112,13 @@
       "sector": "Auto Ancillary",
       "shares": 5,
       "buy_price": 2326.4,
-      "cmp": 2327.6,
-      "current_value": 11638.0,
+      "cmp": 2327.4,
+      "current_value": 11637.0,
       "prev_close": 2286.4,
-      "day_change_pct": 1.8,
-      "day_pnl": 206.0,
-      "unrealized_pnl": 6.0,
-      "unrealized_pnl_pct": 0.05
+      "day_change_pct": 1.79,
+      "day_pnl": 205.0,
+      "unrealized_pnl": 5.0,
+      "unrealized_pnl_pct": 0.04
     },
     "DIXON.NS": {
       "name": "Dixon Technologies",
@@ -126,13 +126,13 @@
       "sector": "EMS & Consumer Tech",
       "shares": 1,
       "buy_price": 13081.0,
-      "cmp": 13061.0,
-      "current_value": 13061.0,
+      "cmp": 13081.0,
+      "current_value": 13081.0,
       "prev_close": 12615.0,
-      "day_change_pct": 3.54,
-      "day_pnl": 446.0,
-      "unrealized_pnl": -20.0,
-      "unrealized_pnl_pct": -0.15
+      "day_change_pct": 3.69,
+      "day_pnl": 466.0,
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_pct": 0.0
     },
     "COLPAL.NS": {
       "name": "Colgate-Palmolive India",
@@ -236,9 +236,22 @@
       "regime": "AGGRESSIVE GROWTH"
     }
   ],
-  "last_updated": "2026-11-19 12:07:11",
-  "day_pnl": 506.6,
-  "day_pnl_pct": 0.51,
-  "overall_pnl": -723.6,
-  "overall_pnl_pct": -0.72
+  "last_updated": "2026-11-19 12:21:44",
+  "day_pnl": 445.1,
+  "day_pnl_pct": 0.45,
+  "overall_pnl": -785.1,
+  "overall_pnl_pct": -0.79,
+  "regime_intel": {
+    "active_regime": "CALM BULL (AGGRESSIVE GROWTH)",
+    "p_calm": 95.2,
+    "p_panic": 4.8,
+    "panic_threshold": 65.0,
+    "realized_vol_20d": 19.34,
+    "target_vol": 21.0,
+    "equity_weight_pct": 100.0,
+    "cash_weight_pct": 0.0,
+    "nifty_cmp": 25355.25,
+    "vix_cmp": 16.172500610351562,
+    "model_thinking": "Hamilton forward filter indicates 95.2% Calm Bull confidence. With 20-day realized volatility (19.3%) safely under the 21.0% target, the system maintains 100% equity concentration in the 8 Aggressive Champions with zero cash drag."
+  }
 }
