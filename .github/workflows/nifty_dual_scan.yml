@@ -45,9 +45,16 @@ jobs:
           CURRENT_HOUR=$(date -u +%H)
           CURRENT_MIN=$(date -u +%M)
           MODE="${{ github.event.inputs.scan_mode }}"
+          if [ -z "$MODE" ]; then
+            MODE="auto"
+          fi
 
-          # 03:20 UTC is 08:50 AM IST. Allow execution between 03:15 UTC (08:45 IST) and 03:55 UTC (09:25 IST) to absorb GitHub runner queue delays.
-          if [ "$MODE" = "premarket" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -eq 3 ] && [ "$CURRENT_MIN" -ge 15 ]) || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -eq 4 ] && [ "$CURRENT_MIN" -le 0 ]); then
+          echo "=========================================================="
+          echo "GitHub Actions Cloud Execution - UTC: ${CURRENT_HOUR}:${CURRENT_MIN} | Mode: ${MODE}"
+          echo "=========================================================="
+
+          # 03:20 UTC is 08:50 AM IST. Allow execution between 03:10 UTC (08:40 IST) and 04:10 UTC (09:40 IST) to absorb runner queue delays.
+          if [ "$MODE" = "premarket" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -eq 3 ] && [ "$CURRENT_MIN" -ge 10 ]) || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -eq 4 ] && [ "$CURRENT_MIN" -le 10 ]); then
             echo ">>> Executing Pre-Market Intelligence Radar (08:50 AM IST Scan)..."
             python pre_market_sentinel.py --cloud
           elif [ "$MODE" = "eod" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -ge 9 ] && [ "$CURRENT_HOUR" -le 11 ]); then
