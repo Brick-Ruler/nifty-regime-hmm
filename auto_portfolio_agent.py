@@ -735,7 +735,7 @@ def run_eod_agent():
                     <tbody>
                         <tr><td><strong>Total Return</strong></td><td class="{'text-green' if port_total_return>=0 else 'text-red'}"><strong>{port_total_return:+5.2f}%</strong></td><td>{nifty_total_return:+5.2f}%</td><td class="{'text-green' if alpha>=0 else 'text-red'}"><strong>{alpha:+5.2f}% Alpha</strong></td></tr>
                         <tr><td><strong>Current Drawdown</strong></td><td class="text-green"><strong>{current_drawdown:.2f}%</strong></td><td>-</td><td>High Capital Protection</td></tr>
-                        <tr><td><strong>Overnight Circuit Breaker</strong></td><td colspan="3"><strong class="text-green">ACTIVE (9:25 AM Morning Gap Trigger <= -1.75%)</strong></td></tr>
+                        <tr><td><strong>Execution Architecture</strong></td><td colspan="3"><strong class="text-green">PURE 03:15 PM EOD MARKOV (Whipsaw Protected • Zero Midday Churn)</strong></td></tr>
                         <tr><td><strong>Target Volatility Overlay</strong></td><td><strong class="text-green">{realized_vol_20d:.1f}% 20D Vol (Target 21.0%)</strong></td><td colspan="2">Gross Exposure: <strong>{new_eq_w*100:.0f}% Equity / {new_cash_w*100:.0f}% Liquid Cash</strong> (15% Deadband Protected)</td></tr>
                     </tbody>
                 </table>
@@ -770,26 +770,26 @@ def run_eod_agent():
                     <tbody>
                         <tr>
                             <td>
-                                <strong style="color: #dc2626;">🚨 Overnight Shock</strong><br>
-                                NIFTY opens &le; <strong>-1.50%</strong> (at or below <strong>Rs. {gap_cutoff_nifty:,.1f}</strong>)
+                                <strong style="color: #6366f1;">🌅 Morning Surveillance (08:50 AM)</strong><br>
+                                Global cues, indicative drift, and overnight corporate filings
                             </td>
                             <td>
-                                <strong>09:25 AM Emergency Defense:</strong> Intercept overnight shock. Trim 8 Champions to 6.25% and ADD 8 Defensive Fortresses.
+                                <strong>Read-Only Intelligence Radar:</strong> Evaluates global macro mood and scans all 16 portfolio holdings for regulatory and corporate exchange filings.
                             </td>
                             <td>
-                                <strong>16 Stocks Total (50% Champions / 50% Fortresses):</strong> Halves company variance and cuts portfolio beta to ~0.45x.
+                                <strong>Zero Morning Churn:</strong> Confirms capital remains 100% steady. Avoids the 53.4% whipsaw rate discovered on morning intraday noise.
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <strong style="color: #d97706;">⚠️ Macro Regime Flip</strong><br>
-                                EOD Markov P(Panic) &gt; <strong>65.0%</strong> (currently {p_panic:.1f}%) or VIX &gt; 18.0
+                                EOD Markov P(Panic) &gt; <strong>65.0%</strong> (currently {p_panic:.1f}%)
                             </td>
                             <td>
-                                <strong>03:15 PM EOD Style Expansion:</strong> HMM signals persistent bear turbulence. Add 8 Fortresses at 6.25% each.
+                                <strong>03:15 PM EOD Style Expansion:</strong> HMM signals confirmed bear turbulence. Expands into the 8 Defensive Fortresses at 6.25% each.
                             </td>
                             <td>
-                                <strong>16 Stocks Total:</strong> Holds 8 Champions + 8 Fortresses (Colpal, Sanofi, GSK, Marico, Torrent, Alkem, Akzo, MGL).
+                                <strong>16 Stocks Total:</strong> Holds 8 Champions + 8 Fortresses (Colpal, Glaxo, Marico, Torrent Pharma, Kansai Nerolac, MGL, Coromandel, Petronet).
                             </td>
                         </tr>
                         <tr>
