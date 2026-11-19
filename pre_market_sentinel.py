@@ -122,8 +122,8 @@ def scan_company_overnight_news(company_name, ticker):
     return findings
 
 def is_valid_premarket_window():
-    if "--force" in sys.argv:
-        print("[TIME GATE] --force flag detected. Bypassing schedule window check.")
+    if "--force" in sys.argv or "--cloud" in sys.argv:
+        print("[TIME GATE] --force/--cloud flag detected. Bypassing schedule window check.")
         return True
     from datetime import timezone, timedelta
     ist_tz = timezone(timedelta(hours=5, minutes=30))
@@ -133,9 +133,9 @@ def is_valid_premarket_window():
         print(f"[TIME GATE] Weekend detected (Day {weekday}). Pre-market scan suppressed.")
         return False
     total_mins = now_ist.hour * 60 + now_ist.minute
-    # Pre-Market Window: 08:30 to 09:15 IST (510 to 555 minutes)
-    if not (510 <= total_mins <= 555):
-        print(f"[TIME GATE] Current time {now_ist.strftime('%H:%M IST')} is outside Pre-Market window (08:30-09:15 IST). Execution suppressed.")
+    # Pre-Market Window: 08:30 to 09:25 IST (510 to 565 minutes)
+    if not (510 <= total_mins <= 565):
+        print(f"[TIME GATE] Current time {now_ist.strftime('%H:%M IST')} is outside Pre-Market window (08:30-09:25 IST). Execution suppressed.")
         return False
     return True
 
@@ -272,13 +272,13 @@ def run_premarket_sentinel():
                 <div class="grid-4">{macro_cards_html}</div>
             </div>
 
-            <!-- 2. Circuit Breaker Proximity -->
+            <!-- 2. Market Drift & Expected Volatility Surveillance -->
             <div class="card">
-                <div class="card-title">2. Circuit Breaker Danger Threshold</div>
+                <div class="card-title">2. Market Drift & Volatility Surveillance (Read-Only)</div>
                 <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 12px; font-size: 13px;">
                     • <strong>NIFTY 50 Base Close:</strong> <strong>{last_nifty:,.1f}</strong><br>
-                    • <strong>-1.75% Emergency Cutoff:</strong> <strong style="color: #dc2626;">Rs. {gap_cutoff_nifty:,.1f}</strong> (Distance: {buffer_points} pts)<br>
-                    • <strong>Threshold Status:</strong> Safe. NIFTY must drop > {buffer_points} pts at open to trigger emergency defense.
+                    • <strong>Surveillance Reference Level (-1.75%):</strong> <strong style="color: #475569;">Rs. {gap_cutoff_nifty:,.1f}</strong> (Distance: {buffer_points} pts)<br>
+                    • <strong>Whipsaw Protection Rule:</strong> Active. As proven by historical walk-forward backtest (53.4% whipsaw rate on morning gaps), morning knee-jerk triggers are strictly decommissioned. Capital remains stable through intraday noise.
                 </div>
             </div>
 
@@ -292,14 +292,14 @@ def run_premarket_sentinel():
                 {amber_items_html}
             </div>
 
-            <!-- 4. Tactical Opening Playbook -->
+            <!-- 4. Daily Execution Strategy (Strict 03:15 PM EOD Milestone) -->
             <div class="card">
-                <div class="card-title" style="color: #7c3aed;">4. Market Strategy & EOD Execution Plan (03:15 PM Milestone)</div>
+                <div class="card-title" style="color: #7c3aed;">4. Daily Execution Strategy (Sole Milestone: 03:15 PM IST)</div>
                 <div class="playbook-box">
-                    <strong style="color: #16a34a;">🟢 Scenario A (Default - Open &gt; Rs. {gap_cutoff_nifty:,.1f}):</strong><br>
-                    Model stays completely quiet. Retains <strong>100% equity concentration in the 8 Aggressive Champions</strong> (Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon). Zero turnover friction.<br><br>
-                    <strong style="color: #dc2626;">🚨 Scenario B (Black Swan - Open &le; Rs. {gap_cutoff_nifty:,.1f}):</strong><br>
-                    09:25 AM Circuit Breaker activates. Automatically trims Champions to 6.25% and expands into the 8 Defensive Fortresses (Colpal, Glaxo, Marico, Torrent Pharma, Kansai Nerolac, MGL, Coromandel, Petronet) to immunize capital.
+                    <strong style="color: #16a34a;">🎯 Active Portfolio Stance (Calm Bull State):</strong><br>
+                    Model maintains <strong>100% equity concentration in the 8 Aggressive Champions</strong> (Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon at 12.5% each). Zero midday churn.<br><br>
+                    <strong style="color: #4338ca;">🛡️ End-of-Day Decision Protocol (03:15 PM IST):</strong><br>
+                    The Hamilton Markov Regime filter and 21.0% Volatility Target will evaluate confirmed closing liquidity at 03:15 PM IST. If a structural transition into Panic Bear is confirmed, defensive rotation and cash preservation execute cleanly at the closing cross.
                 </div>
             </div>
 

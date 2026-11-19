@@ -46,12 +46,13 @@ jobs:
           CURRENT_MIN=$(date -u +%M)
           MODE="${{ github.event.inputs.scan_mode }}"
 
-          if [ "$MODE" = "premarket" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -eq 3 ] && [ "$CURRENT_MIN" -le 35 ]); then
+          # 03:20 UTC is 08:50 AM IST. Allow execution between 03:15 UTC (08:45 IST) and 03:55 UTC (09:25 IST) to absorb GitHub runner queue delays.
+          if [ "$MODE" = "premarket" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -eq 3 ] && [ "$CURRENT_MIN" -ge 15 ]) || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -eq 4 ] && [ "$CURRENT_MIN" -le 0 ]); then
             echo ">>> Executing Pre-Market Intelligence Radar (08:50 AM IST Scan)..."
-            python pre_market_sentinel.py
+            python pre_market_sentinel.py --cloud
           elif [ "$MODE" = "eod" ] || ([ "$MODE" = "auto" ] && [ "$CURRENT_HOUR" -ge 9 ] && [ "$CURRENT_HOUR" -le 11 ]); then
             echo ">>> Executing EOD Hamilton Markov Regime Rebalance Scan (03:15 PM IST Scan)..."
-            python auto_portfolio_agent.py
+            python auto_portfolio_agent.py --eod-check
           else
             echo ">>> Outside valid market scan hours (UTC: ${CURRENT_HOUR}:${CURRENT_MIN}). Suppressing execution to prevent stale off-hour alerts."
           fi
