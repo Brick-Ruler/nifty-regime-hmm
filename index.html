@@ -3,28 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIFTY Dynamic Regime Tracker | Real-Time Live Surveillance</title>
+    <title>NIFTY Dynamic Portfolio Tracker | Live Institutional Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #080d1a;
-            --bg-secondary: #0f172a;
-            --bg-card: #131d33;
-            --bg-card-hover: #1a2744;
+            --bg-primary: #090d16;
+            --bg-card: #0f172a;
+            --bg-card-subtle: #1e293b;
             --border: #1e293b;
-            --border-highlight: #3b82f6;
+            --border-highlight: #38bdf8;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
             --green: #10b981;
-            --green-glow: rgba(16, 185, 129, 0.25);
+            --green-bg: rgba(16, 185, 129, 0.12);
             --red: #ef4444;
-            --red-glow: rgba(239, 68, 68, 0.25);
-            --accent-blue: #3b82f6;
-            --accent-purple: #8b5cf6;
-            --accent-gold: #f59e0b;
+            --red-bg: rgba(239, 68, 68, 0.12);
+            --blue: #38bdf8;
+            --purple: #a855f7;
         }
 
         * {
@@ -38,8 +36,7 @@
             background-color: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 12px 16px 32px;
-            overflow-x: hidden;
+            padding: 20px 24px 40px;
         }
 
         .mono {
@@ -47,162 +44,70 @@
         }
 
         .container {
-            max-width: 1380px;
+            max-width: 1240px;
             margin: 0 auto;
         }
 
-        /* Top Streaming Marquee Ticker Tape (Pure Native CSS/JS - Zero Iframe, Zero CORS) */
-        .ticker-bar {
-            background: #0b1325;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 8px 12px;
-            margin-bottom: 16px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-        .ticker-label {
-            background: #1e293b;
-            color: #38bdf8;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 4px;
-            letter-spacing: 0.5px;
-            margin-right: 14px;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            z-index: 2;
-        }
-
-        .ticker-track-wrapper {
-            overflow: hidden;
-            white-space: nowrap;
-            width: 100%;
-        }
-
-        .ticker-track {
-            display: inline-flex;
-            gap: 28px;
-            animation: tickerScroll 40s linear infinite;
-        }
-
-        .ticker-track:hover {
-            animation-play-state: paused;
-        }
-
-        @keyframes tickerScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .ticker-sym {
-            color: #e2e8f0;
-            font-weight: 700;
-        }
-
-        .ticker-price {
-            font-family: 'JetBrains Mono', monospace;
-            color: #f8fafc;
-        }
-
-        .badge-pill {
-            font-size: 11px;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .pill-up {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--green);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-
-        .pill-down {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--red);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        /* Header Bar */
+        /* Top Header */
         header {
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 16px;
+            padding-bottom: 20px;
             border-bottom: 1px solid var(--border);
             margin-bottom: 20px;
-            gap: 16px;
         }
 
         .brand-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             letter-spacing: -0.5px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .pulse-dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background-color: var(--green);
             border-radius: 50%;
-            box-shadow: 0 0 14px var(--green);
-            animation: pulseGlow 1.8s infinite;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--green);
+            animation: pulse 2s infinite;
         }
 
-        @keyframes pulseGlow {
-            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.8); }
-            70% { transform: scale(1.15); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
 
-        .header-controls {
+        .header-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 14px;
         }
 
-        .status-badge {
-            background: rgba(16, 185, 129, 0.1);
+        .badge-live {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
             color: var(--green);
-            border: 1px solid rgba(16, 185, 129, 0.25);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
         }
 
         .refresh-btn {
-            background: #1e293b;
-            color: #38bdf8;
-            border: 1px solid #334155;
+            background: var(--bg-card-subtle);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 12px;
+            font-weight: 600;
             padding: 6px 14px;
             border-radius: 6px;
-            font-size: 12px;
-            font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
@@ -211,549 +116,410 @@
         }
 
         .refresh-btn:hover {
-            background: #334155;
-            color: #fff;
-            border-color: #38bdf8;
+            background: #27354f;
+            border-color: var(--blue);
         }
 
-        .refresh-btn:active {
-            transform: scale(0.97);
-        }
-
-        /* 4 Hero KPI Cards */
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px;
-            margin-bottom: 22px;
-        }
-
-        .kpi-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+        /* System Brain Card (Regime & Probability Gauges) */
+        .brain-card {
+            background: linear-gradient(135deg, #0d1527 0%, #111c35 100%);
+            border: 1px solid #1e2d4d;
             border-radius: 12px;
-            padding: 18px 20px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-            transition: transform 0.2s, border-color 0.2s;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
-        .kpi-card:hover {
-            border-color: #334155;
-            transform: translateY(-2px);
+        .brain-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
         }
 
-        .kpi-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+        .regime-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--green-bg);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: var(--green);
+            font-size: 13px;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 8px;
+            letter-spacing: 0.5px;
         }
 
-        .kpi-card.green-top::before {
-            background: linear-gradient(90deg, #10b981, #059669);
+        .prob-section {
+            margin: 14px 0 16px 0;
         }
 
-        .kpi-card.red-top::before {
-            background: linear-gradient(90deg, #ef4444, #b91c1c);
-        }
-
-        .kpi-label {
-            font-size: 11px;
+        .prob-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
             font-weight: 700;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
             margin-bottom: 8px;
         }
 
-        .kpi-val {
-            font-size: 26px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            margin-bottom: 6px;
-        }
-
-        .kpi-sub {
-            font-size: 12px;
-            color: var(--text-muted);
+        .prob-bar-container {
+            width: 100%;
+            height: 14px;
+            background: rgba(239, 68, 68, 0.25);
+            border-radius: 7px;
+            overflow: hidden;
             display: flex;
-            align-items: center;
-            gap: 6px;
+            position: relative;
         }
 
-        /* Sentinels Row */
-        .sentinels-bar {
-            background: #0f172a;
+        .prob-bar-calm {
+            height: 100%;
+            background: linear-gradient(90deg, #059669 0%, #10b981 100%);
+            width: 95.2%;
+            transition: width 0.5s ease;
+        }
+
+        .brain-insight {
+            background: rgba(15, 23, 42, 0.7);
+            border-left: 3px solid var(--blue);
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #cbd5e1;
+        }
+
+        /* 4 Clean Metric Cards */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 12px 18px;
-            margin-bottom: 22px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
+            padding: 18px 20px;
         }
 
-        .sentinel-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sentinel-tag {
+        .metric-title {
             font-size: 11px;
             font-weight: 700;
-            color: var(--text-secondary);
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
         }
 
-        .sentinel-val {
-            font-size: 14px;
+        .metric-val {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .metric-sub {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* Pill badges */
+        .pill-up {
+            color: var(--green);
+            background: var(--green-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
             font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Main Panel & Holdings Table */
-        .panel {
+        .pill-down {
+            color: var(--red);
+            background: var(--red-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        /* Tables & Lists */
+        .card-panel {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 22px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            padding: 20px 24px;
+            margin-bottom: 24px;
         }
 
-        .panel-header {
+        .card-panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
             padding-bottom: 12px;
             border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 10px;
         }
 
-        .panel-title {
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: -0.3px;
+        .card-panel-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
+            gap: 8px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
-            text-align: left;
         }
 
         th {
-            color: var(--text-muted);
-            font-weight: 700;
+            text-align: left;
             font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
-            padding: 12px 14px;
+            color: var(--text-muted);
+            padding: 10px 12px;
             border-bottom: 1px solid var(--border);
-            background: #0f172a;
-        }
-
-        th.num, td.num {
-            text-align: right;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         td {
-            padding: 14px;
-            border-bottom: 1px solid rgba(30, 41, 59, 0.8);
+            padding: 12px;
+            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
             vertical-align: middle;
-            transition: background-color 0.4s ease;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
         }
 
         tr:hover td {
-            background-color: var(--bg-card-hover);
+            background: rgba(30, 41, 59, 0.3);
         }
 
-        tfoot td {
-            background: #0f172a;
-            font-weight: 800;
-            border-top: 2px solid var(--border);
-            border-bottom: none;
-            padding: 16px 14px;
+        .text-right {
+            text-align: right;
         }
 
-        .stock-cell {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stock-symbol {
-            font-weight: 800;
-            font-size: 14px;
-            color: #f8fafc;
-        }
-
-        .stock-name {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .badge-sector {
-            display: inline-block;
-            background: rgba(148, 163, 184, 0.12);
-            color: #cbd5e1;
-            padding: 2px 8px;
+        .sector-tag {
+            background: #1a2744;
+            color: #7dd3fc;
+            padding: 3px 8px;
             border-radius: 4px;
             font-size: 11px;
             font-weight: 600;
         }
 
-        /* Flash animations when live price ticks */
-        .flash-up {
-            animation: flashGreen 1.2s ease-out;
-        }
-
-        .flash-down {
-            animation: flashRed 1.2s ease-out;
-        }
-
-        @keyframes flashGreen {
-            0% { background-color: rgba(16, 185, 129, 0.4); }
-            100% { background-color: transparent; }
-        }
-
-        @keyframes flashRed {
-            0% { background-color: rgba(239, 68, 68, 0.4); }
-            100% { background-color: transparent; }
-        }
-
-        /* 2-Column Grid for Reserve Fortresses & Automation Specs */
-        .grid-2 {
+        /* Standby Grid */
+        .standby-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 22px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
         }
 
-        @media (max-width: 992px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .mini-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-        }
-
-        .mini-card {
-            background: #0f172a;
+        .standby-card {
+            background: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 10px 12px;
+            padding: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .mini-sym {
+        .standby-sym {
             font-weight: 700;
-            font-size: 12px;
-            color: #e2e8f0;
+            font-size: 13px;
         }
 
-        .mini-price {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .spec-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(30, 41, 59, 0.6);
-            font-size: 12px;
-        }
-
-        .spec-row:last-child {
-            border-bottom: none;
-        }
-
-        .spec-label {
-            color: var(--text-secondary);
-        }
-
-        .spec-val {
-            font-weight: 700;
-            color: var(--text-primary);
+        .standby-sec {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 2px;
         }
 
         footer {
             text-align: center;
             font-size: 12px;
             color: var(--text-muted);
-            padding-top: 24px;
+            padding-top: 16px;
             border-top: 1px solid var(--border);
-            line-height: 1.6;
+        }
+
+        @media (max-width: 900px) {
+            .metric-grid { grid-template-columns: repeat(2, 1fr); }
+            .standby-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 1. Real-Time Streaming Ticker Tape (Pure Native HTML5/CSS - Zero Iframe) -->
-        <div class="ticker-bar">
-            <div class="ticker-label">
-                <span class="pulse-dot" style="width: 8px; height: 8px;"></span>
-                <span>NSE LIVE TICKS</span>
-            </div>
-            <div class="ticker-track-wrapper">
-                <div class="ticker-track" id="ticker-track">
-                    <!-- Populated dynamically via JavaScript with seamless loop -->
-                </div>
-            </div>
-        </div>
-
-        <!-- 2. Header & Live Connection Status -->
+        <!-- Header -->
         <header>
             <div>
                 <div class="brand-title">
                     <span class="pulse-dot"></span>
-                    NIFTY Dynamic Regime Tracker
+                    NIFTY Quantitative Portfolio Tracker
                 </div>
                 <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
-                    Autonomous Institutional Surveillance • Markov Regime-Switching Engine (Bull / Panic)
+                    Option B Momentum Rotation Engine • Hamilton Hidden Markov Model
                 </div>
             </div>
-            <div class="header-controls">
-                <div class="status-badge">
-                    <span class="pulse-dot" style="width: 8px; height: 8px;"></span>
-                    <span id="poll-status">AUTO-POLLING LIVE (3s)</span>
-                </div>
-                <button class="refresh-btn" id="manual-refresh-btn" onclick="forceRefresh()">
-                    <span id="refresh-icon">⚡</span>
-                    <span>Refresh Now</span>
+            <div class="header-actions">
+                <span class="badge-live" id="feed-status">● LIVE NSE FEED</span>
+                <button class="refresh-btn" onclick="fetchLiveQuotes(true)">
+                    <span>⚡</span> Refresh
                 </button>
             </div>
         </header>
 
-        <!-- 3. Top Sentinel Volatility & Circuit Breaker Ribbon -->
-        <div class="sentinels-bar">
-            <div class="sentinel-item">
-                <span class="sentinel-tag">Benchmark NIFTY 50:</span>
-                <span class="sentinel-val" id="nifty-val">25,224.40</span>
-                <span class="badge-pill pill-down" id="nifty-chg">-0.25%</span>
-            </div>
-            <div class="sentinel-item">
-                <span class="sentinel-tag">India VIX (Risk Sentinel):</span>
-                <span class="sentinel-val" id="vix-val">15.75</span>
-                <span class="badge-pill pill-up" id="vix-chg">+0.96%</span>
-            </div>
-            <div class="sentinel-item">
-                <span class="sentinel-tag">Execution Architecture:</span>
-                <span class="badge-pill pill-up" style="background: rgba(16, 185, 129, 0.15); color: var(--green);">
-                    PURE 03:15 PM EOD MARKOV (WHIPSAW PROTECTED)
-                </span>
-            </div>
-            <div class="sentinel-item">
-                <span class="sentinel-tag">Vol Target (21.0%):</span>
-                <span class="badge-pill pill-up" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);">
-                    17.7% REALIZED (100% EQUITY / 0% CASH)
-                </span>
-            </div>
-            <div class="sentinel-item">
-                <span class="sentinel-tag">Last Sync:</span>
-                <span class="sentinel-val mono" id="last-sync-time" style="color: #38bdf8;">--:--:-- IST</span>
-            </div>
-        </div>
-
-        <!-- 4. Hero KPI Dashboard Cards -->
-        <div class="kpi-grid">
-            <div class="kpi-card" id="card-portfolio-val">
-                <div class="kpi-label">Current Portfolio Value</div>
-                <div class="kpi-val mono" id="kpi-total-val">₹98,056.65</div>
-                <div class="kpi-sub">
-                    <span id="kpi-total-pnl" class="badge-pill pill-down">-₹2,078.65 (-2.08%)</span>
-                    <span>vs ₹1,00,135 Base Capital</span>
-                </div>
-            </div>
-
-            <div class="kpi-card" id="card-day-pnl">
-                <div class="kpi-label">Today's Day Gain / Loss</div>
-                <div class="kpi-val mono" id="kpi-day-val" style="color: var(--red);">-₹2,078.65</div>
-                <div class="kpi-sub">
-                    <span id="kpi-day-pct" class="badge-pill pill-down">-2.08% Day</span>
-                    <span>Aggregate Intraday Movement</span>
-                </div>
-            </div>
-
-            <div class="kpi-card green-top">
-                <div class="kpi-label">Active Markov Regime</div>
-                <div class="kpi-val" style="color: var(--green); font-size: 22px;">AGGRESSIVE GROWTH</div>
-                <div class="kpi-sub">
-                    <span class="badge-pill pill-up">STATE 0: BULL</span>
-                    <span>100% Concentrated in 8 Champions</span>
-                </div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-label">Next Automated Action</div>
-                <div class="kpi-val mono" id="countdown-clock" style="color: #38bdf8; font-size: 24px;">--:--:--</div>
-                <div class="kpi-sub" id="next-scan-desc">
-                    Target: 03:15 PM EOD Markov Rebalance
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. Main Real-Time Holdings Table (Direct Native High-Frequency Table) -->
-        <div class="panel">
-            <div class="panel-header">
+        <!-- 1. System Brain & Regime Probability Card -->
+        <div class="brain-card">
+            <div class="brain-header">
                 <div>
-                    <div class="panel-title">
-                        <span>⚡</span> Active Portfolio Holdings (8 High-Beta Champions)
-                    </div>
-                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
-                        Continuous tick surveillance. Prices and P&L update tick-by-tick automatically without browser refresh.
-                    </div>
+                    <span class="regime-badge" id="regime-title">🟢 CALM BULL REGIME (ACTIVE • 100% EQUITY)</span>
                 </div>
-                <div style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px;">
-                    <span class="pulse-dot" style="width: 7px; height: 7px;"></span>
-                    <span>Auto-refreshing every 3s via same-origin zero-CORS feed</span>
+                <div style="font-size: 12px; color: var(--text-secondary);">
+                    Surveillance Close: <span class="mono" id="last-sync-time" style="color: var(--blue);">--:--:-- IST</span>
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <table id="holdings-table">
+            <div class="prob-section">
+                <div class="prob-labels">
+                    <span style="color: var(--green);">P(Calm Bull): <span class="mono" id="val-p-calm">95.2%</span></span>
+                    <span style="color: var(--text-muted); font-size: 11px;">Defensive Trigger Barrier: 65% Panic</span>
+                    <span style="color: var(--red);">P(Panic Bear): <span class="mono" id="val-p-panic">4.8%</span></span>
+                </div>
+                <div class="prob-bar-container">
+                    <div class="prob-bar-calm" id="bar-p-calm" style="width: 95.2%;"></div>
+                </div>
+            </div>
+
+            <div class="brain-insight" id="brain-insight-text">
+                💡 <strong>Model Assessment:</strong> The Hamilton forward filter calculates <strong>95.2% Calm Bull confidence</strong> based on steady index drift. 20-day realized volatility is comfortably below the 21.0% target. Zero defensive rotation needed today; model maintains 100% equity concentration in the 8 Champions.
+            </div>
+        </div>
+
+        <!-- 2. Four Clean Metrics -->
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-title">Portfolio Total Value</div>
+                <div class="metric-val mono" id="kpi-total-val">₹99,054.80</div>
+                <div class="metric-sub">
+                    <span id="kpi-total-pnl" class="pill-down">-₹945.20 (-0.95%)</span>
+                    <span style="margin-left: 4px;">vs ₹1,00,000 Base</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-title">Today's Day Gain / Loss</div>
+                <div class="metric-val mono" id="kpi-day-val" style="color: var(--green);">+₹285.00</div>
+                <div class="metric-sub">
+                    <span id="kpi-day-pct" class="pill-up">+0.29% Day</span>
+                    <span style="margin-left: 4px;">Intraday Net Move</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-title">Target Volatility (21.0%)</div>
+                <div class="metric-val mono" id="kpi-vol-val" style="color: var(--blue);">19.3%</div>
+                <div class="metric-sub">
+                    <span class="pill-up" style="background: rgba(56, 189, 248, 0.15); color: var(--blue);">100% Equity Exposure</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-title">Next Scheduled Decision</div>
+                <div class="metric-val mono" id="countdown-clock" style="color: var(--purple);">--:--:--</div>
+                <div class="metric-sub" id="next-scan-desc">
+                    Target: 03:15 PM EOD HMM
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Active Portfolio Holdings (8 Aggressive Champions) -->
+        <div class="card-panel">
+            <div class="card-panel-header">
+                <div class="card-panel-title">
+                    <span>⚡</span> 8 Active Aggressive Champions (Option B Leading Sectors)
+                </div>
+                <span class="pill-up" style="font-size: 11px;">100% ALLOCATED</span>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table>
                     <thead>
                         <tr>
-                            <th>Stock / Symbol</th>
-                            <th>Sector</th>
-                            <th class="num">Shares</th>
-                            <th class="num">Entry Price</th>
-                            <th class="num">Live CMP (₹)</th>
-                            <th class="num">Day Change</th>
-                            <th class="num">Holding Value (₹)</th>
-                            <th class="num">Unrealized P&L</th>
-                            <th class="num">Weight</th>
+                            <th>Holding</th>
+                            <th>Leading Sector</th>
+                            <th class="text-right">Shares</th>
+                            <th class="text-right">Buy Price</th>
+                            <th class="text-right">Live CMP</th>
+                            <th class="text-right">Day %</th>
+                            <th class="text-right">Current Value</th>
+                            <th class="text-right">Unrealized P&L</th>
+                            <th class="text-right">Weight</th>
                         </tr>
                     </thead>
                     <tbody id="holdings-body">
                         <!-- Populated by JavaScript -->
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td colspan="2">TOTAL PORTFOLIO SUMMARY</td>
-                            <td class="num mono">106 sh</td>
-                            <td class="num mono">₹100,135.30</td>
-                            <td class="num mono" id="foot-cmp-avg">--</td>
-                            <td class="num mono" id="foot-day-chg">--</td>
-                            <td class="num mono" id="foot-total-val" style="color: #f8fafc; font-size: 15px;">₹98,056.65</td>
-                            <td class="num mono" id="foot-total-pnl" style="color: var(--red); font-size: 15px;">-₹2,078.65 (-2.08%)</td>
-                            <td class="num mono">100.0%</td>
+                        <tr style="font-weight: 700; background: rgba(15, 23, 42, 0.8);">
+                            <td colspan="2">Cash Buffer Reserve</td>
+                            <td colspan="4" style="color: var(--text-muted); font-size: 11px;">Liquid Unallocated Capital (Zero Debt)</td>
+                            <td class="text-right mono" id="foot-cash-val">₹549.20</td>
+                            <td class="text-right mono" style="color: var(--green);">Safe Buffer</td>
+                            <td class="text-right mono">0.6%</td>
+                        </tr>
+                        <tr style="font-weight: 800; font-size: 14px; border-top: 2px solid var(--border);">
+                            <td colspan="6">TOTAL PORTFOLIO NET ASSET VALUE (NAV)</td>
+                            <td class="text-right mono" id="foot-total-val" style="color: #ffffff;">₹99,054.80</td>
+                            <td class="text-right mono" id="foot-total-pnl" style="color: var(--red);">-₹945.20 (-0.95%)</td>
+                            <td class="text-right mono">100.0%</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
 
-        <!-- 6. Secondary Two-Column: Defensive Fortresses & Execution Specifications -->
-        <div class="grid-2">
-            <!-- Left: 16 Defensive Fortresses Monitored in Reserve -->
-            <div class="panel">
-                <div class="panel-header">
-                    <div class="panel-title">
-                        <span>🛡️</span> Defensive Fortresses (Panic Basket in Reserve)
-                    </div>
-                    <div class="badge-pill pill-up" style="font-size: 10px;">STANDBY MODE</div>
+        <!-- 4. Defensive Fortresses on Standby (Minimal 8-Grid) -->
+        <div class="card-panel">
+            <div class="card-panel-header">
+                <div class="card-panel-title">
+                    <span>🛡️</span> 8 Defensive Fortresses (Standby Reserve • 0 Shares Held)
                 </div>
-                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
-                    Ready for rapid capital deployment if Markov Regime shifts to Panic State 1 (High VIX / Bear Trend).
-                </div>
-                <div class="mini-list" id="defensive-list">
-                    <!-- Populated dynamically via JS -->
-                </div>
+                <span style="font-size: 11px; color: var(--text-muted);">Activates only if P(Panic) breaches 65% at 03:15 PM EOD</span>
             </div>
 
-            <!-- Right: Autonomous Architecture Specs -->
-            <div class="panel">
-                <div class="panel-header">
-                    <div class="panel-title">
-                        <span>⚙️</span> Autonomous Execution Framework
-                    </div>
-                    <div class="badge-pill pill-up" style="font-size: 10px;">CLOUD SYNCED</div>
-                </div>
-                <div>
-                    <div class="spec-row">
-                        <span class="spec-label">Primary Cloud Execution:</span>
-                        <span class="spec-val">GitHub Actions Runner (24/7 Mon-Fri)</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">Local Failover Sentinel:</span>
-                        <span class="spec-val">Windows Task Scheduler (WakeToRun = true)</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">Morning Intelligence Radar:</span>
-                        <span class="spec-val">08:50 AM IST (Global Cues & Forensics)</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">Sole Execution Milestone:</span>
-                        <span class="spec-val" style="color: var(--green);">03:15 PM IST (Hamilton Markov Regime EOD)</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">Sector Rotation Engine:</span>
-                        <span class="spec-val" style="color: #a855f7;">Option B (Top-5 Leading Momentum Sectors)</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">Target Volatility Overlay:</span>
-                        <span class="spec-val" style="color: #38bdf8;">21.0% Target • 15% Deadband (Liquid BeES)</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">Email Briefings:</span>
-                        <span class="spec-val">neal17022006@gmail.com (Cloud SMTP)</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">Walk-Forward Backtest:</span>
-                        <span class="spec-val" style="color: var(--green);">+33.16% CAGR • Sharpe 1.36 • Max DD -24.4%</span>
-                    </div>
-                </div>
+            <div class="standby-grid" id="defensive-grid">
+                <!-- Populated by JavaScript -->
             </div>
         </div>
 
+        <!-- Footer -->
         <footer>
-            Antigravity Quantitative Regime Engine • Real-Time National Stock Exchange (NSE) Feed<br>
-            Designed for Instant High-Frequency Browser Surveillance • No Manual Page Refresh Required
+            Antigravity Quantitative Engine • 08:50 AM Pre-Market Radar & 03:15 PM EOD Hamilton Markov Milestone<br>
+            All rebalances execute strictly at 03:15 PM closing cross to eliminate intraday whipsaw friction.
         </footer>
     </div>
 
-    <!-- 7. Robust Real-Time Engine (Zero External Dependencies, Zero CORS) -->
     <script>
-        // Institutional Master Portfolio Allocations (Vetted 8 Aggressive Champions)
         const PORTFOLIO_MASTER = [
             { symbol: 'PERSISTENT', name: 'Persistent Systems', sector: 'Digital IT', shares: 2, baseCost: 5911.0, ns: 'PERSISTENT.NS' },
             { symbol: 'COFORGE', name: 'Coforge Ltd', sector: 'Digital IT', shares: 6, baseCost: 2041.0, ns: 'COFORGE.NS' },
             { symbol: 'CHOLAFIN', name: 'Cholamandalam Inv', sector: 'Financials/NBFC', shares: 7, baseCost: 1884.7, ns: 'CHOLAFIN.NS' },
             { symbol: 'FEDERALBNK', name: 'Federal Bank', sector: 'Banking', shares: 34, baseCost: 365.8, ns: 'FEDERALBNK.NS' },
-            { symbol: 'INDHOTEL', name: 'Indian Hotels (Tata)', sector: 'Hospitality', shares: 14, baseCost: 901.5, ns: 'INDHOTEL.NS' },
-            { symbol: 'EIHOTEL', name: 'EIH Ltd (Oberoi)', sector: 'Hospitality', shares: 40, baseCost: 310.4, ns: 'EIHOTEL.NS' },
+            { symbol: 'INDHOTEL', name: 'Indian Hotels (Tata)', sector: 'Hospitality', shares: 14, baseCost: 901.55, ns: 'INDHOTEL.NS' },
+            { symbol: 'EIHOTEL', name: 'EIH Ltd (Oberoi)', sector: 'Hospitality', shares: 40, baseCost: 310.45, ns: 'EIHOTEL.NS' },
             { symbol: 'BALKRISIND', name: 'Balkrishna Ind (BKT)', sector: 'Auto Ancillary', shares: 5, baseCost: 2326.4, ns: 'BALKRISIND.NS' },
-            { symbol: 'DIXON', name: 'Dixon Technologies', sector: 'EMS/Tech', shares: 1, baseCost: 13081.0, ns: 'DIXON.NS' }
+            { symbol: 'DIXON', name: 'Dixon Technologies', sector: 'EMS & Tech', shares: 1, baseCost: 13081.0, ns: 'DIXON.NS' }
         ];
 
-        // Institutional Defensive Fortresses (Added in Panic -> 16 Stocks Total)
         const DEFENSIVE_WATCHLIST = [
             { symbol: 'COLPAL', name: 'Colgate-Palmolive', sector: 'Oral Staples', ns: 'COLPAL.NS' },
             { symbol: 'GLAXO', name: 'GSK Pharma', sector: 'MNC Healthcare', ns: 'GLAXO.NS' },
@@ -765,30 +531,29 @@
             { symbol: 'PETRONET', name: 'Petronet LNG', sector: 'Energy Infra', ns: 'PETRONET.NS' }
         ];
 
-        // In-memory price store (Initialized with latest verified NSE close/intraday quotes)
         let liveQuotesCache = {
-            'PERSISTENT.NS': { cmp: 5911.0, prev_close: 5911.0, change_pct: 0.0 },
-            'COFORGE.NS': { cmp: 2041.0, prev_close: 2041.0, change_pct: 0.0 },
-            'CHOLAFIN.NS': { cmp: 1884.7, prev_close: 1884.7, change_pct: 0.0 },
-            'FEDERALBNK.NS': { cmp: 365.8, prev_close: 365.8, change_pct: 0.0 },
-            'INDHOTEL.NS': { cmp: 901.5, prev_close: 901.5, change_pct: 0.0 },
-            'EIHOTEL.NS': { cmp: 310.4, prev_close: 310.4, change_pct: 0.0 },
-            'BALKRISIND.NS': { cmp: 2326.4, prev_close: 2326.4, change_pct: 0.0 },
-            'DIXON.NS': { cmp: 13081.0, prev_close: 13081.0, change_pct: 0.0 },
+            'PERSISTENT.NS': { cmp: 5808.0, prev_close: 5857.0, change_pct: -0.84 },
+            'COFORGE.NS': { cmp: 2040.3, prev_close: 2049.0, change_pct: -0.42 },
+            'CHOLAFIN.NS': { cmp: 1867.0, prev_close: 1875.0, change_pct: -0.43 },
+            'FEDERALBNK.NS': { cmp: 361.9, prev_close: 360.4, change_pct: 0.42 },
+            'INDHOTEL.NS': { cmp: 887.4, prev_close: 875.0, change_pct: 1.41 },
+            'EIHOTEL.NS': { cmp: 304.5, prev_close: 313.4, change_pct: -2.86 },
+            'BALKRISIND.NS': { cmp: 2324.2, prev_close: 2286.5, change_pct: 1.65 },
+            'DIXON.NS': { cmp: 13052.0, prev_close: 12615.0, change_pct: 3.46 },
             'COLPAL.NS': { cmp: 2780.0, prev_close: 2795.0, change_pct: -0.54 },
             'GLAXO.NS': { cmp: 2380.0, prev_close: 2390.0, change_pct: -0.42 },
             'MARICO.NS': { cmp: 610.3, prev_close: 612.0, change_pct: -0.28 },
             'TORNTPHARM.NS': { cmp: 3450.0, prev_close: 3470.0, change_pct: -0.58 },
-            'KANSAINER.NS': { cmp: 198.96, prev_close: 201.0, change_pct: -1.01 },
+            'KANSAINER.NS': { cmp: 198.05, prev_close: 198.96, change_pct: -0.46 },
             'MGL.NS': { cmp: 1420.0, prev_close: 1435.0, change_pct: -1.05 },
             'COROMANDEL.NS': { cmp: 1680.0, prev_close: 1695.0, change_pct: -0.88 },
             'PETRONET.NS': { cmp: 340.5, prev_close: 343.0, change_pct: -0.73 }
         };
 
-        let lastQuotesTimestamp = "2026-11-18 12:52:39";
-        let previousCMPs = {};
+        const CASH_BUFFER = 549.20;
+        const INITIAL_CAPITAL = 100000.0;
+        let lastQuotesTimestamp = "2026-11-19 12:13:49";
 
-        // Format Currency Helper
         function formatINR(val, decimals = 2) {
             return '₹' + Number(val).toLocaleString('en-IN', {
                 minimumFractionDigits: decimals,
@@ -796,67 +561,23 @@
             });
         }
 
-        // Render Top Marquee Ticker Tape
-        function renderTickerTape() {
-            const track = document.getElementById('ticker-track');
-            if (!track) return;
-
-            let itemsHTML = '';
-            // NIFTY & VIX first
-            const niftyVal = 25224.40;
-            const niftyChg = -0.25;
-            const vixVal = 15.75;
-            const vixChg = 0.96;
-
-            itemsHTML += `
-                <div class="ticker-item">
-                    <span class="ticker-sym">NIFTY 50:</span>
-                    <span class="ticker-price">${formatINR(niftyVal, 1)}</span>
-                    <span class="badge-pill ${niftyChg >= 0 ? 'pill-up' : 'pill-down'}">${niftyChg >= 0 ? '+' : ''}${niftyChg}%</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-sym">INDIA VIX:</span>
-                    <span class="ticker-price">${vixVal.toFixed(2)}</span>
-                    <span class="badge-pill ${vixChg >= 0 ? 'pill-up' : 'pill-down'}">+${vixChg}%</span>
-                </div>
-            `;
-
-            PORTFOLIO_MASTER.forEach(stock => {
-                const q = liveQuotesCache[stock.ns] || { cmp: stock.baseCost, change_pct: 0 };
-                const chgClass = q.change_pct >= 0 ? 'pill-up' : 'pill-down';
-                const sign = q.change_pct >= 0 ? '+' : '';
-                itemsHTML += `
-                    <div class="ticker-item">
-                        <span class="ticker-sym">${stock.symbol}:</span>
-                        <span class="ticker-price">${formatINR(q.cmp, 1)}</span>
-                        <span class="badge-pill ${chgClass}">${sign}${q.change_pct.toFixed(2)}%</span>
-                    </div>
-                `;
-            });
-
-            // Duplicate once for seamless infinite CSS animation
-            track.innerHTML = itemsHTML + itemsHTML;
-        }
-
-        // Render Defensive Basket
         function renderDefensives() {
-            const container = document.getElementById('defensive-list');
+            const container = document.getElementById('defensive-grid');
             if (!container) return;
-
             let html = '';
             DEFENSIVE_WATCHLIST.forEach(d => {
                 const q = liveQuotesCache[d.ns] || { cmp: 0, change_pct: 0 };
-                const chgClass = q.change_pct >= 0 ? 'pill-up' : 'pill-down';
                 const sign = q.change_pct >= 0 ? '+' : '';
+                const pillClass = q.change_pct >= 0 ? 'pill-up' : 'pill-down';
                 html += `
-                    <div class="mini-card">
+                    <div class="standby-card">
                         <div>
-                            <div class="mini-sym">${d.symbol}</div>
-                            <div style="font-size:10px; color:var(--text-muted);">${d.name}</div>
+                            <div class="standby-sym">${d.symbol}</div>
+                            <div class="standby-sec">${d.sector}</div>
                         </div>
-                        <div style="text-align: right;">
-                            <div class="mini-price">${formatINR(q.cmp, 1)}</div>
-                            <div class="badge-pill ${chgClass}" style="font-size: 10px; margin-top: 2px;">${sign}${q.change_pct.toFixed(2)}%</div>
+                        <div class="text-right">
+                            <div class="mono" style="font-size: 13px; font-weight: 700;">${formatINR(q.cmp, 1)}</div>
+                            <span class="${pillClass}" style="font-size: 10px; display: inline-block; margin-top: 2px;">${sign}${q.change_pct.toFixed(2)}%</span>
                         </div>
                     </div>
                 `;
@@ -864,186 +585,129 @@
             container.innerHTML = html;
         }
 
-        // Render Main Portfolio Holdings Table & Calculate Totals
         function renderTable() {
             const tbody = document.getElementById('holdings-body');
             if (!tbody) return;
 
+            let totalCurrentEquity = 0;
             let totalBaseCost = 0;
-            let totalCurrentVal = 0;
-            let totalDayPnL = 0;
+            let totalDayGain = 0;
 
-            // Calculate overall totals first for weight computation
             PORTFOLIO_MASTER.forEach(stock => {
                 const q = liveQuotesCache[stock.ns] || { cmp: stock.baseCost, prev_close: stock.baseCost, change_pct: 0 };
-                const baseVal = stock.shares * stock.baseCost;
                 const curVal = stock.shares * q.cmp;
-                const prevClose = q.prev_close || stock.baseCost;
-                const dayGain = stock.shares * (q.cmp - prevClose);
-
-                totalBaseCost += baseVal;
-                totalCurrentVal += curVal;
-                totalDayPnL += dayGain;
+                const cost = stock.shares * stock.baseCost;
+                const prevVal = stock.shares * (q.prev_close || stock.baseCost);
+                totalCurrentEquity += curVal;
+                totalBaseCost += cost;
+                totalDayGain += (curVal - prevVal);
             });
 
-            const totalUnrealizedPnL = totalCurrentVal - totalBaseCost;
-            const totalPnLPct = (totalUnrealizedPnL / totalBaseCost) * 100.0;
-            const dayPnLPct = (totalDayPnL / totalBaseCost) * 100.0;
+            const totalPortfolioNAV = totalCurrentEquity + CASH_BUFFER;
+            const totalUnrealizedPnL = totalPortfolioNAV - INITIAL_CAPITAL;
+            const totalPnLPct = (totalUnrealizedPnL / INITIAL_CAPITAL) * 100.0;
+            const dayPnLPct = (totalDayGain / (totalCurrentEquity - totalDayGain + CASH_BUFFER)) * 100.0;
 
-            // Update KPI Cards
-            document.getElementById('kpi-total-val').innerText = formatINR(totalCurrentVal);
-            
-            const pnlPill = document.getElementById('kpi-total-pnl');
-            const pnlSign = totalUnrealizedPnL >= 0 ? '+' : '';
-            pnlPill.innerText = `${pnlSign}${formatINR(totalUnrealizedPnL)} (${pnlSign}${totalPnLPct.toFixed(2)}%)`;
-            pnlPill.className = `badge-pill ${totalUnrealizedPnL >= 0 ? 'pill-up' : 'pill-down'}`;
+            // Update Cards
+            document.getElementById('kpi-total-val').innerText = formatINR(totalPortfolioNAV);
+            const pnlEl = document.getElementById('kpi-total-pnl');
+            const signPnl = totalUnrealizedPnL >= 0 ? '+' : '';
+            pnlEl.innerText = `${signPnl}${formatINR(totalUnrealizedPnL)} (${signPnl}${totalPnLPct.toFixed(2)}%)`;
+            pnlEl.className = totalUnrealizedPnL >= 0 ? 'pill-up' : 'pill-down';
 
             const dayValEl = document.getElementById('kpi-day-val');
             const dayPctEl = document.getElementById('kpi-day-pct');
-            const daySign = totalDayPnL >= 0 ? '+' : '';
-            dayValEl.innerText = `${daySign}${formatINR(totalDayPnL)}`;
-            dayValEl.style.color = totalDayPnL >= 0 ? 'var(--green)' : 'var(--red)';
-            dayPctEl.innerText = `${daySign}${dayPnLPct.toFixed(2)}% Day`;
-            dayPctEl.className = `badge-pill ${totalDayPnL >= 0 ? 'pill-up' : 'pill-down'}`;
+            const signDay = totalDayGain >= 0 ? '+' : '';
+            dayValEl.innerText = `${signDay}${formatINR(totalDayGain)}`;
+            dayValEl.style.color = totalDayGain >= 0 ? 'var(--green)' : 'var(--red)';
+            dayPctEl.innerText = `${signDay}${dayPnLPct.toFixed(2)}% Day`;
+            dayPctEl.className = totalDayGain >= 0 ? 'pill-up' : 'pill-down';
 
-            // Build Rows
+            // Build rows
             let rowsHTML = '';
             PORTFOLIO_MASTER.forEach(stock => {
                 const q = liveQuotesCache[stock.ns] || { cmp: stock.baseCost, prev_close: stock.baseCost, change_pct: 0 };
-                const baseVal = stock.shares * stock.baseCost;
                 const curVal = stock.shares * q.cmp;
-                const pnl = curVal - baseVal;
+                const cost = stock.shares * stock.baseCost;
+                const pnl = curVal - cost;
                 const pnlPct = ((q.cmp - stock.baseCost) / stock.baseCost) * 100.0;
-                const weight = totalCurrentVal > 0 ? ((curVal / totalCurrentVal) * 100.0).toFixed(1) : '12.5';
-
-                const pnlClass = pnl >= 0 ? 'color: var(--green);' : 'color: var(--red);';
-                const dayClass = q.change_pct >= 0 ? 'pill-up' : 'pill-down';
+                const weight = ((curVal / totalPortfolioNAV) * 100.0).toFixed(1);
                 const daySign = q.change_pct >= 0 ? '+' : '';
-
-                // Flash detection
-                let flashClass = '';
-                if (previousCMPs[stock.symbol]) {
-                    if (q.cmp > previousCMPs[stock.symbol]) flashClass = 'flash-up';
-                    else if (q.cmp < previousCMPs[stock.symbol]) flashClass = 'flash-down';
-                }
-                previousCMPs[stock.symbol] = q.cmp;
+                const dayClass = q.change_pct >= 0 ? 'pill-up' : 'pill-down';
+                const pnlClass = pnl >= 0 ? 'color: var(--green);' : 'color: var(--red);';
 
                 rowsHTML += `
                     <tr>
                         <td>
-                            <div class="stock-cell">
-                                <span class="stock-symbol">${stock.symbol}</span>
-                                <span class="stock-name">${stock.name}</span>
-                            </div>
+                            <strong style="color: #ffffff;">${stock.symbol}</strong>
+                            <div style="font-size: 11px; color: var(--text-muted);">${stock.name}</div>
                         </td>
-                        <td><span class="badge-sector">${stock.sector}</span></td>
-                        <td class="num mono"><strong>${stock.shares}</strong></td>
-                        <td class="num mono" style="color: var(--text-secondary);">${formatINR(stock.baseCost)}</td>
-                        <td class="num mono ${flashClass}" style="font-weight: 700; font-size: 14px;">${formatINR(q.cmp)}</td>
-                        <td class="num">
-                            <span class="badge-pill ${dayClass}">${daySign}${q.change_pct.toFixed(2)}%</span>
-                        </td>
-                        <td class="num mono" style="font-weight: 700;">${formatINR(curVal)}</td>
-                        <td class="num mono" style="${pnlClass} font-weight: 700;">
+                        <td><span class="sector-tag">${stock.sector}</span></td>
+                        <td class="text-right mono"><strong>${stock.shares}</strong></td>
+                        <td class="text-right mono" style="color: var(--text-secondary);">${formatINR(stock.baseCost)}</td>
+                        <td class="text-right mono" style="font-weight: 700; color: #ffffff;">${formatINR(q.cmp)}</td>
+                        <td class="text-right"><span class="${dayClass}">${daySign}${q.change_pct.toFixed(2)}%</span></td>
+                        <td class="text-right mono" style="font-weight: 700;">${formatINR(curVal)}</td>
+                        <td class="text-right mono" style="${pnlClass} font-weight: 700;">
                             ${pnl >= 0 ? '+' : ''}${formatINR(pnl)} (${pnl >= 0 ? '+' : ''}${pnlPct.toFixed(2)}%)
                         </td>
-                        <td class="num mono" style="color: var(--text-secondary);">${weight}%</td>
+                        <td class="text-right mono" style="color: var(--text-secondary);">${weight}%</td>
                     </tr>
                 `;
             });
 
             tbody.innerHTML = rowsHTML;
-
-            // Footer row updates
-            document.getElementById('foot-total-val').innerText = formatINR(totalCurrentVal);
-            const footPnLEl = document.getElementById('foot-total-pnl');
-            footPnLEl.innerText = `${pnlSign}${formatINR(totalUnrealizedPnL)} (${pnlSign}${totalPnLPct.toFixed(2)}%)`;
-            footPnLEl.style.color = totalUnrealizedPnL >= 0 ? 'var(--green)' : 'var(--red)';
+            document.getElementById('foot-total-val').innerText = formatINR(totalPortfolioNAV);
+            const footPnL = document.getElementById('foot-total-pnl');
+            footPnL.innerText = `${signPnl}${formatINR(totalUnrealizedPnL)} (${signPnl}${totalPnLPct.toFixed(2)}%)`;
+            footPnL.style.color = totalUnrealizedPnL >= 0 ? 'var(--green)' : 'var(--red)';
         }
 
-        // Fetch Live Quotes with Serverless On-Demand Support
         async function fetchLiveQuotes(isManual = false) {
-            const refreshBtn = document.getElementById('manual-refresh-btn');
-            const pollStatus = document.getElementById('poll-status');
-            if (isManual && refreshBtn) {
-                refreshBtn.style.opacity = '0.6';
-                refreshBtn.querySelector('span:last-child').innerText = 'Fetching Live Exchange...';
-            }
+            const statusEl = document.getElementById('feed-status');
+            if (isManual && statusEl) statusEl.innerText = "REFRESHING...";
 
-            let data = null;
-            let sourceLabel = '';
+            let quoteData = null;
+            let ledgerData = null;
 
-            // 1. Primary: Netlify Serverless Live Exchange API (Live on-demand, ~1s latency)
+            // Fetch live API & ledger
             try {
-                const apiResp = await fetch(`/api/quotes?_t=${Date.now()}`, { cache: 'no-store' });
-                if (apiResp.ok) {
-                    data = await apiResp.json();
-                    sourceLabel = 'LIVE CLOUD SERVERLESS FEED';
-                }
+                const [qResp, lResp] = await Promise.all([
+                    fetch(`/api/quotes?_t=${Date.now()}`, { cache: 'no-store' }),
+                    fetch(`/portfolio_ledger.json?_t=${Date.now()}`, { cache: 'no-store' })
+                ]);
+                if (qResp.ok) quoteData = await qResp.json();
+                if (lResp.ok) ledgerData = await lResp.json();
             } catch (e) {
-                // Ignore and fall back
+                console.warn('Network sync notice:', e);
             }
 
-            // 2. Fallback: Local/GitHub Pages static JSON feed
-            if (!data || !data.stocks || Object.keys(data.stocks).length === 0) {
-                try {
-                    const jsonResp = await fetch(`./live_quotes.json?_t=${Date.now()}`, { cache: 'no-store' });
-                    if (jsonResp.ok) {
-                        data = await jsonResp.json();
-                        sourceLabel = 'STATIC EXCHANGE SNAPSHOT';
-                    }
-                } catch (e) {
-                    console.warn('Fallback quote error:', e);
-                }
+            if (quoteData && quoteData.stocks) {
+                liveQuotesCache = Object.assign({}, liveQuotesCache, quoteData.stocks);
+                if (quoteData.timestamp) lastQuotesTimestamp = quoteData.timestamp;
             }
 
-            if (data && data.stocks) {
-                liveQuotesCache = Object.assign({}, liveQuotesCache, data.stocks);
-                if (data.timestamp) lastQuotesTimestamp = data.timestamp;
-
-                if (data.nifty) {
-                    document.getElementById('nifty-val').innerText = data.nifty.cmp.toLocaleString('en-IN', { minimumFractionDigits: 2 });
-                    const nchg = data.nifty.change_pct;
-                    const nel = document.getElementById('nifty-chg');
-                    nel.innerText = `${nchg >= 0 ? '+' : ''}${nchg.toFixed(2)}%`;
-                    nel.className = `badge-pill ${nchg >= 0 ? 'pill-up' : 'pill-down'}`;
+            // Update Regime Intel from Ledger
+            if (ledgerData && ledgerData.regime_intel) {
+                const r = ledgerData.regime_intel;
+                document.getElementById('val-p-calm').innerText = `${r.p_calm.toFixed(1)}%`;
+                document.getElementById('val-p-panic').innerText = `${r.p_panic.toFixed(1)}%`;
+                document.getElementById('bar-p-calm').style.width = `${r.p_calm}%`;
+                if (r.model_thinking) {
+                    document.getElementById('brain-insight-text').innerHTML = `💡 <strong>Model Assessment:</strong> ${r.model_thinking}`;
                 }
-
-                if (data.vix) {
-                    document.getElementById('vix-val').innerText = data.vix.cmp.toFixed(2);
-                    const vchg = data.vix.change_pct;
-                    const vel = document.getElementById('vix-chg');
-                    vel.innerText = `${vchg >= 0 ? '+' : ''}${vchg.toFixed(2)}%`;
-                    vel.className = `badge-pill ${vchg >= 0 ? 'pill-up' : 'pill-down'}`;
-                }
-
-                document.getElementById('last-sync-time').innerText = lastQuotesTimestamp;
-                renderTable();
-                renderTickerTape();
-                renderDefensives();
-
-                if (pollStatus) {
-                    pollStatus.innerText = `${sourceLabel} (LIVE)`;
-                    pollStatus.style.color = 'var(--green)';
-                }
-            } else {
-                if (pollStatus) {
-                    pollStatus.innerText = 'OFFLINE CACHE ACTIVE';
-                    pollStatus.style.color = '#f59e0b';
+                if (r.realized_vol_20d) {
+                    document.getElementById('kpi-vol-val').innerText = `${r.realized_vol_20d.toFixed(1)}%`;
                 }
             }
 
-            if (isManual && refreshBtn) {
-                refreshBtn.style.opacity = '1';
-                refreshBtn.querySelector('span:last-child').innerText = 'Refresh Now';
-            }
+            document.getElementById('last-sync-time').innerText = lastQuotesTimestamp;
+            renderTable();
+            renderDefensives();
+
+            if (statusEl) statusEl.innerText = "● LIVE NSE FEED";
         }
 
-        function forceRefresh() {
-            fetchLiveQuotes(true);
-        }
-
-        // Countdown Timer to Next Scheduled Action (08:50 AM Radar or 03:15 PM EOD Rebalance)
         function updateCountdown() {
             const now = new Date();
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
@@ -1055,20 +719,20 @@
 
             let targetHour = 15;
             let targetMinute = 15;
-            let label = "Target: 03:15 PM EOD Hamilton Markov Decision";
+            let label = "Target: 03:15 PM EOD HMM";
 
             if (curHours < 8 || (curHours === 8 && curMinutes < 50)) {
                 targetHour = 8;
                 targetMinute = 50;
-                label = "Target: 08:50 AM Pre-Market Intelligence Radar";
+                label = "Target: 08:50 AM Pre-Market Radar";
             } else if (curHours < 15 || (curHours === 15 && curMinutes < 15)) {
                 targetHour = 15;
                 targetMinute = 15;
-                label = "Target: 03:15 PM EOD Hamilton Markov Decision";
+                label = "Target: 03:15 PM EOD HMM";
             } else {
                 targetHour = 8 + 24;
                 targetMinute = 50;
-                label = "Target: Tomorrow 08:50 AM Pre-Market Radar";
+                label = "Target: Tomorrow 08:50 AM Radar";
             }
 
             const nowSecs = curHours * 3600 + curMinutes * 60 + curSeconds;
@@ -1087,19 +751,14 @@
             if (descEl) descEl.innerText = label;
         }
 
-        // Initialize Everything Immediately On Page Load
-        renderTickerTape();
+        // Init
         renderTable();
         renderDefensives();
-        document.getElementById('last-sync-time').innerText = lastQuotesTimestamp;
         updateCountdown();
+        fetchLiveQuotes();
 
-        // High-Frequency Auto-Polling Loops
         setInterval(updateCountdown, 1000);
-        setInterval(() => fetchLiveQuotes(false), 3000); // Check every 3 seconds!
-
-        // Initial fetch right away
-        fetchLiveQuotes(false);
+        setInterval(() => fetchLiveQuotes(false), 5000);
     </script>
 </body>
 </html>
