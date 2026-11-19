@@ -1,96 +1,96 @@
 {
-  "timestamp": "2026-11-19 12:00:59",
+  "timestamp": "2026-11-19 12:07:17",
   "source": "FALLBACK_EXCHANGE_FEED",
   "stocks": {
     "PERSISTENT.NS": {
-      "cmp": 5836.5,
+      "cmp": 5822.5,
       "prev_close": 5857.0,
-      "change_pct": -0.35
+      "change_pct": -0.59
     },
     "COFORGE.NS": {
-      "cmp": 2042.5,
+      "cmp": 2040.4,
       "prev_close": 2049.0,
-      "change_pct": -0.32
+      "change_pct": -0.42
     },
     "CHOLAFIN.NS": {
-      "cmp": 1868.5,
+      "cmp": 1867.4,
       "prev_close": 1875.0,
-      "change_pct": -0.35
+      "change_pct": -0.41
     },
     "FEDERALBNK.NS": {
-      "cmp": 362.05,
+      "cmp": 361.5,
       "prev_close": 360.35,
-      "change_pct": 0.47
+      "change_pct": 0.32
     },
     "INDHOTEL.NS": {
-      "cmp": 892.25,
+      "cmp": 891.6,
       "prev_close": 875.05,
-      "change_pct": 1.97
+      "change_pct": 1.89
     },
     "EIHOTEL.NS": {
-      "cmp": 310.7,
+      "cmp": 307.45,
       "prev_close": 313.45,
-      "change_pct": -0.88
+      "change_pct": -1.91
     },
     "BALKRISIND.NS": {
-      "cmp": 2327.1,
+      "cmp": 2328.0,
       "prev_close": 2286.4,
-      "change_pct": 1.78
+      "change_pct": 1.82
     },
     "DIXON.NS": {
-      "cmp": 13070.0,
+      "cmp": 13061.0,
       "prev_close": 12615.0,
-      "change_pct": 3.61
+      "change_pct": 3.54
     },
     "COLPAL.NS": {
-      "cmp": 1764.0,
+      "cmp": 1763.7,
       "prev_close": 1688.4,
-      "change_pct": 4.48
+      "change_pct": 4.46
     },
     "GLAXO.NS": {
-      "cmp": 2663.7,
+      "cmp": 2659.9,
       "prev_close": 2638.2,
-      "change_pct": 0.97
+      "change_pct": 0.82
     },
     "MARICO.NS": {
-      "cmp": 909.0,
+      "cmp": 908.75,
       "prev_close": 906.05,
-      "change_pct": 0.33
+      "change_pct": 0.3
     },
     "TORNTPHARM.NS": {
-      "cmp": 4662.6,
+      "cmp": 4666.8,
       "prev_close": 4610.7,
-      "change_pct": 1.13
+      "change_pct": 1.22
     },
     "KANSAINER.NS": {
-      "cmp": 198.03,
+      "cmp": 197.25,
       "prev_close": 198.96,
-      "change_pct": -0.47
+      "change_pct": -0.86
     },
     "MGL.NS": {
-      "cmp": 1104.3,
+      "cmp": 1104.0,
       "prev_close": 1115.5,
-      "change_pct": -1.0
+      "change_pct": -1.03
     },
     "COROMANDEL.NS": {
-      "cmp": 1964.5,
+      "cmp": 1963.3,
       "prev_close": 1959.0,
-      "change_pct": 0.28
+      "change_pct": 0.22
     },
     "PETRONET.NS": {
-      "cmp": 328.25,
+      "cmp": 328.05,
       "prev_close": 325.5,
-      "change_pct": 0.84
+      "change_pct": 0.78
     }
   },
   "nifty": {
-    "cmp": 25371.6,
+    "cmp": 25354.35,
     "prev_close": 25227.95,
-    "change_pct": 0.57
+    "change_pct": 0.5
   },
   "vix": {
-    "cmp": 16.07,
+    "cmp": 16.21,
     "prev_close": 15.52,
-    "change_pct": 3.52
+    "change_pct": 4.43
   }
 }
