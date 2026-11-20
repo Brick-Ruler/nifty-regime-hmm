@@ -1,0 +1,50 @@
+name: NIFTY Pre-Market Intelligence Radar
+
+on:
+  schedule:
+    # Backup trigger: 03:20 AM UTC is 08:50 AM IST
+    - cron: '20 3 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  premarket-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Execute Pre-Market Radar
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        run: |
+          echo "=========================================================="
+          echo "GitHub Actions Cloud Execution - Pre-Market Intelligence Radar (08:50 AM IST)"
+          echo "Timestamp: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          echo "=========================================================="
+          python pre_market_sentinel.py --cloud
+
+      - name: Commit & Push Updated Portfolio Ledger
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add portfolio_ledger.json live_quotes.json
+          git add *.html 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit."
+          else
+            git commit -m "Automated pre-market radar update: $(date -u +'%Y-%m-%d %H:%M UTC') [skip ci]"
+            git push
+          fi

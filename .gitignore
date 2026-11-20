@@ -10,3 +10,5 @@ kite_session.json
 credentials.json
 *.token
 .netlify/
+
+*.log

@@ -2,6 +2,12 @@
   publish = "."
   functions = "netlify/functions"
 
+[functions."trigger_premarket"]
+  schedule = "20 3 * * 1-5"
+
+[functions."trigger_eod"]
+  schedule = "45 9 * * 1-5"
+
 [[headers]]
   for = "/*"
   [headers.values]
