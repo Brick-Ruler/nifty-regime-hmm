@@ -5,6 +5,12 @@ on:
     # Backup trigger: 09:45 AM UTC is 03:15 PM IST
     - cron: '45 9 * * 1-5'
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force execution outside market window'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -34,7 +40,12 @@ jobs:
           echo "GitHub Actions Cloud Execution - EOD Hamilton Markov Scan (03:15 PM IST)"
           echo "Timestamp: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
           echo "=========================================================="
-          python auto_portfolio_agent.py --eod-check
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            echo ">>> Force execution requested. Bypassing schedule window check..."
+            python auto_portfolio_agent.py --eod-check --force
+          else
+            python auto_portfolio_agent.py --eod-check
+          fi
 
       - name: Commit & Push Updated Portfolio Ledger
         run: |
