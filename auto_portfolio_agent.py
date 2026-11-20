@@ -571,7 +571,7 @@ def run_eod_agent():
             f"vs <strong>P(Calm) = {p_calm:.1f}%</strong>."
         )
         reasoning_points.append(
-            f"<strong>Volatility Target (18.0%):</strong> 20-Day Portfolio Realized Volatility is <strong>{realized_vol_20d:.1f}%</strong>. "
+            f"<strong>Volatility Target ({tgt_vol:.1f}%):</strong> 20-Day Portfolio Realized Volatility is <strong>{realized_vol_20d:.1f}%</strong>. "
             f"Gross Allocation: <strong>{new_eq_w*100:.1f}% Equity / {new_cash_w*100:.1f}% Liquid Cash (Yielding 6.5% p.a.)</strong>. "
             f"{'Deadband filter (15%) suppressed friction trade today.' if not vol_rebalanced else 'Vol Target Rebalance executed to maintain risk budget.'}"
         )
@@ -613,6 +613,10 @@ def run_eod_agent():
         buy_p = h.get('buy_price', cmp)
         inv_cost = round(h['shares'] * buy_p, 2)
         h['invested_cost'] = inv_cost
+        h['day_change_pct'] = round(daily_r, 2)
+        prev_p = round(cmp / (1.0 + (daily_r / 100.0)), 2) if (1.0 + (daily_r / 100.0)) > 0 else cmp
+        h['prev_close'] = prev_p
+        h['day_pnl'] = round(h['shares'] * (cmp - prev_p), 2)
         
         if h['shares'] > 0:
             total_invested_cost += inv_cost
@@ -685,6 +689,11 @@ def run_eod_agent():
                 if diff != 0:
                     transactions.append({'ticker': sym, 'name': name, 'action': 'ADD_DEFENSIVE', 'shares': abs(diff), 'price': cmp})
                     ledger['holdings'][sym]['shares'] = target_sh
+                    ledger['holdings'][sym]['buy_price'] = cmp
+                    ledger['holdings'][sym]['invested_cost'] = round(target_sh * cmp, 2)
+                    ledger['holdings'][sym]['current_value'] = round(target_sh * cmp, 2)
+                    ledger['holdings'][sym]['unrealized_pnl'] = 0.0
+                    ledger['holdings'][sym]['unrealized_pnl_pct'] = 0.0
                     ledger['cash_buffer'] -= (diff * cmp)
                     turnover_val += abs(diff) * cmp
         else:
@@ -696,6 +705,10 @@ def run_eod_agent():
                     transactions.append({'ticker': sym, 'name': name, 'action': 'EXIT_DEFENSIVE', 'shares': curr_sh, 'price': cmp})
                     ledger['cash_buffer'] += (curr_sh * cmp)
                     ledger['holdings'][sym]['shares'] = 0
+                    ledger['holdings'][sym]['current_value'] = 0.0
+                    ledger['holdings'][sym]['invested_cost'] = 0.0
+                    ledger['holdings'][sym]['unrealized_pnl'] = 0.0
+                    ledger['holdings'][sym]['unrealized_pnl_pct'] = 0.0
                     turnover_val += (curr_sh * cmp)
             for sym, name, _ in AGG_STOCKS:
                 target_amt = total_cap * (new_eq_w / 8.0)
@@ -710,9 +723,18 @@ def run_eod_agent():
                     turnover_val += abs(diff) * cmp
 
         fee = turnover_val * 0.0020
-        ledger['cumulative_friction_paid'] += fee
-        ledger['cash_buffer'] -= fee
-        ledger['total_portfolio_value'] = round(ledger['equity_value'] + ledger['cash_buffer'], 2)
+        ledger['cumulative_friction_paid'] = round(ledger.get('cumulative_friction_paid', 0.0) + fee, 2)
+        ledger['cash_buffer'] = round(ledger['cash_buffer'] - fee, 2)
+
+        # Full recalculation of equity metrics post-rebalance
+        recalc_eq_val = sum(ledger['holdings'][s]['shares'] * ledger['holdings'][s]['cmp'] for s in ledger['holdings'])
+        recalc_cost_val = sum(ledger['holdings'][s].get('invested_cost', ledger['holdings'][s]['shares'] * ledger['holdings'][s].get('buy_price', ledger['holdings'][s]['cmp'])) for s in ledger['holdings'] if ledger['holdings'][s]['shares'] > 0)
+        ledger['equity_value'] = round(recalc_eq_val, 2)
+        ledger['current_equity_value'] = round(recalc_eq_val, 2)
+        ledger['invested_equity_cost'] = round(recalc_cost_val, 2)
+        ledger['equity_pnl'] = round(recalc_eq_val - recalc_cost_val, 2)
+        ledger['equity_pnl_pct'] = round((ledger['equity_pnl'] / recalc_cost_val) * 100.0, 2) if recalc_cost_val > 0 else 0.0
+        ledger['total_portfolio_value'] = round(recalc_eq_val + ledger['cash_buffer'], 2)
         ledger['total_account_nav'] = ledger['total_portfolio_value']
 
     # 7. Metrics & Ledger Persistence
@@ -739,8 +761,18 @@ def run_eod_agent():
         )
     }
 
-    if not ledger.get('history') or ledger['history'][-1]['date'] != today_str:
-        ledger.setdefault('history', []).append({'date': today_str, 'value': total_account_nav, 'nifty_close': nifty_price, 'regime': new_regime})
+    ledger['last_updated'] = now_str
+    ledger['overall_pnl'] = net_equity_pnl
+    ledger['overall_pnl_pct'] = equity_return_pct
+    ledger['day_pnl'] = net_equity_pnl
+    ledger['day_pnl_pct'] = equity_return_pct
+
+    if not ledger.get('history'):
+        ledger['history'] = []
+    if ledger['history'] and ledger['history'][-1]['date'] == today_str:
+        ledger['history'][-1] = {'date': today_str, 'value': total_account_nav, 'nifty_close': nifty_price, 'regime': new_regime}
+    else:
+        ledger['history'].append({'date': today_str, 'value': total_account_nav, 'nifty_close': nifty_price, 'regime': new_regime})
 
     with open(LEDGER_FILE, 'w', encoding='utf-8') as f:
         json.dump(ledger, f, indent=2)

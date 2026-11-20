@@ -30,9 +30,9 @@
       "buy_price": 5857.0,
       "cmp": 6124.0,
       "current_value": 12248.0,
-      "prev_close": 5857.0,
-      "day_change_pct": -0.88,
-      "day_pnl": -103.0,
+      "prev_close": 5879.98,
+      "day_change_pct": 4.15,
+      "day_pnl": 488.04,
       "unrealized_pnl": 534.0,
       "unrealized_pnl_pct": 4.56,
       "invested_cost": 11714.0
@@ -45,9 +45,9 @@
       "buy_price": 2049.0,
       "cmp": 2086.7,
       "current_value": 12520.2,
-      "prev_close": 2049.0,
-      "day_change_pct": -0.39,
-      "day_pnl": -47.4,
+      "prev_close": 2040.98,
+      "day_change_pct": 2.24,
+      "day_pnl": 274.32,
       "unrealized_pnl": 226.2,
       "unrealized_pnl_pct": 1.84,
       "invested_cost": 12294.0
@@ -60,9 +60,9 @@
       "buy_price": 1875.0,
       "cmp": 1874.6,
       "current_value": 13122.2,
-      "prev_close": 1875.0,
-      "day_change_pct": -0.28,
-      "day_pnl": -37.1,
+      "prev_close": 1874.97,
+      "day_change_pct": -0.02,
+      "day_pnl": -2.59,
       "unrealized_pnl": -2.8,
       "unrealized_pnl_pct": -0.02,
       "invested_cost": 13125.0
@@ -75,9 +75,9 @@
       "buy_price": 360.35,
       "cmp": 373.5,
       "current_value": 12699.0,
-      "prev_close": 360.35,
-      "day_change_pct": 0.78,
-      "day_pnl": 95.2,
+      "prev_close": 364.5,
+      "day_change_pct": 2.47,
+      "day_pnl": 306.0,
       "unrealized_pnl": 447.1,
       "unrealized_pnl_pct": 3.65,
       "invested_cost": 12251.9
@@ -90,9 +90,9 @@
       "buy_price": 875.05,
       "cmp": 912.0,
       "current_value": 12768.0,
-      "prev_close": 875.05,
-      "day_change_pct": 1.25,
-      "day_pnl": 152.6,
+      "prev_close": 889.67,
+      "day_change_pct": 2.51,
+      "day_pnl": 312.62,
       "unrealized_pnl": 517.3,
       "unrealized_pnl_pct": 4.22,
       "invested_cost": 12250.7
@@ -105,9 +105,9 @@
       "buy_price": 313.45,
       "cmp": 334.15,
       "current_value": 13366.0,
-      "prev_close": 313.45,
-      "day_change_pct": -1.95,
-      "day_pnl": -244.0,
+      "prev_close": 310.0,
+      "day_change_pct": 7.79,
+      "day_pnl": 966.0,
       "unrealized_pnl": 828.0,
       "unrealized_pnl_pct": 6.6,
       "invested_cost": 12538.0
@@ -120,9 +120,9 @@
       "buy_price": 2286.4,
       "cmp": 2363.8,
       "current_value": 11819.0,
-      "prev_close": 2286.4,
-      "day_change_pct": 1.69,
-      "day_pnl": 193.0,
+      "prev_close": 2327.26,
+      "day_change_pct": 1.57,
+      "day_pnl": 182.7,
       "unrealized_pnl": 387.0,
       "unrealized_pnl_pct": 3.39,
       "invested_cost": 11432.0
@@ -135,9 +135,9 @@
       "buy_price": 12615.0,
       "cmp": 13120.0,
       "current_value": 13120.0,
-      "prev_close": 12615.0,
-      "day_change_pct": 3.53,
-      "day_pnl": 445.0,
+      "prev_close": 13053.43,
+      "day_change_pct": 0.51,
+      "day_pnl": 66.57,
       "unrealized_pnl": 505.0,
       "unrealized_pnl_pct": 4.0,
       "invested_cost": 12615.0
@@ -150,7 +150,10 @@
       "buy_price": 1719.7,
       "cmp": 1760.0,
       "current_value": 0.0,
-      "invested_cost": 0.0
+      "invested_cost": 0.0,
+      "day_change_pct": -0.93,
+      "prev_close": 1776.52,
+      "day_pnl": -0.0
     },
     "GLAXO.NS": {
       "name": "GlaxoSmithKline Pharma",
@@ -160,7 +163,10 @@
       "buy_price": 2687.6,
       "cmp": 2727.6,
       "current_value": 0.0,
-      "invested_cost": 0.0
+      "invested_cost": 0.0,
+      "day_change_pct": 0.52,
+      "prev_close": 2713.49,
+      "day_pnl": 0.0
     },
     "MARICO.NS": {
       "name": "Marico Ltd",
@@ -170,7 +176,10 @@
       "buy_price": 924.0,
       "cmp": 917.0,
       "current_value": 0.0,
-      "invested_cost": 0.0
+      "invested_cost": 0.0,
+      "day_change_pct": -0.2,
+      "prev_close": 918.84,
+      "day_pnl": -0.0
     },
     "TORNTPHARM.NS": {
       "name": "Torrent Pharma",
@@ -180,7 +189,10 @@
       "buy_price": 4668.8,
       "cmp": 4689.5,
       "current_value": 0.0,
-      "invested_cost": 0.0
+      "invested_cost": 0.0,
+      "day_change_pct": 1.7,
+      "prev_close": 4611.11,
+      "day_pnl": 0.0
     },
     "KANSAINER.NS": {
       "name": "Kansai Nerolac Paints",
@@ -190,7 +202,10 @@
       "buy_price": 201.02,
       "cmp": 197.94,
       "current_value": 0.0,
-      "invested_cost": 0.0
+      "invested_cost": 0.0,
+      "day_change_pct": 0.98,
+      "prev_close": 196.02,
+      "day_pnl": 0.0
     },
     "MGL.NS": {
       "name": "Mahanagar Gas",
@@ -200,7 +215,10 @@
       "buy_price": 1104.1,
       "cmp": 1115.3,
       "current_value": 0.0,
-      "invested_cost": 0.0
+      "invested_cost": 0.0,
+      "day_change_pct": 1.09,
+      "prev_close": 1103.27,
+      "day_pnl": 0.0
     },
     "COROMANDEL.NS": {
       "name": "Coromandel Int",
@@ -210,7 +228,10 @@
       "buy_price": 1973.5,
       "cmp": 1996.0,
       "current_value": 0.0,
-      "invested_cost": 0.0
+      "invested_cost": 0.0,
+      "day_change_pct": 1.22,
+      "prev_close": 1971.94,
+      "day_pnl": 0.0
     },
     "PETRONET.NS": {
       "name": "Petronet LNG",
@@ -220,7 +241,10 @@
       "buy_price": 328.1,
       "cmp": 329.15,
       "current_value": 0.0,
-      "invested_cost": 0.0
+      "invested_cost": 0.0,
+      "day_change_pct": -0.5,
+      "prev_close": 330.8,
+      "day_pnl": -0.0
     }
   },
   "universe_bench_summary": {
@@ -259,16 +283,16 @@
     },
     {
       "date": "2026-11-21",
-      "value": 100849.0,
-      "nifty_close": 25514.30078125,
+      "value": 103441.8,
+      "nifty_close": 25800.6,
       "regime": "AGGRESSIVE GROWTH"
     }
   ],
-  "last_updated": "2026-11-19 12:46:36",
-  "day_pnl": 420.4,
-  "day_pnl_pct": 0.42,
-  "overall_pnl": 420.4,
-  "overall_pnl_pct": 0.42,
+  "last_updated": "2026-11-21 00:24:35",
+  "day_pnl": 3441.8,
+  "day_pnl_pct": 3.5,
+  "overall_pnl": 3441.8,
+  "overall_pnl_pct": 3.5,
   "regime_intel": {
     "active_regime": "CALM BULL (AGGRESSIVE GROWTH)",
     "p_calm": 98.0,
