@@ -41,23 +41,25 @@ DEF_STOCKS = [
 ]
 
 def fetch_latest_quote(symbol):
+    """
+    Fetches the true real-time regularMarketPrice and daily return from Yahoo Finance chart API.
+    Matches the live Netlify engine feed.
+    """
     encoded = urllib.parse.quote(symbol)
-    url = f"https://query1.finance.yahoo.com/v8/finance/chart/{encoded}?range=5d&interval=1d"
+    url = f"https://query1.finance.yahoo.com/v8/finance/chart/{encoded}?range=1d&interval=5m"
     headers = {"User-Agent": "Mozilla/5.0"}
     req = urllib.request.Request(url, headers=headers)
     try:
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req, timeout=5) as resp:
             data = json.loads(resp.read().decode('utf-8'))
-            result = data['chart']['result'][0]
-            quotes = result['indicators']['quote'][0]
-            closes = [c for c in quotes['close'] if c is not None and not math.isnan(c)]
-            if len(closes) >= 2:
-                latest = closes[-1]
-                prev = closes[-2]
-                ret = ((latest - prev) / prev) * 100.0
-                return latest, ret
-            elif len(closes) == 1:
-                return closes[0], 0.0
+            meta = data['chart']['result'][0]['meta']
+            cmp = meta.get('regularMarketPrice')
+            prev = meta.get('chartPreviousClose') or meta.get('previousClose')
+            if cmp is not None and prev is not None and prev > 0:
+                ret = ((cmp - prev) / prev) * 100.0
+                return round(cmp, 2), round(ret, 2)
+            elif cmp is not None:
+                return round(cmp, 2), 0.0
     except Exception as e:
         pass
     return None, 0.0

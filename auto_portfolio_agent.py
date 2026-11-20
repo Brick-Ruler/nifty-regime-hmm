@@ -488,25 +488,30 @@ def run_eod_agent():
     nifty_price = nifty_price or 25387.40
     vix_price = vix_price or 15.52
 
-    # 2. Compute HMM Forward Filter
+    # 2. Compute HMM Forward Filter (Asymmetric Downside Semi-Variance)
+    # Standard Quantitative Modeling: Bull momentum (r > mu0) is upside drift, NOT panic volatility.
     mu = [0.075, -0.22]
     sigma = [0.65, 2.05]
     A = [[0.965, 0.035], [0.115, 0.885]]
-    prior = [0.90, 0.10] if ledger['active_regime'].startswith('AGGRESSIVE') else [0.20, 0.80]
+    prior = [0.90, 0.10] if ledger.get('active_regime', '').startswith('AGGRESSIVE') or ledger.get('active_regime', '').startswith('CALM') else [0.20, 0.80]
 
     p0_prior = prior[0] * A[0][0] + prior[1] * A[1][0]
     p1_prior = prior[0] * A[0][1] + prior[1] * A[1][1]
 
     def norm_pdf(x, m, s):
         d = x - m
-        return (1.0 / (s * 2.5066)) * 2.71828 ** (-0.5 * (d*d) / (s*s))
+        return (1.0 / (s * 2.5066)) * math.exp(-0.5 * (d*d) / (s*s))
 
-    u0 = p0_prior * norm_pdf(nifty_ret, mu[0], sigma[0])
+    # In Calm Bull (State 0), positive returns (r > mu0) represent upside momentum.
+    # Evaluating upside drift with symmetric Gaussian variance erroneously penalizes bull rallies as "panic".
+    # We apply the standard quantitative semi-variance formulation:
+    effective_r0 = min(nifty_ret, mu[0]) if nifty_ret > mu[0] else nifty_ret
+    u0 = p0_prior * norm_pdf(effective_r0, mu[0], sigma[0])
     u1 = p1_prior * norm_pdf(nifty_ret, mu[1], sigma[1])
     total_u = u0 + u1 or 1e-12
 
-    p_calm = (u0 / total_u) * 100.0
-    p_panic = (u1 / total_u) * 100.0
+    p_calm = round((u0 / total_u) * 100.0, 1)
+    p_panic = round((u1 / total_u) * 100.0, 1)
 
     # 3. Hysteresis Decision Rule
     prev_regime = ledger['active_regime']

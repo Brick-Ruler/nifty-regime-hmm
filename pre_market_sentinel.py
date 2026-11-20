@@ -209,11 +209,11 @@ def run_premarket_sentinel():
 
     # 2. Portfolio Opening Baseline Metrics (Pure Equity Basis)
     invested_cost = round(ledger.get('invested_equity_cost', 98220.60), 2)
-    current_val = round(ledger.get('current_equity_value', 100866.60), 2)
-    net_pnl = round(ledger.get('equity_pnl', 2646.00), 2)
-    pnl_pct = round(ledger.get('equity_pnl_pct', 2.69), 2)
+    current_val = round(ledger.get('current_equity_value', 101662.40), 2)
+    net_pnl = round(ledger.get('equity_pnl', 3441.80), 2)
+    pnl_pct = round(ledger.get('equity_pnl_pct', 3.50), 2)
     cash_buffer = round(ledger.get('cash_buffer', 1779.40), 2)
-    account_nav = round(ledger.get('total_account_nav', 102646.00), 2)
+    account_nav = round(ledger.get('total_account_nav', 103441.80), 2)
     pnl_class = "text-green" if net_pnl >= 0 else "text-red"
     pnl_sign = "+" if net_pnl >= 0 else ""
 
