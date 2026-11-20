@@ -207,15 +207,19 @@ def run_premarket_sentinel():
         bias_color = "#2563eb"
         indicative_mood = "Balanced global backdrop. Domestic morning cues will drive opening price action."
 
-    # 2. Gap Circuit Breaker Proximity (Calibrated -1.75% Cutoff)
-    last_nifty = ledger.get('initial_nifty_close', 25387.40)
-    gap_cutoff_nifty = round(last_nifty * (1.0 - 0.0175), 2)
-    buffer_points = round(last_nifty - gap_cutoff_nifty, 1)
+    # 2. Portfolio Opening Baseline Metrics (Pure Equity Basis)
+    invested_cost = round(ledger.get('invested_equity_cost', 98220.60), 2)
+    current_val = round(ledger.get('current_equity_value', 100866.60), 2)
+    net_pnl = round(ledger.get('equity_pnl', 2646.00), 2)
+    pnl_pct = round(ledger.get('equity_pnl_pct', 2.69), 2)
+    cash_buffer = round(ledger.get('cash_buffer', 1779.40), 2)
+    account_nav = round(ledger.get('total_account_nav', 102646.00), 2)
+    pnl_class = "text-green" if net_pnl >= 0 else "text-red"
+    pnl_sign = "+" if net_pnl >= 0 else ""
 
     # 3. Company Disclosures & News Filter (8 Active Champions + 8 Fortresses)
     print("Running Corporate Announcement & News Sentinel across Portfolio...")
     active_tickers = [s for s in AGG_STOCKS]
-    defensive_tickers = [s for s in DEF_STOCKS]
 
     red_alerts = []
     amber_updates = []
@@ -234,32 +238,29 @@ def run_premarket_sentinel():
     for label, val in macro.items():
         chg_cls = "text-green" if val['chg'] >= 0 else "text-red"
         macro_cards_html += f"""
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; text-align: center;">
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; text-align: center;">
             <div style="font-size: 11px; color: #64748b; font-weight: 600;">{label}</div>
-            <div style="font-size: 15px; font-weight: 700; color: #1e293b; margin-top: 3px;">{val['price']}</div>
-            <div class="{chg_cls}" style="font-size: 12px; font-weight: 700;">{val['chg']:+4.2f}%</div>
+            <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-top: 2px;">{val['price']}</div>
+            <div class="{chg_cls}" style="font-size: 11px; font-weight: 700;">{val['chg']:+4.2f}%</div>
         </div>
         """
 
     # Corporate News HTML Section
     if red_alerts:
-        corp_status_header = "<span style='color: #dc2626; font-weight: 800;'>🚨 TERMINAL RED ALERT DETECTED</span>"
-        red_items_html = "<div style='background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px; border-radius: 4px; margin-bottom: 12px;'>"
+        corp_status_header = "<span style='color: #dc2626; font-weight: 800;'>🚨 MATERIAL GOVERNANCE ALERT</span>"
+        corp_items_html = "<div style='background: #fee2e2; border-left: 4px solid #ef4444; padding: 10px; border-radius: 4px; font-size: 12px; margin-top: 6px;'>"
         for sym, name, sec, title in red_alerts:
-            red_items_html += f"• <strong style='color:#b91c1c;'>{sym} ({name}):</strong> {title}<br>"
-        red_items_html += "<strong style='color:#991b1b;'>Recommendation:</strong> Model flag: Consider emergency eviction to bench if confirmed by stock exchange filing.</div>"
+            corp_items_html += f"• <strong style='color:#b91c1c;'>{sym} ({name}):</strong> {title}<br>"
+        corp_items_html += "</div>"
     else:
-        corp_status_header = "<span style='color: #16a34a; font-weight: 800;'>🟢 Clean (Zero Terminal Governance Flags)</span>"
-        red_items_html = "<div style='font-size: 13px; color: #475569;'>All 16 portfolio companies vetted clean overnight. Zero statutory auditor resignations, zero SEBI probes, and zero promoter pledge alerts.</div>"
+        corp_status_header = "<span style='color: #16a34a; font-weight: 800;'>🟢 Clean (Zero Material Disclosures)</span>"
+        corp_items_html = "<div style='font-size: 12px; color: #475569; margin-top: 6px;'>All 8 portfolio companies vetted clean overnight across stock exchange filings (Zero statutory auditor resignations, SEBI probes, or promoter pledge alerts).</div>"
 
-    amber_items_html = ""
     if amber_updates:
-        amber_items_html = "<div style='margin-top: 10px;'><strong style='color: #d97706; font-size: 12px;'>Operational Intelligence (Filtered Signal):</strong><br>"
-        for sym, name, sec, title in amber_updates[:4]:
-            amber_items_html += f"<div style='font-size: 12px; color: #334155; margin-top: 4px;'>• <strong>{sym} ({sec}):</strong> {title}</div>"
-        amber_items_html += "</div>"
-    else:
-        amber_items_html = "<div style='font-size: 12px; color: #64748b; margin-top: 8px;'>Everyday noise (ESOP allotments, routine share certificate lost notices) suppressed. Zero material operational headlines.</div>"
+        corp_items_html += "<div style='margin-top: 8px; font-size: 12px; color: #334155;'><strong style='color: #d97706;'>Operational Disclosures:</strong><br>"
+        for sym, name, sec, title in amber_updates[:3]:
+            corp_items_html += f"• <strong>{sym}:</strong> {title}<br>"
+        corp_items_html += "</div>"
 
     email_html = f"""
     <!DOCTYPE html>
@@ -267,81 +268,102 @@ def run_premarket_sentinel():
     <head>
         <meta charset="utf-8">
         <style>
-            body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0f172a; margin: 0; padding: 20px; color: #334155; }}
-            .container {{ max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }}
-            .header {{ background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: #ffffff; padding: 24px; text-align: center; border-bottom: 3px solid #6366f1; }}
-            .title {{ font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }}
-            .meta {{ font-size: 12px; color: #cbd5e1; margin-top: 4px; }}
-            .card {{ padding: 18px 22px; border-bottom: 1px solid #f1f5f9; }}
-            .card-title {{ font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #6366f1; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }}
-            .grid-4 {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }}
+            body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0f172a; margin: 0; padding: 20px; color: #1e293b; }}
+            .container {{ max-width: 660px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #cbd5e1; padding: 22px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }}
+            .header {{ border-bottom: 2px solid #6366f1; padding-bottom: 12px; margin-bottom: 16px; }}
+            .title {{ font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; }}
+            .meta {{ font-size: 12px; color: #64748b; margin-top: 4px; }}
+            .card {{ background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }}
+            .card-title {{ font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: #475569; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }}
+            .grid-4 {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 6px; }}
+            .grid-5 {{ display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 8px; }}
+            .stat-box {{ background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; }}
+            .val-large {{ font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 2px; }}
+            .val-sub {{ font-size: 11px; color: #64748b; margin-top: 2px; }}
             .text-green {{ color: #16a34a; }}
             .text-red {{ color: #dc2626; }}
-            .playbook-box {{ background: #f8fafc; border-left: 4px solid #6366f1; padding: 14px; border-radius: 4px; font-size: 13px; line-height: 1.5; }}
-            .footer {{ background: #f8fafc; padding: 14px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; }}
+            .btn-link {{ background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: #ffffff !important; text-decoration: none; padding: 13px 26px; border-radius: 8px; font-weight: 800; font-size: 13px; display: inline-block; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35); }}
+            .footer {{ font-size: 11px; color: #94a3b8; text-align: center; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 12px; line-height: 1.5; }}
         </style>
     </head>
     <body>
         <div class="container">
             <div class="header">
-                <div class="title">🌅 Pre-Market Intelligence & Tactical Playbook</div>
-                <div class="meta">{today_display} • 08:50 AM IST Early Surveillance Brief</div>
+                <div class="title">🌅 NIFTY Pre-Market Intelligence Brief</div>
+                <div class="meta">{today_display} • 08:50 AM IST Early Surveillance Radar</div>
             </div>
 
-            <!-- 1. Global Macro Radar -->
+            <!-- 1. Portfolio Opening Status (Pure Equity Basis) -->
             <div class="card">
                 <div class="card-title">
-                    <span>1. Global Macro Risk Radar</span>
-                    <span style="font-size: 11px; color: {bias_color}; background: #f1f5f9; padding: 2px 8px; border-radius: 12px; font-weight: 700;">Bias: {opening_bias}</span>
+                    <span>1. Portfolio Status (Heading into Open)</span>
+                    <span style="font-size: 11px; color: #6d28d9; font-weight: 700;">8 CHAMPIONS (100% EQUITY)</span>
                 </div>
-                <div style="font-size: 13px; color: #475569; margin-bottom: 8px;">{indicative_mood}</div>
-                <div class="grid-4">{macro_cards_html}</div>
+                <div class="grid-4">
+                    <div class="stat-box">
+                        <div class="val-sub">Invested Basis</div>
+                        <div class="val-large">Rs. {invested_cost:,.2f}</div>
+                        <div class="val-sub">8 Stocks Cost</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="val-sub">Current Equity Value</div>
+                        <div class="val-large">Rs. {current_val:,.2f}</div>
+                        <div class="val-sub"><span class="{pnl_class}">{pnl_sign}{pnl_pct:.2f}% Pure Gain</span></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="val-sub">Cash Buffer</div>
+                        <div class="val-large" style="color: #2563eb;">Rs. {cash_buffer:,.2f}</div>
+                        <div class="val-sub">1.8% Liquid Cash</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="val-sub">Account NAV</div>
+                        <div class="val-large" style="color: #7c3aed;">Rs. {account_nav:,.2f}</div>
+                        <div class="val-sub"><span class="{pnl_class}">{pnl_sign}Rs. {net_pnl:,.2f} Overall</span></div>
+                    </div>
+                </div>
             </div>
 
-            <!-- 2. Market Drift & Expected Volatility Surveillance -->
-            <div class="card">
-                <div class="card-title">2. Market Drift & Volatility Surveillance (Read-Only)</div>
-                <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 12px; font-size: 13px;">
-                    • <strong>NIFTY 50 Base Close:</strong> <strong>{last_nifty:,.1f}</strong><br>
-                    • <strong>Surveillance Reference Level (-1.75%):</strong> <strong style="color: #475569;">Rs. {gap_cutoff_nifty:,.1f}</strong> (Distance: {buffer_points} pts)<br>
-                    • <strong>Whipsaw Protection Rule:</strong> Active. As proven by historical walk-forward backtest (53.4% whipsaw rate on morning gaps), morning knee-jerk triggers are strictly decommissioned. Capital remains stable through intraday noise.
-                </div>
-            </div>
-
-            <!-- 3. Company Disclosures & Forensic Sentinel -->
+            <!-- 2. Global Macro Radar -->
             <div class="card">
                 <div class="card-title">
-                    <span>3. Overnight Corporate Sentinel (Signal vs Noise)</span>
+                    <span>2. Global Macro Risk Radar</span>
+                    <span style="font-size: 11px; color: {bias_color}; font-weight: 700;">Bias: {opening_bias}</span>
+                </div>
+                <div style="font-size: 12px; color: #475569; margin-bottom: 4px;">{indicative_mood}</div>
+                <div class="grid-5">{macro_cards_html}</div>
+            </div>
+
+            <!-- 3. Corporate Exchange Filings -->
+            <div class="card">
+                <div class="card-title">
+                    <span>3. Overnight Corporate Radar (Exchange Disclosures)</span>
                     <span style="font-size: 11px;">{corp_status_header}</span>
                 </div>
-                {red_items_html}
-                {amber_items_html}
+                {corp_items_html}
             </div>
 
-            <!-- 4. Daily Execution Strategy (Strict 03:15 PM EOD Milestone) -->
+            <!-- 4. Daily Execution Strategy -->
             <div class="card">
-                <div class="card-title" style="color: #7c3aed;">4. Daily Execution Strategy (Sole Milestone: 03:15 PM IST)</div>
-                <div class="playbook-box">
-                    <strong style="color: #16a34a;">🎯 Active Portfolio Stance (Calm Bull State):</strong><br>
-                    Model maintains <strong>100% equity concentration in the 8 Aggressive Champions</strong> (Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon at 12.5% each). Zero midday churn.<br><br>
-                    <strong style="color: #4338ca;">🛡️ End-of-Day Decision Protocol (03:15 PM IST):</strong><br>
-                    The Hamilton Markov Regime filter and 21.0% Volatility Target will evaluate confirmed closing liquidity at 03:15 PM IST. If a structural transition into Panic Bear is confirmed, defensive rotation and cash preservation execute cleanly at the closing cross.
+                <div class="card-title">4. Tactical Strategy for Today</div>
+                <div style="font-size: 13px; line-height: 1.6; color: #334155;">
+                    • <strong>Opening Execution (09:15 AM IST):</strong> Model maintains <strong>100% equity concentration in the 8 Champions</strong> (Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon). Zero opening turnover friction.<br>
+                    • <strong>Decision Milestone (03:15 PM IST):</strong> Next quantitative evaluation takes place at 03:15 PM IST using the Hamilton Markov Regime filter and 21.0% Volatility Target on confirmed closing liquidity.
                 </div>
             </div>
 
-            <!-- 5. Real-Time Netlify Live Tracker Link -->
-            <div style="text-align: center; margin: 22px 0 12px 0;">
-                <a href="https://nifty-portfolio-tracker.netlify.app/" target="_blank" style="background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: #ffffff; text-decoration: none; padding: 14px 30px; border-radius: 8px; font-weight: 800; font-size: 14px; display: inline-block; box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4); letter-spacing: 0.3px;">
-                    🌐 Open Live Portfolio Dashboard (Real-Time NSE Streaming) &rarr;
+            <!-- Single Clean Direct Netlify Dashboard Link -->
+            <div style="text-align: center; margin: 20px 0 12px 0;">
+                <a href="https://nifty-portfolio-tracker.netlify.app/" target="_blank" class="btn-link">
+                    🌐 Open Live Netlify Dashboard (Dynamic Feed & Live MTM) &rarr;
                 </a>
                 <div style="font-size: 11px; color: #64748b; margin-top: 6px;">
-                    Serverless Live Feed • Auto-polling every 3s • View live MTM valuations & Option B Sector weights
+                    Serverless API Feed • Live Tick-by-Tick Quotes • Zero Stale Cache
                 </div>
             </div>
 
             <div class="footer">
                 Antigravity Quantitative Strategy Engine • Read-Only Pre-Market Intelligence.<br>
-                Next scheduled decision milestone: <strong>03:15 PM IST</strong> (EOD Hamilton Markov Regime Decision).
+                Next decision milestone: <strong>03:15 PM IST</strong> (EOD Hamilton Markov Regime Decision).
             </div>
         </div>
     </body>

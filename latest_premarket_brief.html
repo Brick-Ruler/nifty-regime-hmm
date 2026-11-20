@@ -4,111 +4,132 @@
     <head>
         <meta charset="utf-8">
         <style>
-            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0f172a; margin: 0; padding: 20px; color: #334155; }
-            .container { max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-            .header { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: #ffffff; padding: 24px; text-align: center; border-bottom: 3px solid #6366f1; }
-            .title { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
-            .meta { font-size: 12px; color: #cbd5e1; margin-top: 4px; }
-            .card { padding: 18px 22px; border-bottom: 1px solid #f1f5f9; }
-            .card-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #6366f1; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
-            .grid-4 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0f172a; margin: 0; padding: 20px; color: #1e293b; }
+            .container { max-width: 660px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #cbd5e1; padding: 22px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+            .header { border-bottom: 2px solid #6366f1; padding-bottom: 12px; margin-bottom: 16px; }
+            .title { font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; }
+            .meta { font-size: 12px; color: #64748b; margin-top: 4px; }
+            .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+            .card-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: #475569; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+            .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 6px; }
+            .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 8px; }
+            .stat-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; }
+            .val-large { font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 2px; }
+            .val-sub { font-size: 11px; color: #64748b; margin-top: 2px; }
             .text-green { color: #16a34a; }
             .text-red { color: #dc2626; }
-            .playbook-box { background: #f8fafc; border-left: 4px solid #6366f1; padding: 14px; border-radius: 4px; font-size: 13px; line-height: 1.5; }
-            .footer { background: #f8fafc; padding: 14px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; }
+            .btn-link { background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: #ffffff !important; text-decoration: none; padding: 13px 26px; border-radius: 8px; font-weight: 800; font-size: 13px; display: inline-block; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35); }
+            .footer { font-size: 11px; color: #94a3b8; text-align: center; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 12px; line-height: 1.5; }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="header">
-                <div class="title">🌅 Pre-Market Intelligence & Tactical Playbook</div>
-                <div class="meta">20 Nov 2026 • 08:50 AM IST Early Surveillance Brief</div>
+                <div class="title">🌅 NIFTY Pre-Market Intelligence Brief</div>
+                <div class="meta">21 Nov 2026 • 08:50 AM IST Early Surveillance Radar</div>
             </div>
 
-            <!-- 1. Global Macro Radar -->
+            <!-- 1. Portfolio Opening Status (Pure Equity Basis) -->
             <div class="card">
                 <div class="card-title">
-                    <span>1. Global Macro Risk Radar</span>
-                    <span style="font-size: 11px; color: #dc2626; background: #f1f5f9; padding: 2px 8px; border-radius: 12px; font-weight: 700;">Bias: WEAK / DEFENSIVE</span>
+                    <span>1. Portfolio Status (Heading into Open)</span>
+                    <span style="font-size: 11px; color: #6d28d9; font-weight: 700;">8 CHAMPIONS (100% EQUITY)</span>
                 </div>
-                <div style="font-size: 13px; color: #475569; margin-bottom: 8px;">Global risk-off pressure overnight. Caution advised on high-beta midcaps.</div>
                 <div class="grid-4">
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; text-align: center;">
-            <div style="font-size: 11px; color: #64748b; font-weight: 600;">S&P 500 (US)</div>
-            <div style="font-size: 15px; font-weight: 700; color: #1e293b; margin-top: 3px;">7175.83</div>
-            <div class="text-red" style="font-size: 12px; font-weight: 700;">-2.02%</div>
-        </div>
-        
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; text-align: center;">
-            <div style="font-size: 11px; color: #64748b; font-weight: 600;">Nasdaq 100 (US)</div>
-            <div style="font-size: 15px; font-weight: 700; color: #1e293b; margin-top: 3px;">23879.2</div>
-            <div class="text-red" style="font-size: 12px; font-weight: 700;">-2.25%</div>
-        </div>
-        
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; text-align: center;">
-            <div style="font-size: 11px; color: #64748b; font-weight: 600;">Nikkei 225 (Asia)</div>
-            <div style="font-size: 15px; font-weight: 700; color: #1e293b; margin-top: 3px;">56436.65</div>
-            <div class="text-red" style="font-size: 12px; font-weight: 700;">-5.06%</div>
-        </div>
-        
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; text-align: center;">
-            <div style="font-size: 11px; color: #64748b; font-weight: 600;">Brent Crude</div>
-            <div style="font-size: 15px; font-weight: 700; color: #1e293b; margin-top: 3px;">82.99</div>
-            <div class="text-green" style="font-size: 12px; font-weight: 700;">+0.67%</div>
-        </div>
-        
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; text-align: center;">
-            <div style="font-size: 11px; color: #64748b; font-weight: 600;">US 10-Yr Yield</div>
-            <div style="font-size: 15px; font-weight: 700; color: #1e293b; margin-top: 3px;">5.05</div>
-            <div class="text-red" style="font-size: 12px; font-weight: 700;">-0.28%</div>
-        </div>
-        </div>
-            </div>
-
-            <!-- 2. Market Drift & Expected Volatility Surveillance -->
-            <div class="card">
-                <div class="card-title">2. Market Drift & Volatility Surveillance (Read-Only)</div>
-                <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 12px; font-size: 13px;">
-                    • <strong>NIFTY 50 Base Close:</strong> <strong>25,387.4</strong><br>
-                    • <strong>Surveillance Reference Level (-1.75%):</strong> <strong style="color: #475569;">Rs. 24,943.1</strong> (Distance: 444.3 pts)<br>
-                    • <strong>Whipsaw Protection Rule:</strong> Active. As proven by historical walk-forward backtest (53.4% whipsaw rate on morning gaps), morning knee-jerk triggers are strictly decommissioned. Capital remains stable through intraday noise.
+                    <div class="stat-box">
+                        <div class="val-sub">Invested Basis</div>
+                        <div class="val-large">Rs. 98,220.60</div>
+                        <div class="val-sub">8 Stocks Cost</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="val-sub">Current Equity Value</div>
+                        <div class="val-large">Rs. 99,069.60</div>
+                        <div class="val-sub"><span class="text-green">+0.86% Pure Gain</span></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="val-sub">Cash Buffer</div>
+                        <div class="val-large" style="color: #2563eb;">Rs. 1,779.40</div>
+                        <div class="val-sub">1.8% Liquid Cash</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="val-sub">Account NAV</div>
+                        <div class="val-large" style="color: #7c3aed;">Rs. 100,849.00</div>
+                        <div class="val-sub"><span class="text-green">+Rs. 849.00 Overall</span></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- 3. Company Disclosures & Forensic Sentinel -->
+            <!-- 2. Global Macro Radar -->
             <div class="card">
                 <div class="card-title">
-                    <span>3. Overnight Corporate Sentinel (Signal vs Noise)</span>
-                    <span style="font-size: 11px;"><span style='color: #16a34a; font-weight: 800;'>🟢 Clean (Zero Terminal Governance Flags)</span></span>
+                    <span>2. Global Macro Risk Radar</span>
+                    <span style="font-size: 11px; color: #dc2626; font-weight: 700;">Bias: WEAK / DEFENSIVE</span>
                 </div>
-                <div style='font-size: 13px; color: #475569;'>All 16 portfolio companies vetted clean overnight. Zero statutory auditor resignations, zero SEBI probes, and zero promoter pledge alerts.</div>
-                <div style='font-size: 12px; color: #64748b; margin-top: 8px;'>Everyday noise (ESOP allotments, routine share certificate lost notices) suppressed. Zero material operational headlines.</div>
+                <div style="font-size: 12px; color: #475569; margin-bottom: 4px;">Global risk-off pressure overnight. Caution advised on high-beta midcaps.</div>
+                <div class="grid-5">
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; text-align: center;">
+            <div style="font-size: 11px; color: #64748b; font-weight: 600;">S&P 500 (US)</div>
+            <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-top: 2px;">7018.75</div>
+            <div class="text-red" style="font-size: 11px; font-weight: 700;">-2.19%</div>
+        </div>
+        
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; text-align: center;">
+            <div style="font-size: 11px; color: #64748b; font-weight: 600;">Nasdaq 100 (US)</div>
+            <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-top: 2px;">23025.43</div>
+            <div class="text-red" style="font-size: 11px; font-weight: 700;">-3.58%</div>
+        </div>
+        
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; text-align: center;">
+            <div style="font-size: 11px; color: #64748b; font-weight: 600;">Nikkei 225 (Asia)</div>
+            <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-top: 2px;">56436.65</div>
+            <div class="text-red" style="font-size: 11px; font-weight: 700;">-5.06%</div>
+        </div>
+        
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; text-align: center;">
+            <div style="font-size: 11px; color: #64748b; font-weight: 600;">Brent Crude</div>
+            <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-top: 2px;">82.94</div>
+            <div class="text-green" style="font-size: 11px; font-weight: 700;">+0.61%</div>
+        </div>
+        
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; text-align: center;">
+            <div style="font-size: 11px; color: #64748b; font-weight: 600;">US 10-Yr Yield</div>
+            <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-top: 2px;">4.94</div>
+            <div class="text-red" style="font-size: 11px; font-weight: 700;">-2.22%</div>
+        </div>
+        </div>
             </div>
 
-            <!-- 4. Daily Execution Strategy (Strict 03:15 PM EOD Milestone) -->
+            <!-- 3. Corporate Exchange Filings -->
             <div class="card">
-                <div class="card-title" style="color: #7c3aed;">4. Daily Execution Strategy (Sole Milestone: 03:15 PM IST)</div>
-                <div class="playbook-box">
-                    <strong style="color: #16a34a;">🎯 Active Portfolio Stance (Calm Bull State):</strong><br>
-                    Model maintains <strong>100% equity concentration in the 8 Aggressive Champions</strong> (Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon at 12.5% each). Zero midday churn.<br><br>
-                    <strong style="color: #4338ca;">🛡️ End-of-Day Decision Protocol (03:15 PM IST):</strong><br>
-                    The Hamilton Markov Regime filter and 21.0% Volatility Target will evaluate confirmed closing liquidity at 03:15 PM IST. If a structural transition into Panic Bear is confirmed, defensive rotation and cash preservation execute cleanly at the closing cross.
+                <div class="card-title">
+                    <span>3. Overnight Corporate Radar (Exchange Disclosures)</span>
+                    <span style="font-size: 11px;"><span style='color: #16a34a; font-weight: 800;'>🟢 Clean (Zero Material Disclosures)</span></span>
+                </div>
+                <div style='font-size: 12px; color: #475569; margin-top: 6px;'>All 8 portfolio companies vetted clean overnight across stock exchange filings (Zero statutory auditor resignations, SEBI probes, or promoter pledge alerts).</div><div style='margin-top: 8px; font-size: 12px; color: #334155;'><strong style='color: #d97706;'>Operational Disclosures:</strong><br>• <strong>EIHOTEL.NS:</strong> EIH Limited (NSE:EIHOTEL) Q2 FY27 Webinar Insights: Revenue, EBITDA, and Expansion Plans Unveiled - Kalkine Media<br></div>
+            </div>
+
+            <!-- 4. Daily Execution Strategy -->
+            <div class="card">
+                <div class="card-title">4. Tactical Strategy for Today</div>
+                <div style="font-size: 13px; line-height: 1.6; color: #334155;">
+                    • <strong>Opening Execution (09:15 AM IST):</strong> Model maintains <strong>100% equity concentration in the 8 Champions</strong> (Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon). Zero opening turnover friction.<br>
+                    • <strong>Decision Milestone (03:15 PM IST):</strong> Next quantitative evaluation takes place at 03:15 PM IST using the Hamilton Markov Regime filter and 21.0% Volatility Target on confirmed closing liquidity.
                 </div>
             </div>
 
-            <!-- 5. Real-Time Netlify Live Tracker Link -->
-            <div style="text-align: center; margin: 22px 0 12px 0;">
-                <a href="https://nifty-portfolio-tracker.netlify.app/" target="_blank" style="background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: #ffffff; text-decoration: none; padding: 14px 30px; border-radius: 8px; font-weight: 800; font-size: 14px; display: inline-block; box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4); letter-spacing: 0.3px;">
-                    🌐 Open Live Portfolio Dashboard (Real-Time NSE Streaming) &rarr;
+            <!-- Single Clean Direct Netlify Dashboard Link -->
+            <div style="text-align: center; margin: 20px 0 12px 0;">
+                <a href="https://nifty-portfolio-tracker.netlify.app/" target="_blank" class="btn-link">
+                    🌐 Open Live Netlify Dashboard (Dynamic Feed & Live MTM) &rarr;
                 </a>
                 <div style="font-size: 11px; color: #64748b; margin-top: 6px;">
-                    Serverless Live Feed • Auto-polling every 3s • View live MTM valuations & Option B Sector weights
+                    Serverless API Feed • Live Tick-by-Tick Quotes • Zero Stale Cache
                 </div>
             </div>
 
             <div class="footer">
                 Antigravity Quantitative Strategy Engine • Read-Only Pre-Market Intelligence.<br>
-                Next scheduled decision milestone: <strong>03:15 PM IST</strong> (EOD Hamilton Markov Regime Decision).
+                Next decision milestone: <strong>03:15 PM IST</strong> (EOD Hamilton Markov Regime Decision).
             </div>
         </div>
     </body>

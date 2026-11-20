@@ -740,20 +740,23 @@ def run_eod_agent():
     with open(LEDGER_FILE, 'w', encoding='utf-8') as f:
         json.dump(ledger, f, indent=2)
 
-    # 8. Email HTML Construction
-    active_stock_movers.sort(key=lambda x: x['pnl_pct'], reverse=True)
-    top_gainers = active_stock_movers[:3]
-    top_losers = active_stock_movers[-3:]
+    # 8. Email HTML Construction (Concise, Clean, Institutional Reporting)
+    sorted_by_daily = sorted(active_stock_movers, key=lambda x: x['daily_r'], reverse=True)
+    advances = [s for s in sorted_by_daily if s['daily_r'] > 0]
+    declines = [s for s in sorted_by_daily if s['daily_r'] < 0]
 
-    gap_cutoff_nifty = round(nifty_price * (1.0 - 0.0175), 1)
-    vol_upper_trigger = round(21.0 / max(0.01, (new_eq_w - deadband)), 1)
+    advances_html = "<br>".join([f"• <strong>{s['sym'].replace('.NS','')}:</strong> <span class='text-green'><strong>{s['daily_r']:+4.2f}%</strong></span> (Rs. {s['cmp']:,.1f})" for s in advances]) if advances else "<span style='color: #64748b;'>None</span>"
+    declines_html = "<br>".join([f"• <strong>{s['sym'].replace('.NS','')}:</strong> <span class='text-red'><strong>{s['daily_r']:+4.2f}%</strong></span> (Rs. {s['cmp']:,.1f})" for s in declines]) if declines else "<span style='color: #64748b;'>None (Zero stock declines today)</span>"
 
     foot_pnl_class = "text-green" if net_equity_pnl >= 0 else "text-red"
     foot_sign = "+" if net_equity_pnl >= 0 else ""
+    nifty_class = "text-green" if nifty_ret >= 0 else "text-red"
+    vix_class = "text-red" if vix_ret > 5.0 else ("text-green" if vix_ret < -5.0 else "text-blue")
 
     active_rows_html = ""
-    for item in active_stock_movers:
+    for item in sorted(active_stock_movers, key=lambda x: x['pnl'], reverse=True):
         pnl_class = "text-green" if item['pnl'] >= 0 else "text-red"
+        day_class = "text-green" if item['daily_r'] >= 0 else "text-red"
         sign = "+" if item['pnl'] >= 0 else ""
         active_rows_html += f"""
         <tr>
@@ -768,8 +771,11 @@ def run_eod_agent():
             <td style="text-align: right; font-weight: 700;">Rs. {item['val']:,.2f}</td>
             <td style="text-align: right;" class="{pnl_class}"><strong>{sign}Rs. {item['pnl']:,.2f}</strong></td>
             <td style="text-align: right;" class="{pnl_class}"><strong>{sign}{item['pnl_pct']:.2f}%</strong></td>
+            <td style="text-align: right;" class="{day_class}"><strong>{item['daily_r']:+4.2f}%</strong></td>
         </tr>
         """
+
+    bullets_html = "".join([f"<li style='margin-bottom: 6px;'>{p}</li>" for p in reasoning_points])
 
     email_html = f"""
     <!DOCTYPE html>
@@ -777,220 +783,171 @@ def run_eod_agent():
     <head>
         <meta charset="UTF-8">
         <style>
-            body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; color: #1c1e21; margin: 0; padding: 20px; }}
-            .container {{ max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 10px; border: 1px solid #dcdfe4; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }}
-            .header {{ border-bottom: 2px solid #7c3aed; padding-bottom: 14px; margin-bottom: 20px; }}
-            .title {{ font-size: 21px; font-weight: 700; color: #0f172a; margin: 0; }}
-            .meta {{ font-size: 13px; color: #64748b; margin-top: 5px; }}
-            .card {{ background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 16px; }}
-            .card-title {{ font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; margin-bottom: 8px; }}
-            .badge-purple {{ background: #f3e8ff; color: #7e22ce; border: 1px solid #d8b4fe; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 12px; }}
-            .grid-2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }}
-            .val-large {{ font-size: 20px; font-weight: 800; color: #0f172a; margin-top: 3px; }}
-            .val-sub {{ font-size: 11px; color: #64748b; }}
-            table {{ width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }}
-            th, td {{ padding: 8px 8px; text-align: left; border-bottom: 1px solid #e2e8f0; }}
-            th {{ background: #f1f5f9; color: #475569; font-weight: 600; font-size: 11px; }}
-            .text-green {{ color: #16a34a; font-weight: 600; }}
-            .text-red {{ color: #dc2626; font-weight: 600; }}
-            .reasoning-box {{ background: #faf5ff; border-left: 4px solid #7c3aed; padding: 12px; border-radius: 4px; font-size: 13px; line-height: 1.6; color: #4c1d95; }}
-            .footer {{ font-size: 11px; color: #94a3b8; text-align: center; margin-top: 24px; border-top: 1px solid #e2e8f0; padding-top: 14px; line-height: 1.5; }}
+            body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #0f172a; color: #1e293b; margin: 0; padding: 20px; }}
+            .container {{ max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #cbd5e1; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }}
+            .header {{ border-bottom: 2px solid #6366f1; padding-bottom: 14px; margin-bottom: 18px; }}
+            .title {{ font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; }}
+            .meta {{ font-size: 12px; color: #64748b; margin-top: 4px; }}
+            .card {{ background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }}
+            .card-title {{ font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: #475569; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }}
+            .badge-purple {{ background: #ede9fe; color: #6d28d9; border: 1px solid #ddd6fe; padding: 3px 8px; border-radius: 10px; font-weight: 700; font-size: 11px; }}
+            .grid-4 {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 6px; }}
+            .grid-2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 6px; }}
+            .stat-box {{ background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; }}
+            .val-large {{ font-size: 17px; font-weight: 800; color: #0f172a; margin-top: 2px; }}
+            .val-sub {{ font-size: 11px; color: #64748b; margin-top: 2px; }}
+            table {{ width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }}
+            th, td {{ padding: 7px 6px; text-align: left; border-bottom: 1px solid #e2e8f0; }}
+            th {{ background: #f1f5f9; color: #475569; font-weight: 700; font-size: 11px; }}
+            .text-green {{ color: #16a34a; }}
+            .text-red {{ color: #dc2626; }}
+            .text-blue {{ color: #2563eb; }}
+            ul.reasoning {{ margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.5; color: #334155; }}
+            .btn-link {{ background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: #ffffff !important; text-decoration: none; padding: 13px 26px; border-radius: 8px; font-weight: 800; font-size: 13px; display: inline-block; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35); }}
+            .footer {{ font-size: 11px; color: #94a3b8; text-align: center; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 12px; line-height: 1.5; }}
         </style>
     </head>
     <body>
         <div class="container">
             <div class="header">
-                <div class="title">NIFTY Dynamic Quantitative Portfolio Briefing</div>
-                <div class="meta">8 Champions in Bull / 16 Fortresses in Panic • 08:50 AM Pre-Market Radar & 03:15 PM EOD Hamilton Markov</div>
+                <div class="title">NIFTY Quantitative Portfolio • EOD Report</div>
+                <div class="meta">{today_str} • 03:15 PM IST Daily Milestone • Hamilton Markov Regime Switch</div>
             </div>
 
-            <!-- 1. System Brain & Regime Card -->
+            <!-- 1. Pure Equity Performance Audit -->
             <div class="card">
-                <div class="card-title">1. Quantitative Rationale & Regime Brain</div>
-                <div style="margin-bottom: 10px;">
-                    Active Mode: <span class="badge-purple">{new_regime} (8 CONCENTRATED STOCKS)</span>
-                    <span style="font-size: 12px; color: #64748b; margin-left: 8px;">
-                        P(Calm Bull): <strong style="color: #16a34a;">{p_calm:.1f}%</strong> | 
-                        P(Panic Bear): <strong style="color: #dc2626;">{p_panic:.1f}%</strong> | 
-                        Barrier: <strong>65.0% Panic</strong>
-                    </span>
+                <div class="card-title">
+                    <span>1. Pure Equity Performance (Cash Buffer Segregated)</span>
+                    <span class="badge-purple">{new_regime}</span>
                 </div>
-                <div class="reasoning-box">{"<br>• ".join(["• " + p for p in reasoning_points])}</div>
-            </div>
-
-            <!-- 2. Pure Equity Performance Audit (Cash Buffer Segregated) -->
-            <div class="card">
-                <div class="card-title">2. Pure Equity Performance Audit (Excluding Cash Buffer)</div>
-                <div class="grid-2">
-                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
-                        <div class="val-sub">Current Invested Equities</div>
+                <div class="grid-4">
+                    <div class="stat-box">
+                        <div class="val-sub">Invested Equity Basis</div>
+                        <div class="val-large">Rs. {total_invested_cost:,.2f}</div>
+                        <div class="val-sub">8 Champions Cost</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="val-sub">Current Equity Value</div>
                         <div class="val-large">Rs. {total_equity_value:,.2f}</div>
-                        <div class="val-sub"><span class="{foot_pnl_class}">{foot_sign}Rs. {net_equity_pnl:,.2f} ({foot_sign}{equity_return_pct:.2f}%)</span> vs Rs. {total_invested_cost:,.2f} Cost</div>
+                        <div class="val-sub"><span class="{foot_pnl_class}">{foot_sign}{equity_return_pct:.2f}% Pure Gain</span></div>
                     </div>
-                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
-                        <div class="val-sub">Net Equity Profit / Loss</div>
-                        <div class="val-large {foot_pnl_class}">{foot_sign}Rs. {net_equity_pnl:,.2f}</div>
-                        <div class="val-sub"><span class="{foot_pnl_class}">{foot_sign}{equity_return_pct:.2f}% Return</span> on Deployed Equities</div>
-                    </div>
-                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
-                        <div class="val-sub">Unallocated Cash Buffer</div>
+                    <div class="stat-box">
+                        <div class="val-sub">Unallocated Cash</div>
                         <div class="val-large" style="color: #2563eb;">Rs. {cash_buffer:,.2f}</div>
-                        <div class="val-sub">1.8% Liquid Cash • Zero Market Risk</div>
+                        <div class="val-sub">1.8% Reserve Buffer</div>
                     </div>
-                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
-                        <div class="val-sub">Total Account Value (NAV)</div>
+                    <div class="stat-box">
+                        <div class="val-sub">Total Account NAV</div>
                         <div class="val-large" style="color: #7c3aed;">Rs. {total_account_nav:,.2f}</div>
-                        <div class="val-sub">Equities (Rs. {round(total_equity_value):,}) + Cash (Rs. {round(cash_buffer):,})</div>
+                        <div class="val-sub"><span class="{foot_pnl_class}">{foot_sign}Rs. {net_equity_pnl:,.2f} Overall</span></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. Active Portfolio Holdings Table -->
+            <!-- 2. Today's Market & Session Movers -->
             <div class="card">
-                <div class="card-title">3. Active Stock Holdings Breakdown (100% Equity)</div>
+                <div class="card-title">2. Today's Session Action (1-Day Intraday Delta)</div>
+                <div class="grid-2" style="margin-bottom: 8px;">
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 10px;">
+                        <span style="font-size: 11px; color: #64748b;">NIFTY 50 Benchmark:</span><br>
+                        <strong>Rs. {nifty_price:,.2f}</strong> <span class="{nifty_class}"><strong>({nifty_ret:+4.2f}%)</strong></span>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 10px;">
+                        <span style="font-size: 11px; color: #64748b;">India VIX:</span><br>
+                        <strong>{vix_price:.2f}</strong> <span class="{vix_class}"><strong>({vix_ret:+4.2f}%)</strong></span>
+                    </div>
+                </div>
+                <div class="grid-2" style="font-size: 12px; margin-top: 8px;">
+                    <div>
+                        <strong style="color: #16a34a;">Advances Today ({len(advances)}):</strong><br>
+                        <div style="margin-top: 4px; line-height: 1.5;">{advances_html}</div>
+                    </div>
+                    <div>
+                        <strong style="color: #dc2626;">Declines Today ({len(declines)}):</strong><br>
+                        <div style="margin-top: 4px; line-height: 1.5;">{declines_html}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Active Holdings Table -->
+            <div class="card">
+                <div class="card-title">3. Active Stock Holdings Breakdown</div>
                 <table>
                     <thead>
                         <tr>
                             <th>Holding</th>
                             <th style="text-align: right;">Shares</th>
                             <th style="text-align: right;">Buy Price</th>
-                            <th style="text-align: right;">Live CMP</th>
-                            <th style="text-align: right;">Invested Cost</th>
-                            <th style="text-align: right;">Current Value</th>
+                            <th style="text-align: right;">CMP</th>
+                            <th style="text-align: right;">Cost Basis</th>
+                            <th style="text-align: right;">Current Val</th>
                             <th style="text-align: right;">Net P&L</th>
-                            <th style="text-align: right;">Return %</th>
+                            <th style="text-align: right;">Total %</th>
+                            <th style="text-align: right;">1-Day %</th>
                         </tr>
                     </thead>
                     <tbody>{active_rows_html}</tbody>
                     <tfoot>
                         <tr style="font-weight: 800; background: #e2e8f0; border-top: 2px solid #cbd5e1;">
-                            <td colspan="4">TOTAL INVESTED EQUITIES (Pure Stock Movement)</td>
+                            <td colspan="4">TOTAL INVESTED EQUITIES</td>
                             <td style="text-align: right;">Rs. {total_invested_cost:,.2f}</td>
                             <td style="text-align: right;">Rs. {total_equity_value:,.2f}</td>
                             <td style="text-align: right;" class="{foot_pnl_class}">{foot_sign}Rs. {net_equity_pnl:,.2f}</td>
                             <td style="text-align: right;" class="{foot_pnl_class}">{foot_sign}{equity_return_pct:.2f}%</td>
+                            <td style="text-align: right; color: #475569;">—</td>
                         </tr>
                         <tr style="font-weight: 600; background: #f8fafc;">
-                            <td colspan="4">Liquid Cash Buffer Reserve (Unallocated)</td>
+                            <td colspan="4">Liquid Cash Reserve (Unallocated)</td>
                             <td style="text-align: right;">Rs. {cash_buffer:,.2f}</td>
                             <td style="text-align: right;">Rs. {cash_buffer:,.2f}</td>
                             <td style="text-align: right; color: #64748b;">Rs. 0.00</td>
                             <td style="text-align: right; color: #64748b;">0.00%</td>
+                            <td style="text-align: right; color: #64748b;">0.00%</td>
                         </tr>
                         <tr style="font-weight: 800; font-size: 13px; border-top: 2px solid #cbd5e1; background: #f1f5f9;">
-                            <td colspan="4">TOTAL ACCOUNT NET ASSET VALUE (NAV)</td>
+                            <td colspan="4">TOTAL PORTFOLIO NAV</td>
                             <td style="text-align: right;">Rs. 100,000.00</td>
                             <td style="text-align: right;">Rs. {total_account_nav:,.2f}</td>
                             <td style="text-align: right;" class="{foot_pnl_class}">{foot_sign}Rs. {net_equity_pnl:,.2f}</td>
                             <td style="text-align: right;" class="{foot_pnl_class}">{foot_sign}{account_return_pct:.2f}%</td>
+                            <td style="text-align: right; color: #475569;">—</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
 
-            <!-- Prominent Live Netlify Dashboard Button -->
-            <div style="text-align: center; margin: 24px 0 16px 0;">
-                <a href="https://nifty-portfolio-tracker.netlify.app/" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: #ffffff; text-decoration: none; padding: 13px 28px; border-radius: 8px; font-weight: 700; font-size: 14px; display: inline-block; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);">
-                    📊 OPEN LIVE NETLIFY DASHBOARD (INSTANT REFRESH) &rarr;
-                </a>
-                <div style="font-size: 11px; color: #64748b; margin-top: 6px;">Live Quantitative Feed • Tap to open and view real-time tick-by-tick updates.</div>
-            </div>
+            <!-- 4. Quantitative Model Rationale -->
             <div class="card">
-                <div class="card-title">4. Today's Factor Movers (Session P&L)</div>
-                <div class="grid-2" style="font-size: 12px;">
-                    <div><strong class="text-green">Top Performers Today:</strong><br>{"<br>".join([f"• {g['name']}: <span class='text-green'>{g['pnl_pct']:+4.2f}%</span> (Rs.{g['cmp']:,.1f})" for g in top_gainers])}</div>
-                    <div><strong class="text-red">Laggards Today:</strong><br>{"<br>".join([f"• {l['name']}: <span class='text-red'>{l['pnl_pct']:+4.2f}%</span> (Rs.{l['cmp']:,.1f})" for l in top_losers])}</div>
+                <div class="card-title">
+                    <span>4. Quantitative Rationale & Model State</span>
+                    <span style="font-size: 11px; color: #64748b;">P(Calm): <strong style="color: #16a34a;">{p_calm:.1f}%</strong> | P(Panic): <strong style="color: #dc2626;">{p_panic:.1f}%</strong> (Barrier: 65%)</span>
+                </div>
+                <ul class="reasoning">
+                    {bullets_html}
+                </ul>
+            </div>
+
+            <!-- Single Clean Direct Netlify Dashboard Link -->
+            <div style="text-align: center; margin: 20px 0 12px 0;">
+                <a href="https://nifty-portfolio-tracker.netlify.app/" target="_blank" class="btn-link">
+                    🌐 Open Live Netlify Dashboard (Dynamic Feed & Live MTM) &rarr;
+                </a>
+                <div style="font-size: 11px; color: #64748b; margin-top: 6px;">
+                    Serverless API Feed • Live Tick-by-Tick Quotes • Zero Stale Cache
                 </div>
             </div>
-            <div class="card">
-                <div class="card-title" style="color: #7c3aed;">5. Forward-Looking Action Roadmap (What Happens If Conditions Change)</div>
-                <div style="font-size: 12px; color: #475569; margin-bottom: 10px;">
-                    Your autonomous model continuously monitors 3 quantitative tripwires. Here are the exact prospective actions it will execute:
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 28%;">Scenario / Trigger Condition</th>
-                            <th style="width: 38%;">Model's Prospective Action</th>
-                            <th style="width: 34%;">Target Portfolio Reallocation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <strong style="color: #6366f1;">🌅 Morning Surveillance (08:50 AM)</strong><br>
-                                Global cues, indicative drift, and overnight corporate filings
-                            </td>
-                            <td>
-                                <strong>Read-Only Intelligence Radar:</strong> Evaluates global macro mood and scans all 16 portfolio holdings for regulatory and corporate exchange filings.
-                            </td>
-                            <td>
-                                <strong>Zero Morning Churn:</strong> Confirms capital remains 100% steady. Avoids the 53.4% whipsaw rate discovered on morning intraday noise.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong style="color: #d97706;">⚠️ Macro Regime Flip</strong><br>
-                                EOD Markov P(Panic) &gt; <strong>65.0%</strong> (currently {p_panic:.1f}%)
-                            </td>
-                            <td>
-                                <strong>03:15 PM EOD Style Expansion:</strong> HMM signals confirmed bear turbulence. Expands into the 8 Defensive Fortresses at 6.25% each.
-                            </td>
-                            <td>
-                                <strong>16 Stocks Total:</strong> Holds 8 Champions + 8 Fortresses (Colpal, Glaxo, Marico, Torrent Pharma, Kansai Nerolac, MGL, Coromandel, Petronet).
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong style="color: #2563eb;">📉 Volatility Spike</strong><br>
-                                20-Day Realized Vol climbs &gt; <strong>{vol_upper_trigger:.1f}%</strong> (exceeding 15% deadband from {realized_vol_20d:.1f}%)
-                            </td>
-                            <td>
-                                <strong>Vol Target Cash Buffer:</strong> Automatically trims equity exposure to maintain 18.0% risk budget.
-                            </td>
-                            <td>
-                                <strong>Trims to ~85% Equity / ~15% Liquid Cash:</strong> Excess capital parked in Liquid BeES earning 6.50% p.a.
-                            </td>
-                        </tr>
-                        <tr style="background: #f0fdf4;">
-                            <td>
-                                <strong style="color: #16a34a;">🟢 Calm Bull Persistence</strong><br>
-                                Gap &gt; -1.5%, P(Panic) &le; 65%, Vol &le; {vol_upper_trigger:.1f}%
-                            </td>
-                            <td>
-                                <strong>Hold 8 Champions (100% Equity):</strong> Dual hysteresis & deadband suppress churn. Zero friction incurred.
-                            </td>
-                            <td>
-                                <strong>Concentrated in 8 Champions (12.5% each):</strong> Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon.
-                            </td>
-                        </tr>
-                        <tr style="background: #faf5ff;">
-                            <td>
-                                <strong style="color: #7c3aed;">🔄 Quarterly Universe Scan</strong><br>
-                                Semi-Annual Sector Reconstitution (126 sessions)
-                            </td>
-                            <td>
-                                <strong>Dynamic Bench Evaluation:</strong> Re-ranks 40-stock universe by Momentum/ROCE/Beta and checks 200-day EMA.
-                            </td>
-                            <td>
-                                <strong>Eviction & Promotion:</strong> Displaces any stock ranked &gt; #12 or below 200 EMA with the top sector bench candidate.
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+
+            <div class="footer">
+                Antigravity Quantitative Strategy Engine • Hamilton 1989 EOD Regime Switch.<br>
+                Next surveillance brief scheduled tomorrow at <strong>08:50 AM IST</strong>.
             </div>
-            <div style="text-align: center; margin: 24px 0 16px 0;">
-                <a href="https://nifty-portfolio-tracker.netlify.app/" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: #ffffff; text-decoration: none; padding: 13px 28px; border-radius: 8px; font-weight: 700; font-size: 14px; display: inline-block; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);">
-                    📊 Open Live Portfolio Tracker (Instant Refresh) &rarr;
-                </a>
-                <div style="font-size: 11px; color: #64748b; margin-top: 6px;">Netlify Cloud Serverless Feed • Tap 'Refresh Now' anytime from your phone or PC.</div>
-            </div>
-            <div class="footer">Automated by Antigravity Quantitative Regime Engine (Hamilton 1989 EOD Regime Switch).<br>Next pre-market intelligence brief scheduled tomorrow at 08:50 AM IST.</div>
         </div>
     </body>
     </html>
     """
-    with open(BRIEF_HTML_FILE, 'w', encoding='utf-8') as f:
+
+    email_file = BRIEF_HTML_FILE
+    with open(email_file, 'w', encoding='utf-8') as f:
         f.write(email_html)
 
     # 9. Send Email

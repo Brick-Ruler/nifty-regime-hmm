@@ -4,147 +4,110 @@
     <head>
         <meta charset="UTF-8">
         <style>
-            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; color: #1c1e21; margin: 0; padding: 20px; }
-            .container { max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 10px; border: 1px solid #dcdfe4; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-            .header { border-bottom: 2px solid #7c3aed; padding-bottom: 14px; margin-bottom: 20px; }
-            .title { font-size: 21px; font-weight: 700; color: #0f172a; margin: 0; }
-            .meta { font-size: 13px; color: #64748b; margin-top: 5px; }
-            .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
-            .card-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; margin-bottom: 8px; }
-            .badge-purple { background: #f3e8ff; color: #7e22ce; border: 1px solid #d8b4fe; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 12px; }
-            .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
-            .val-large { font-size: 20px; font-weight: 800; color: #0f172a; margin-top: 3px; }
-            .val-sub { font-size: 11px; color: #64748b; }
-            table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
-            th, td { padding: 8px 8px; text-align: left; border-bottom: 1px solid #e2e8f0; }
-            th { background: #f1f5f9; color: #475569; font-weight: 600; font-size: 11px; }
-            .text-green { color: #16a34a; font-weight: 600; }
-            .text-red { color: #dc2626; font-weight: 600; }
-            .reasoning-box { background: #faf5ff; border-left: 4px solid #7c3aed; padding: 12px; border-radius: 4px; font-size: 13px; line-height: 1.6; color: #4c1d95; }
-            .footer { font-size: 11px; color: #94a3b8; text-align: center; margin-top: 24px; border-top: 1px solid #e2e8f0; padding-top: 14px; line-height: 1.5; }
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #0f172a; color: #1e293b; margin: 0; padding: 20px; }
+            .container { max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #cbd5e1; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+            .header { border-bottom: 2px solid #6366f1; padding-bottom: 14px; margin-bottom: 18px; }
+            .title { font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; }
+            .meta { font-size: 12px; color: #64748b; margin-top: 4px; }
+            .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+            .card-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: #475569; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+            .badge-purple { background: #ede9fe; color: #6d28d9; border: 1px solid #ddd6fe; padding: 3px 8px; border-radius: 10px; font-weight: 700; font-size: 11px; }
+            .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 6px; }
+            .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 6px; }
+            .stat-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; }
+            .val-large { font-size: 17px; font-weight: 800; color: #0f172a; margin-top: 2px; }
+            .val-sub { font-size: 11px; color: #64748b; margin-top: 2px; }
+            table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+            th, td { padding: 7px 6px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+            th { background: #f1f5f9; color: #475569; font-weight: 700; font-size: 11px; }
+            .text-green { color: #16a34a; }
+            .text-red { color: #dc2626; }
+            .text-blue { color: #2563eb; }
+            ul.reasoning { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.5; color: #334155; }
+            .btn-link { background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: #ffffff !important; text-decoration: none; padding: 13px 26px; border-radius: 8px; font-weight: 800; font-size: 13px; display: inline-block; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35); }
+            .footer { font-size: 11px; color: #94a3b8; text-align: center; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 12px; line-height: 1.5; }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="header">
-                <div class="title">NIFTY Dynamic Quantitative Portfolio Briefing</div>
-                <div class="meta">8 Champions in Bull / 16 Fortresses in Panic • 08:50 AM Pre-Market Radar & 03:15 PM EOD Hamilton Markov</div>
+                <div class="title">NIFTY Quantitative Portfolio • EOD Report</div>
+                <div class="meta">2026-11-21 • 03:15 PM IST Daily Milestone • Hamilton Markov Regime Switch</div>
             </div>
 
-            <!-- 1. System Brain & Regime Card -->
+            <!-- 1. Pure Equity Performance Audit -->
             <div class="card">
-                <div class="card-title">1. Quantitative Rationale & Regime Brain</div>
-                <div style="margin-bottom: 10px;">
-                    Active Mode: <span class="badge-purple">AGGRESSIVE GROWTH (8 CONCENTRATED STOCKS)</span>
-                    <span style="font-size: 12px; color: #64748b; margin-left: 8px;">
-                        P(Calm Bull): <strong style="color: #16a34a;">89.9%</strong> | 
-                        P(Panic Bear): <strong style="color: #dc2626;">10.1%</strong> | 
-                        Barrier: <strong>65.0% Panic</strong>
-                    </span>
+                <div class="card-title">
+                    <span>1. Pure Equity Performance (Cash Buffer Segregated)</span>
+                    <span class="badge-purple">AGGRESSIVE GROWTH</span>
                 </div>
-                <div class="reasoning-box">• <strong>Market Mood is Calm Bull:</strong> India VIX closed calm at <strong>17.26 (+7.14%)</strong>, well below the 18.0 threshold. NIFTY 50 registered daily drift of <strong>+1.06%</strong>.<br>• • <strong>Quantitative Probability:</strong> Hamilton Forward Filter calculated <strong>P(Panic) = 10.1%</strong> vs <strong>P(Calm) = 89.9%</strong>.<br>• • <strong>Volatility Target (18.0%):</strong> 20-Day Portfolio Realized Volatility is <strong>19.3%</strong>. Gross Allocation: <strong>100.0% Equity / 0.0% Liquid Cash (Yielding 6.5% p.a.)</strong>. Deadband filter (15%) suppressed friction trade today.<br>• • <strong>Concentration Strategy Active (8 Champions):</strong> Equity capital is concentrated across the 8 Aggressive Champions to capture maximum bull-market alpha.<br>• • <strong>Action Decision: HOLD CONCENTRATED POSITIONS:</strong> Dual hysteresis & deadband filters kept portfolio steady. Zero friction incurred today.</div>
-            </div>
-
-            <!-- 2. Pure Equity Performance Audit (Cash Buffer Segregated) -->
-            <div class="card">
-                <div class="card-title">2. Pure Equity Performance Audit (Excluding Cash Buffer)</div>
-                <div class="grid-2">
-                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
-                        <div class="val-sub">Current Invested Equities</div>
-                        <div class="val-large">Rs. 101,555.10</div>
-                        <div class="val-sub"><span class="text-green">+Rs. 3,334.50 (+3.39%)</span> vs Rs. 98,220.60 Cost</div>
+                <div class="grid-4">
+                    <div class="stat-box">
+                        <div class="val-sub">Invested Equity Basis</div>
+                        <div class="val-large">Rs. 98,220.60</div>
+                        <div class="val-sub">8 Champions Cost</div>
                     </div>
-                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
-                        <div class="val-sub">Net Equity Profit / Loss</div>
-                        <div class="val-large text-green">+Rs. 3,334.50</div>
-                        <div class="val-sub"><span class="text-green">+3.39% Return</span> on Deployed Equities</div>
+                    <div class="stat-box">
+                        <div class="val-sub">Current Equity Value</div>
+                        <div class="val-large">Rs. 99,069.60</div>
+                        <div class="val-sub"><span class="text-green">+0.86% Pure Gain</span></div>
                     </div>
-                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
-                        <div class="val-sub">Unallocated Cash Buffer</div>
+                    <div class="stat-box">
+                        <div class="val-sub">Unallocated Cash</div>
                         <div class="val-large" style="color: #2563eb;">Rs. 1,779.40</div>
-                        <div class="val-sub">1.8% Liquid Cash • Zero Market Risk</div>
+                        <div class="val-sub">1.8% Reserve Buffer</div>
                     </div>
-                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px;">
-                        <div class="val-sub">Total Account Value (NAV)</div>
-                        <div class="val-large" style="color: #7c3aed;">Rs. 103,334.50</div>
-                        <div class="val-sub">Equities (Rs. 101,555) + Cash (Rs. 1,779)</div>
+                    <div class="stat-box">
+                        <div class="val-sub">Total Account NAV</div>
+                        <div class="val-large" style="color: #7c3aed;">Rs. 100,849.00</div>
+                        <div class="val-sub"><span class="text-green">+Rs. 849.00 Overall</span></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. Active Portfolio Holdings Table -->
+            <!-- 2. Today's Market & Session Movers -->
             <div class="card">
-                <div class="card-title">3. Active Stock Holdings Breakdown (100% Equity)</div>
+                <div class="card-title">2. Today's Session Action (1-Day Intraday Delta)</div>
+                <div class="grid-2" style="margin-bottom: 8px;">
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 10px;">
+                        <span style="font-size: 11px; color: #64748b;">NIFTY 50 Benchmark:</span><br>
+                        <strong>Rs. 25,514.30</strong> <span class="text-green"><strong>(+1.14%)</strong></span>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 10px;">
+                        <span style="font-size: 11px; color: #64748b;">India VIX:</span><br>
+                        <strong>16.11</strong> <span class="text-blue"><strong>(+3.47%)</strong></span>
+                    </div>
+                </div>
+                <div class="grid-2" style="font-size: 12px; margin-top: 8px;">
+                    <div>
+                        <strong style="color: #16a34a;">Advances Today (5):</strong><br>
+                        <div style="margin-top: 4px; line-height: 1.5;">• <strong>DIXON:</strong> <span class='text-green'><strong>+3.48%</strong></span> (Rs. 13,054.0)<br>• <strong>BALKRISIND:</strong> <span class='text-green'><strong>+1.79%</strong></span> (Rs. 2,327.3)<br>• <strong>INDHOTEL:</strong> <span class='text-green'><strong>+1.67%</strong></span> (Rs. 889.7)<br>• <strong>FEDERALBNK:</strong> <span class='text-green'><strong>+1.15%</strong></span> (Rs. 364.5)<br>• <strong>PERSISTENT:</strong> <span class='text-green'><strong>+0.39%</strong></span> (Rs. 5,880.0)</div>
+                    </div>
+                    <div>
+                        <strong style="color: #dc2626;">Declines Today (2):</strong><br>
+                        <div style="margin-top: 4px; line-height: 1.5;">• <strong>COFORGE:</strong> <span class='text-red'><strong>-0.39%</strong></span> (Rs. 2,041.0)<br>• <strong>EIHOTEL:</strong> <span class='text-red'><strong>-1.10%</strong></span> (Rs. 310.0)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Active Holdings Table -->
+            <div class="card">
+                <div class="card-title">3. Active Stock Holdings Breakdown</div>
                 <table>
                     <thead>
                         <tr>
                             <th>Holding</th>
                             <th style="text-align: right;">Shares</th>
                             <th style="text-align: right;">Buy Price</th>
-                            <th style="text-align: right;">Live CMP</th>
-                            <th style="text-align: right;">Invested Cost</th>
-                            <th style="text-align: right;">Current Value</th>
+                            <th style="text-align: right;">CMP</th>
+                            <th style="text-align: right;">Cost Basis</th>
+                            <th style="text-align: right;">Current Val</th>
                             <th style="text-align: right;">Net P&L</th>
-                            <th style="text-align: right;">Return %</th>
+                            <th style="text-align: right;">Total %</th>
+                            <th style="text-align: right;">1-Day %</th>
                         </tr>
                     </thead>
                     <tbody>
-        <tr>
-            <td>
-                <strong>EIHOTEL</strong><br>
-                <span style="font-size: 11px; color: #64748b;">EIH Ltd (Oberoi)</span>
-            </td>
-            <td style="text-align: right;"><strong>40</strong></td>
-            <td style="text-align: right; color: #64748b;">Rs. 313.45</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 334.10</td>
-            <td style="text-align: right; color: #64748b;">Rs. 12,538.00</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 13,364.00</td>
-            <td style="text-align: right;" class="text-green"><strong>+Rs. 826.00</strong></td>
-            <td style="text-align: right;" class="text-green"><strong>+6.59%</strong></td>
-        </tr>
-        
-        <tr>
-            <td>
-                <strong>INDHOTEL</strong><br>
-                <span style="font-size: 11px; color: #64748b;">Indian Hotels (Tata)</span>
-            </td>
-            <td style="text-align: right;"><strong>14</strong></td>
-            <td style="text-align: right; color: #64748b;">Rs. 875.05</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 911.55</td>
-            <td style="text-align: right; color: #64748b;">Rs. 12,250.70</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 12,761.70</td>
-            <td style="text-align: right;" class="text-green"><strong>+Rs. 511.00</strong></td>
-            <td style="text-align: right;" class="text-green"><strong>+4.17%</strong></td>
-        </tr>
-        
-        <tr>
-            <td>
-                <strong>PERSISTENT</strong><br>
-                <span style="font-size: 11px; color: #64748b;">Persistent Systems</span>
-            </td>
-            <td style="text-align: right;"><strong>2</strong></td>
-            <td style="text-align: right; color: #64748b;">Rs. 5,857.00</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 6,089.50</td>
-            <td style="text-align: right; color: #64748b;">Rs. 11,714.00</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 12,179.00</td>
-            <td style="text-align: right;" class="text-green"><strong>+Rs. 465.00</strong></td>
-            <td style="text-align: right;" class="text-green"><strong>+3.97%</strong></td>
-        </tr>
-        
-        <tr>
-            <td>
-                <strong>FEDERALBNK</strong><br>
-                <span style="font-size: 11px; color: #64748b;">Federal Bank</span>
-            </td>
-            <td style="text-align: right;"><strong>34</strong></td>
-            <td style="text-align: right; color: #64748b;">Rs. 360.35</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 373.45</td>
-            <td style="text-align: right; color: #64748b;">Rs. 12,251.90</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 12,697.30</td>
-            <td style="text-align: right;" class="text-green"><strong>+Rs. 445.40</strong></td>
-            <td style="text-align: right;" class="text-green"><strong>+3.64%</strong></td>
-        </tr>
-        
         <tr>
             <td>
                 <strong>DIXON</strong><br>
@@ -152,11 +115,12 @@
             </td>
             <td style="text-align: right;"><strong>1</strong></td>
             <td style="text-align: right; color: #64748b;">Rs. 12,615.00</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 13,060.00</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 13,054.00</td>
             <td style="text-align: right; color: #64748b;">Rs. 12,615.00</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 13,060.00</td>
-            <td style="text-align: right;" class="text-green"><strong>+Rs. 445.00</strong></td>
-            <td style="text-align: right;" class="text-green"><strong>+3.53%</strong></td>
+            <td style="text-align: right; font-weight: 700;">Rs. 13,054.00</td>
+            <td style="text-align: right;" class="text-green"><strong>+Rs. 439.00</strong></td>
+            <td style="text-align: right;" class="text-green"><strong>+3.48%</strong></td>
+            <td style="text-align: right;" class="text-green"><strong>+3.48%</strong></td>
         </tr>
         
         <tr>
@@ -166,25 +130,57 @@
             </td>
             <td style="text-align: right;"><strong>5</strong></td>
             <td style="text-align: right; color: #64748b;">Rs. 2,286.40</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 2,365.50</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 2,327.30</td>
             <td style="text-align: right; color: #64748b;">Rs. 11,432.00</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 11,827.50</td>
-            <td style="text-align: right;" class="text-green"><strong>+Rs. 395.50</strong></td>
-            <td style="text-align: right;" class="text-green"><strong>+3.46%</strong></td>
+            <td style="text-align: right; font-weight: 700;">Rs. 11,636.50</td>
+            <td style="text-align: right;" class="text-green"><strong>+Rs. 204.50</strong></td>
+            <td style="text-align: right;" class="text-green"><strong>+1.79%</strong></td>
+            <td style="text-align: right;" class="text-green"><strong>+1.79%</strong></td>
         </tr>
         
         <tr>
             <td>
-                <strong>COFORGE</strong><br>
-                <span style="font-size: 11px; color: #64748b;">Coforge Ltd</span>
+                <strong>INDHOTEL</strong><br>
+                <span style="font-size: 11px; color: #64748b;">Indian Hotels (Tata)</span>
             </td>
-            <td style="text-align: right;"><strong>6</strong></td>
-            <td style="text-align: right; color: #64748b;">Rs. 2,049.00</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 2,090.10</td>
-            <td style="text-align: right; color: #64748b;">Rs. 12,294.00</td>
-            <td style="text-align: right; font-weight: 700;">Rs. 12,540.60</td>
-            <td style="text-align: right;" class="text-green"><strong>+Rs. 246.60</strong></td>
-            <td style="text-align: right;" class="text-green"><strong>+2.01%</strong></td>
+            <td style="text-align: right;"><strong>14</strong></td>
+            <td style="text-align: right; color: #64748b;">Rs. 875.05</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 889.65</td>
+            <td style="text-align: right; color: #64748b;">Rs. 12,250.70</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 12,455.10</td>
+            <td style="text-align: right;" class="text-green"><strong>+Rs. 204.40</strong></td>
+            <td style="text-align: right;" class="text-green"><strong>+1.67%</strong></td>
+            <td style="text-align: right;" class="text-green"><strong>+1.67%</strong></td>
+        </tr>
+        
+        <tr>
+            <td>
+                <strong>FEDERALBNK</strong><br>
+                <span style="font-size: 11px; color: #64748b;">Federal Bank</span>
+            </td>
+            <td style="text-align: right;"><strong>34</strong></td>
+            <td style="text-align: right; color: #64748b;">Rs. 360.35</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 364.50</td>
+            <td style="text-align: right; color: #64748b;">Rs. 12,251.90</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 12,393.00</td>
+            <td style="text-align: right;" class="text-green"><strong>+Rs. 141.10</strong></td>
+            <td style="text-align: right;" class="text-green"><strong>+1.15%</strong></td>
+            <td style="text-align: right;" class="text-green"><strong>+1.15%</strong></td>
+        </tr>
+        
+        <tr>
+            <td>
+                <strong>PERSISTENT</strong><br>
+                <span style="font-size: 11px; color: #64748b;">Persistent Systems</span>
+            </td>
+            <td style="text-align: right;"><strong>2</strong></td>
+            <td style="text-align: right; color: #64748b;">Rs. 5,857.00</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 5,880.00</td>
+            <td style="text-align: right; color: #64748b;">Rs. 11,714.00</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 11,760.00</td>
+            <td style="text-align: right;" class="text-green"><strong>+Rs. 46.00</strong></td>
+            <td style="text-align: right;" class="text-green"><strong>+0.39%</strong></td>
+            <td style="text-align: right;" class="text-green"><strong>+0.39%</strong></td>
         </tr>
         
         <tr>
@@ -199,132 +195,93 @@
             <td style="text-align: right; font-weight: 700;">Rs. 13,125.00</td>
             <td style="text-align: right;" class="text-green"><strong>+Rs. 0.00</strong></td>
             <td style="text-align: right;" class="text-green"><strong>+0.00%</strong></td>
+            <td style="text-align: right;" class="text-green"><strong>+0.00%</strong></td>
+        </tr>
+        
+        <tr>
+            <td>
+                <strong>COFORGE</strong><br>
+                <span style="font-size: 11px; color: #64748b;">Coforge Ltd</span>
+            </td>
+            <td style="text-align: right;"><strong>6</strong></td>
+            <td style="text-align: right; color: #64748b;">Rs. 2,049.00</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 2,041.00</td>
+            <td style="text-align: right; color: #64748b;">Rs. 12,294.00</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 12,246.00</td>
+            <td style="text-align: right;" class="text-red"><strong>Rs. -48.00</strong></td>
+            <td style="text-align: right;" class="text-red"><strong>-0.39%</strong></td>
+            <td style="text-align: right;" class="text-red"><strong>-0.39%</strong></td>
+        </tr>
+        
+        <tr>
+            <td>
+                <strong>EIHOTEL</strong><br>
+                <span style="font-size: 11px; color: #64748b;">EIH Ltd (Oberoi)</span>
+            </td>
+            <td style="text-align: right;"><strong>40</strong></td>
+            <td style="text-align: right; color: #64748b;">Rs. 313.45</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 310.00</td>
+            <td style="text-align: right; color: #64748b;">Rs. 12,538.00</td>
+            <td style="text-align: right; font-weight: 700;">Rs. 12,400.00</td>
+            <td style="text-align: right;" class="text-red"><strong>Rs. -138.00</strong></td>
+            <td style="text-align: right;" class="text-red"><strong>-1.10%</strong></td>
+            <td style="text-align: right;" class="text-red"><strong>-1.10%</strong></td>
         </tr>
         </tbody>
                     <tfoot>
                         <tr style="font-weight: 800; background: #e2e8f0; border-top: 2px solid #cbd5e1;">
-                            <td colspan="4">TOTAL INVESTED EQUITIES (Pure Stock Movement)</td>
+                            <td colspan="4">TOTAL INVESTED EQUITIES</td>
                             <td style="text-align: right;">Rs. 98,220.60</td>
-                            <td style="text-align: right;">Rs. 101,555.10</td>
-                            <td style="text-align: right;" class="text-green">+Rs. 3,334.50</td>
-                            <td style="text-align: right;" class="text-green">+3.39%</td>
+                            <td style="text-align: right;">Rs. 99,069.60</td>
+                            <td style="text-align: right;" class="text-green">+Rs. 849.00</td>
+                            <td style="text-align: right;" class="text-green">+0.86%</td>
+                            <td style="text-align: right; color: #475569;">—</td>
                         </tr>
                         <tr style="font-weight: 600; background: #f8fafc;">
-                            <td colspan="4">Liquid Cash Buffer Reserve (Unallocated)</td>
+                            <td colspan="4">Liquid Cash Reserve (Unallocated)</td>
                             <td style="text-align: right;">Rs. 1,779.40</td>
                             <td style="text-align: right;">Rs. 1,779.40</td>
                             <td style="text-align: right; color: #64748b;">Rs. 0.00</td>
                             <td style="text-align: right; color: #64748b;">0.00%</td>
+                            <td style="text-align: right; color: #64748b;">0.00%</td>
                         </tr>
                         <tr style="font-weight: 800; font-size: 13px; border-top: 2px solid #cbd5e1; background: #f1f5f9;">
-                            <td colspan="4">TOTAL ACCOUNT NET ASSET VALUE (NAV)</td>
+                            <td colspan="4">TOTAL PORTFOLIO NAV</td>
                             <td style="text-align: right;">Rs. 100,000.00</td>
-                            <td style="text-align: right;">Rs. 103,334.50</td>
-                            <td style="text-align: right;" class="text-green">+Rs. 3,334.50</td>
-                            <td style="text-align: right;" class="text-green">+3.33%</td>
+                            <td style="text-align: right;">Rs. 100,849.00</td>
+                            <td style="text-align: right;" class="text-green">+Rs. 849.00</td>
+                            <td style="text-align: right;" class="text-green">+0.85%</td>
+                            <td style="text-align: right; color: #475569;">—</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
 
-            <!-- Prominent Live Netlify Dashboard Button -->
-            <div style="text-align: center; margin: 24px 0 16px 0;">
-                <a href="https://nifty-portfolio-tracker.netlify.app/" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: #ffffff; text-decoration: none; padding: 13px 28px; border-radius: 8px; font-weight: 700; font-size: 14px; display: inline-block; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);">
-                    📊 OPEN LIVE NETLIFY DASHBOARD (INSTANT REFRESH) &rarr;
-                </a>
-                <div style="font-size: 11px; color: #64748b; margin-top: 6px;">Live Quantitative Feed • Tap to open and view real-time tick-by-tick updates.</div>
-            </div>
+            <!-- 4. Quantitative Model Rationale -->
             <div class="card">
-                <div class="card-title">4. Today's Factor Movers (Session P&L)</div>
-                <div class="grid-2" style="font-size: 12px;">
-                    <div><strong class="text-green">Top Performers Today:</strong><br>• EIH Ltd (Oberoi): <span class='text-green'>+6.59%</span> (Rs.334.1)<br>• Indian Hotels (Tata): <span class='text-green'>+4.17%</span> (Rs.911.5)<br>• Persistent Systems: <span class='text-green'>+3.97%</span> (Rs.6,089.5)</div>
-                    <div><strong class="text-red">Laggards Today:</strong><br>• Balkrishna Ind (BKT): <span class='text-red'>+3.46%</span> (Rs.2,365.5)<br>• Coforge Ltd: <span class='text-red'>+2.01%</span> (Rs.2,090.1)<br>• Cholamandalam Inv: <span class='text-red'>+0.00%</span> (Rs.1,875.0)</div>
+                <div class="card-title">
+                    <span>4. Quantitative Rationale & Model State</span>
+                    <span style="font-size: 11px; color: #64748b;">P(Calm): <strong style="color: #16a34a;">88.4%</strong> | P(Panic): <strong style="color: #dc2626;">11.6%</strong> (Barrier: 65%)</span>
+                </div>
+                <ul class="reasoning">
+                    <li style='margin-bottom: 6px;'><strong>Market Mood is Calm Bull:</strong> India VIX closed calm at <strong>16.11 (+3.47%)</strong>, well below the 18.0 threshold. NIFTY 50 registered daily drift of <strong>+1.14%</strong>.</li><li style='margin-bottom: 6px;'><strong>Quantitative Probability:</strong> Hamilton Forward Filter calculated <strong>P(Panic) = 11.6%</strong> vs <strong>P(Calm) = 88.4%</strong>.</li><li style='margin-bottom: 6px;'><strong>Volatility Target (18.0%):</strong> 20-Day Portfolio Realized Volatility is <strong>19.3%</strong>. Gross Allocation: <strong>100.0% Equity / 0.0% Liquid Cash (Yielding 6.5% p.a.)</strong>. Deadband filter (15%) suppressed friction trade today.</li><li style='margin-bottom: 6px;'><strong>Concentration Strategy Active (8 Champions):</strong> Equity capital is concentrated across the 8 Aggressive Champions to capture maximum bull-market alpha.</li><li style='margin-bottom: 6px;'><strong>Action Decision: HOLD CONCENTRATED POSITIONS:</strong> Dual hysteresis & deadband filters kept portfolio steady. Zero friction incurred today.</li>
+                </ul>
+            </div>
+
+            <!-- Single Clean Direct Netlify Dashboard Link -->
+            <div style="text-align: center; margin: 20px 0 12px 0;">
+                <a href="https://nifty-portfolio-tracker.netlify.app/" target="_blank" class="btn-link">
+                    🌐 Open Live Netlify Dashboard (Dynamic Feed & Live MTM) &rarr;
+                </a>
+                <div style="font-size: 11px; color: #64748b; margin-top: 6px;">
+                    Serverless API Feed • Live Tick-by-Tick Quotes • Zero Stale Cache
                 </div>
             </div>
-            <div class="card">
-                <div class="card-title" style="color: #7c3aed;">5. Forward-Looking Action Roadmap (What Happens If Conditions Change)</div>
-                <div style="font-size: 12px; color: #475569; margin-bottom: 10px;">
-                    Your autonomous model continuously monitors 3 quantitative tripwires. Here are the exact prospective actions it will execute:
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 28%;">Scenario / Trigger Condition</th>
-                            <th style="width: 38%;">Model's Prospective Action</th>
-                            <th style="width: 34%;">Target Portfolio Reallocation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <strong style="color: #6366f1;">🌅 Morning Surveillance (08:50 AM)</strong><br>
-                                Global cues, indicative drift, and overnight corporate filings
-                            </td>
-                            <td>
-                                <strong>Read-Only Intelligence Radar:</strong> Evaluates global macro mood and scans all 16 portfolio holdings for regulatory and corporate exchange filings.
-                            </td>
-                            <td>
-                                <strong>Zero Morning Churn:</strong> Confirms capital remains 100% steady. Avoids the 53.4% whipsaw rate discovered on morning intraday noise.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong style="color: #d97706;">⚠️ Macro Regime Flip</strong><br>
-                                EOD Markov P(Panic) &gt; <strong>65.0%</strong> (currently 10.1%)
-                            </td>
-                            <td>
-                                <strong>03:15 PM EOD Style Expansion:</strong> HMM signals confirmed bear turbulence. Expands into the 8 Defensive Fortresses at 6.25% each.
-                            </td>
-                            <td>
-                                <strong>16 Stocks Total:</strong> Holds 8 Champions + 8 Fortresses (Colpal, Glaxo, Marico, Torrent Pharma, Kansai Nerolac, MGL, Coromandel, Petronet).
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong style="color: #2563eb;">📉 Volatility Spike</strong><br>
-                                20-Day Realized Vol climbs &gt; <strong>24.7%</strong> (exceeding 15% deadband from 19.3%)
-                            </td>
-                            <td>
-                                <strong>Vol Target Cash Buffer:</strong> Automatically trims equity exposure to maintain 18.0% risk budget.
-                            </td>
-                            <td>
-                                <strong>Trims to ~85% Equity / ~15% Liquid Cash:</strong> Excess capital parked in Liquid BeES earning 6.50% p.a.
-                            </td>
-                        </tr>
-                        <tr style="background: #f0fdf4;">
-                            <td>
-                                <strong style="color: #16a34a;">🟢 Calm Bull Persistence</strong><br>
-                                Gap &gt; -1.5%, P(Panic) &le; 65%, Vol &le; 24.7%
-                            </td>
-                            <td>
-                                <strong>Hold 8 Champions (100% Equity):</strong> Dual hysteresis & deadband suppress churn. Zero friction incurred.
-                            </td>
-                            <td>
-                                <strong>Concentrated in 8 Champions (12.5% each):</strong> Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon.
-                            </td>
-                        </tr>
-                        <tr style="background: #faf5ff;">
-                            <td>
-                                <strong style="color: #7c3aed;">🔄 Quarterly Universe Scan</strong><br>
-                                Semi-Annual Sector Reconstitution (126 sessions)
-                            </td>
-                            <td>
-                                <strong>Dynamic Bench Evaluation:</strong> Re-ranks 40-stock universe by Momentum/ROCE/Beta and checks 200-day EMA.
-                            </td>
-                            <td>
-                                <strong>Eviction & Promotion:</strong> Displaces any stock ranked &gt; #12 or below 200 EMA with the top sector bench candidate.
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+
+            <div class="footer">
+                Antigravity Quantitative Strategy Engine • Hamilton 1989 EOD Regime Switch.<br>
+                Next surveillance brief scheduled tomorrow at <strong>08:50 AM IST</strong>.
             </div>
-            <div style="text-align: center; margin: 24px 0 16px 0;">
-                <a href="https://nifty-portfolio-tracker.netlify.app/" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: #ffffff; text-decoration: none; padding: 13px 28px; border-radius: 8px; font-weight: 700; font-size: 14px; display: inline-block; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);">
-                    📊 Open Live Portfolio Tracker (Instant Refresh) &rarr;
-                </a>
-                <div style="font-size: 11px; color: #64748b; margin-top: 6px;">Netlify Cloud Serverless Feed • Tap 'Refresh Now' anytime from your phone or PC.</div>
-            </div>
-            <div class="footer">Automated by Antigravity Quantitative Regime Engine (Hamilton 1989 EOD Regime Switch).<br>Next pre-market intelligence brief scheduled tomorrow at 08:50 AM IST.</div>
         </div>
     </body>
     </html>

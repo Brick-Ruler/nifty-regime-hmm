@@ -559,7 +559,7 @@
             'PETRONET.NS': { cmp: 340.5, prev_close: 343.0, change_pct: -0.73 }
         };
 
-        const CASH_BUFFER = 1779.40;
+        let CASH_BUFFER = 1779.40;
         const INITIAL_ACCOUNT_CAPITAL = 100000.0;
         let lastQuotesTimestamp = "2026-11-19 12:44:27";
 
@@ -703,10 +703,12 @@
             try {
                 const [qResp, lResp] = await Promise.all([
                     fetch(`/api/quotes?_t=${Date.now()}`, { cache: 'no-store' }),
-                    fetch(`/portfolio_ledger.json?_t=${Date.now()}`, { cache: 'no-store' })
+                    fetch(`/api/ledger?_t=${Date.now()}`, { cache: 'no-store' })
+                        .catch(() => fetch(`https://raw.githubusercontent.com/Brick-Ruler/nifty-regime-hmm/main/portfolio_ledger.json?_t=${Date.now()}`, { cache: 'no-store' }))
+                        .catch(() => fetch(`/portfolio_ledger.json?_t=${Date.now()}`, { cache: 'no-store' }))
                 ]);
-                if (qResp.ok) quoteData = await qResp.json();
-                if (lResp.ok) ledgerData = await lResp.json();
+                if (qResp && qResp.ok) quoteData = await qResp.json();
+                if (lResp && lResp.ok) ledgerData = await lResp.json();
             } catch (e) {
                 console.warn('Network sync notice:', e);
             }
@@ -716,13 +718,25 @@
                 if (quoteData.timestamp) lastQuotesTimestamp = quoteData.timestamp;
             }
 
-            if (ledgerData && ledgerData.regime_intel) {
-                const r = ledgerData.regime_intel;
-                document.getElementById('val-p-calm').innerText = `${r.p_calm.toFixed(1)}%`;
-                document.getElementById('val-p-panic').innerText = `${r.p_panic.toFixed(1)}%`;
-                document.getElementById('bar-p-calm').style.width = `${r.p_calm}%`;
-                if (r.model_thinking) {
-                    document.getElementById('brain-insight-text').innerHTML = `💡 <strong>Model Assessment:</strong> ${r.model_thinking}`;
+            if (ledgerData) {
+                if (ledgerData.cash_buffer != null) CASH_BUFFER = ledgerData.cash_buffer;
+                if (ledgerData.regime_intel) {
+                    const r = ledgerData.regime_intel;
+                    document.getElementById('val-p-calm').innerText = `${r.p_calm.toFixed(1)}%`;
+                    document.getElementById('val-p-panic').innerText = `${r.p_panic.toFixed(1)}%`;
+                    document.getElementById('bar-p-calm').style.width = `${r.p_calm}%`;
+                    if (r.model_thinking) {
+                        document.getElementById('brain-insight-text').innerHTML = `💡 <strong>Model Assessment:</strong> ${r.model_thinking}`;
+                    }
+                }
+                if (ledgerData.holdings) {
+                    PORTFOLIO_MASTER.forEach(stock => {
+                        const h = ledgerData.holdings[stock.ns];
+                        if (h) {
+                            if (h.shares != null) stock.shares = h.shares;
+                            if (h.buy_price != null) stock.baseCost = h.buy_price;
+                        }
+                    });
                 }
             }
 
