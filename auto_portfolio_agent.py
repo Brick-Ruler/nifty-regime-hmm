@@ -52,9 +52,10 @@ sys.stderr = _logger
 
 from daily_portfolio_advisor import AGG_STOCKS, DEF_STOCKS, fetch_latest_quote
 try:
-    from update_live_quotes import update_live_quotes
+    from update_live_quotes import update_live_quotes, process_pending_cash_deployment
 except Exception:
     update_live_quotes = None
+    process_pending_cash_deployment = None
 
 LEDGER_FILE = os.path.join(BASE_DIR, "portfolio_ledger.json")
 BRIEF_HTML_FILE = os.path.join(BASE_DIR, "latest_email_brief.html")
@@ -610,6 +611,14 @@ def run_eod_agent():
         )
 
     # 5. Mark to Market (Pure Equity Accounting Convention)
+    if process_pending_cash_deployment:
+        try:
+            if process_pending_cash_deployment(LEDGER_FILE):
+                with open(LEDGER_FILE, 'r', encoding='utf-8') as f:
+                    ledger = json.load(f)
+        except Exception as e:
+            print(f"[WARN] Pending cash sweep notice: {e}")
+
     total_equity_value = 0.0
     total_invested_cost = 0.0
     active_stock_movers = []

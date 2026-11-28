@@ -347,7 +347,7 @@ def run_premarket_sentinel():
                 <div class="card-title">4. Tactical Strategy for Today</div>
                 <div style="font-size: 13px; line-height: 1.6; color: #334155;">
                     • <strong>Weekend / Overnight Risk Flag (Alert-Only):</strong> <code>{ledger.get('weekend_sentinel', {}).get('risk_flag', 'NOMINAL')}</code><br>
-                    • <strong>Opening Execution (09:15 AM IST):</strong> Zero automated morning trading (whipsaw protection active). Read-only surveillance only.<br>
+                    • <strong>Opening Execution (09:15 AM IST):</strong> {'Queued Cash Deployment: <strong>1 × INDHOTEL + 2 × FEDERALBNK</strong> at Monday open.' if ledger.get('pending_cash_deployment', {}).get('status') == 'PENDING_NEXT_OPEN' else 'Zero automated morning trading (whipsaw protection active). Read-only surveillance only.'}<br>
                     • <strong>Decision Milestone (03:15 PM IST):</strong> Single unified Hamilton Markov Regime evaluation and 21.0% Volatility Target on confirmed closing liquidity.
                 </div>
             </div>
