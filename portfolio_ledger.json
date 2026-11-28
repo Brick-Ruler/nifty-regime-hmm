@@ -340,5 +340,45 @@
   "current_equity_value": 100562.0,
   "equity_pnl": 2341.4,
   "equity_pnl_pct": 2.38,
-  "total_account_nav": 102341.4
+  "total_account_nav": 102341.4,
+  "weekend_sentinel": {
+    "timestamp": "2026-11-28 16:31:16 IST",
+    "risk_flag": "ELEVATED_CAUTION",
+    "action_directive": "MONITOR_MONDAY_OPEN",
+    "reasons": [
+      "Crude Oil elevated at +3.63%"
+    ],
+    "macro_snapshot": {
+      "S&P 500 Futures": {
+        "symbol": "ES=F",
+        "price": 7308.25,
+        "chg_pct": 0.74
+      },
+      "Nasdaq 100 Futures": {
+        "symbol": "NQ=F",
+        "price": 26765.0,
+        "chg_pct": -0.16
+      },
+      "Crude Oil (WTI/Macro)": {
+        "symbol": "CL=F",
+        "price": 83.08,
+        "chg_pct": 3.63
+      },
+      "US CBOE VIX": {
+        "symbol": "^VIX",
+        "price": 23.81,
+        "chg_pct": -10.56
+      },
+      "Gold (Safe Haven)": {
+        "symbol": "GC=F",
+        "price": 3668.5,
+        "chg_pct": 0.47
+      },
+      "USD / INR": {
+        "symbol": "INR=X",
+        "price": 92.99,
+        "chg_pct": 0.34
+      }
+    }
+  }
 }

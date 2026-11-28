@@ -346,8 +346,9 @@ def run_premarket_sentinel():
             <div class="card">
                 <div class="card-title">4. Tactical Strategy for Today</div>
                 <div style="font-size: 13px; line-height: 1.6; color: #334155;">
-                    • <strong>Opening Execution (09:15 AM IST):</strong> Model maintains <strong>100% equity concentration in the 8 Champions</strong> (Persistent, Coforge, Cholamandalam, Federal Bank, Indian Hotels, EIH, Balkrishna Ind, Dixon). Zero opening turnover friction.<br>
-                    • <strong>Decision Milestone (03:15 PM IST):</strong> Next quantitative evaluation takes place at 03:15 PM IST using the Hamilton Markov Regime filter and 21.0% Volatility Target on confirmed closing liquidity.
+                    • <strong>Weekend / Overnight Risk Flag:</strong> <code>{ledger.get('weekend_sentinel', {}).get('risk_flag', 'NOMINAL')}</code> ({ledger.get('weekend_sentinel', {}).get('action_directive', 'HOLD_CALM_BULL')})<br>
+                    • <strong>Opening Shield (09:20 AM IST):</strong> Silent Black-Swan-Only Circuit Breaker armed (triggers defense only if NIFTY gaps &le; -2.0%, or &le; -1.25% under a Sunday <code>CRITICAL_BLACK_SWAN</code> flag).<br>
+                    • <strong>Decision Milestone (03:15 PM IST):</strong> Primary Hamilton Markov Regime evaluation and 21.0% Volatility Target on confirmed closing liquidity.
                 </div>
             </div>
 

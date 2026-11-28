@@ -1,0 +1,59 @@
+name: NIFTY Morning Black-Swan Circuit Breaker
+
+on:
+  schedule:
+    # 03:50 UTC Mon-Fri is 09:20 AM IST (5 mins after NSE open)
+    - cron: '50 3 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force execution outside morning window'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  morning-black-swan-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Execute Black-Swan Morning Circuit Breaker
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        run: |
+          echo "=========================================================="
+          echo "GitHub Actions Cloud Execution - Morning Black-Swan Shield (09:20 AM IST)"
+          echo "Timestamp: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          echo "=========================================================="
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            python auto_portfolio_agent.py --morning-check --force
+          else
+            python auto_portfolio_agent.py --morning-check
+          fi
+
+      - name: Commit & Push If Emergency Triggered
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add portfolio_ledger.json emergency_gap_alert.html 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "Normal open — no emergency ledger changes."
+          else
+            git commit -m "Emergency morning Black-Swan defense: $(date -u +'%Y-%m-%d %H:%M UTC') [skip ci]"
+            git push
+          fi

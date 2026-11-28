@@ -231,12 +231,24 @@ def run_morning_circuit_breaker():
     print(f"-> NIFTY 50 Opening Gap: {nifty_gap:+5.2f}% (Open: {nifty_open:,.1f} | Prev Close: {nifty_prev_close:,.1f})")
     print(f"-> India VIX:            {vix_open:5.2f} (Gap: {vix_gap:+5.2f}%)")
 
-    # 2. Check Calibrated Optimal Threshold: Gap <= -1.75% OR (Gap <= -1.25% AND VIX >= 20.0)
-    emergency_triggered = (nifty_gap <= -1.75) or (nifty_gap <= -1.25 and vix_open >= 20.0 and vix_gap >= 15.0)
+    # 2. Check Strict Black-Swan-Only Threshold (Zero Whipsaw on Routine Dips)
+    # Also consumes Sunday Night Macro Sentinel pre-flagging!
+    weekend_flag = ledger.get('weekend_sentinel', {}).get('risk_flag', 'NOMINAL')
+    print(f"-> Weekend Sentinel Flag: {weekend_flag}")
+
+    if ledger.get('active_regime', '').startswith('DEFENSIVE'):
+        print("Status: Portfolio already in DEFENSIVE QUALITY protection. Morning breaker not required.")
+        return
+
+    emergency_triggered = (
+        (nifty_gap <= -2.0)
+        or (nifty_gap <= -1.50 and vix_open >= 20.0)
+        or (weekend_flag == "CRITICAL_BLACK_SWAN" and nifty_gap <= -1.25)
+    )
 
     if not emergency_triggered:
-        print(f"Status: Market open within normal tolerance (Gap: {nifty_gap:+4.2f}%).")
-        print("Dispatching Morning Market Briefing to user email...")
+        print(f"Status: Market open within Black-Swan tolerance (Gap: {nifty_gap:+4.2f}%, Flag: {weekend_flag}). Zero opening churn; holding steady until 3:15 PM EOD.")
+        return
 
         active_rows_html = ""
         for sym in ledger.get('holdings', {}):
@@ -999,7 +1011,6 @@ def run_eod_agent():
 
 if __name__ == "__main__":
     if "--morning-check" in sys.argv:
-        print("[DECOMMISSIONED] Morning execution breaker eliminated to prevent whipsaw friction. The system executes solely at 03:15 PM EOD.")
-        sys.exit(0)
+        run_morning_circuit_breaker()
     else:
         run_eod_agent()
