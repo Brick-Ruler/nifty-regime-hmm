@@ -1011,6 +1011,7 @@ def run_eod_agent():
 
 if __name__ == "__main__":
     if "--morning-check" in sys.argv:
-        run_morning_circuit_breaker()
+        print("[DECOMMISSIONED - PATH A] Morning trading breaker eliminated to prevent whipsaw friction. Execution occurs solely at 03:15 PM EOD.")
+        sys.exit(0)
     else:
         run_eod_agent()

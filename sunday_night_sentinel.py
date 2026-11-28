@@ -235,9 +235,9 @@ def run_sunday_sentinel():
     </div>
 
     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-bottom:16px;font-size:12px;color:#334155;">
-      <strong>Monday Morning Execution Protocol:</strong><br>
-      • <strong>08:50 AM IST:</strong> Pre-Market Sentinel reads this weekend flag alongside live Asian cues.<br>
-      • <strong>09:20 AM IST:</strong> Black-Swan Morning Breaker triggers instant defensive protection <em>only</em> if NIFTY opens &le; -2.0% (or &le; -1.25% when weekend shock is flagged).<br>
+      <strong>Monday Execution Protocol (Path A — Pure EOD HMM):</strong><br>
+      • <strong>08:50 AM IST:</strong> Read-only Pre-Market Radar surfaces this weekend flag alongside live Asian cues &amp; corporate filings.<br>
+      • <strong>03:15 PM IST:</strong> Single unified Hamilton Markov Regime evaluation executes on confirmed closing liquidity (zero morning whipsaw churn).<br>
       • <strong>Current Portfolio NAV:</strong> Rs. {nav:,.2f} (Pure Equity P&amp;L: {eq_pnl:+,.2f} / {eq_pnl_pct:+.2f}%)
     </div>
 
