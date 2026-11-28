@@ -2,7 +2,7 @@
 // Runs server-side in Node.js runtime (Zero CORS issues!)
 
 const SYMBOLS = [
-  '^NSEI', '^INDIAVIX',
+  '^NSEI', '^INDIAVIX', 'MID150BEES.NS',
   // 8 Aggressive Champions (Option B Top-5 Sector Rotation)
   'PERSISTENT.NS', 'COFORGE.NS', 'CHOLAFIN.NS', 'FEDERALBNK.NS',
   'INDHOTEL.NS', 'EIHOTEL.NS', 'BALKRISIND.NS', 'DIXON.NS',
@@ -59,6 +59,7 @@ export default async (req, context) => {
     if (!r.data) continue;
     if (r.symbol === '^NSEI') quotes.nifty = r.data;
     else if (r.symbol === '^INDIAVIX') quotes.vix = r.data;
+    else if (r.symbol === 'MID150BEES.NS') quotes.midcap150 = r.data;
     else quotes.stocks[r.symbol] = r.data;
   }
 

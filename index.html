@@ -442,6 +442,60 @@
             </div>
         </div>
 
+        <!-- 2b. Dual-Benchmark & Quantitative Evaluation Scorecard -->
+        <div class="card-panel">
+            <div class="card-panel-header">
+                <div class="card-panel-title">
+                    <span>📐</span> Portfolio Evaluation & Dual-Benchmark Alpha Audit
+                </div>
+                <span id="eval-sample-badge" style="font-size: 11px; color: var(--blue); font-weight: 700;">Live Since 18 Nov 2026</span>
+            </div>
+
+            <div class="metric-grid" style="margin-bottom: 14px;">
+                <div class="metric-card" style="background: rgba(30, 41, 59, 0.45);">
+                    <div class="metric-title">Alpha vs. Nifty Midcap 150 (Style)</div>
+                    <div class="metric-val mono" id="eval-alpha-midcap" style="font-size: 20px;">+0.00%</div>
+                    <div class="metric-sub" id="eval-midcap-sub">Portfolio vs MID150BEES</div>
+                </div>
+                <div class="metric-card" style="background: rgba(30, 41, 59, 0.45);">
+                    <div class="metric-title">Alpha vs. NIFTY 50 (Broad)</div>
+                    <div class="metric-val mono" id="eval-alpha-nifty" style="font-size: 20px;">+0.00%</div>
+                    <div class="metric-sub" id="eval-nifty-sub">Portfolio vs ^NSEI</div>
+                </div>
+                <div class="metric-card" style="background: rgba(30, 41, 59, 0.45);">
+                    <div class="metric-title">Live Drawdown / Peak</div>
+                    <div class="metric-val mono" id="eval-mdd" style="font-size: 20px; color: var(--text-primary);">0.00%</div>
+                    <div class="metric-sub" id="eval-mdd-sub">Current DD &bull; Peak ₹1,00,000</div>
+                </div>
+                <div class="metric-card" style="background: rgba(30, 41, 59, 0.45);">
+                    <div class="metric-title">Live Win Rate &amp; 20D Vol</div>
+                    <div class="metric-val mono" id="eval-winrate" style="font-size: 20px; color: var(--text-primary);">--%</div>
+                    <div class="metric-sub" id="eval-vol-sub">20D Realized Vol: 19.3%</div>
+                </div>
+            </div>
+
+            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+                    <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-secondary);">
+                        Risk-Adjusted Ratios (Sharpe &bull; Sortino &bull; Beta &bull; Treynor &bull; Jensen's &alpha;)
+                    </span>
+                    <span id="ratios-status-pill" class="mono" style="font-size: 11px; color: var(--blue);">Calibrating (8 / 30 sessions)</span>
+                </div>
+                <div id="ratios-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; text-align: center;">
+                    <div><div style="font-size: 10px; color: var(--text-muted);">SHARPE RATIO</div><div class="mono" id="ratio-sharpe" style="font-size: 14px; font-weight: 700; margin-top: 2px;">Warming up</div></div>
+                    <div><div style="font-size: 10px; color: var(--text-muted);">SORTINO RATIO</div><div class="mono" id="ratio-sortino" style="font-size: 14px; font-weight: 700; margin-top: 2px;">Warming up</div></div>
+                    <div><div style="font-size: 10px; color: var(--text-muted);">BETA (vs Midcap)</div><div class="mono" id="ratio-beta" style="font-size: 14px; font-weight: 700; margin-top: 2px;">Warming up</div></div>
+                    <div><div style="font-size: 10px; color: var(--text-muted);">TREYNOR RATIO</div><div class="mono" id="ratio-treynor" style="font-size: 14px; font-weight: 700; margin-top: 2px;">Warming up</div></div>
+                    <div><div style="font-size: 10px; color: var(--text-muted);">JENSEN'S ALPHA</div><div class="mono" id="ratio-jensen" style="font-size: 14px; font-weight: 700; margin-top: 2px;">Warming up</div></div>
+                </div>
+            </div>
+
+            <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                <span>📊 <strong>6.76-Yr Backtest Baseline (2019–2026):</strong> CAGR <strong style="color: var(--green);">34.6%</strong> &bull; Sharpe <strong>1.44</strong> &bull; Sortino <strong>2.01</strong> &bull; Calmar <strong>1.29</strong> &bull; Max DD <strong>-25.4%</strong></span>
+                <span>Risk-Free Rate: <strong>6.5% p.a.</strong> (Liquid BeES)</span>
+            </div>
+        </div>
+
         <!-- 3. Active Portfolio Holdings (8 Aggressive Champions) -->
         <div class="card-panel">
             <div class="card-panel-header">
@@ -743,8 +797,127 @@
             document.getElementById('last-sync-time').innerText = lastQuotesTimestamp;
             renderTable();
             renderDefensives();
+            renderEvaluationMetrics(ledgerData, quoteData);
 
             if (statusEl) statusEl.innerText = "● LIVE NSE FEED";
+        }
+
+        function renderEvaluationMetrics(ledgerData, quoteData) {
+            // Compute current live NAV
+            let curEquity = 0;
+            PORTFOLIO_MASTER.forEach(stock => {
+                const q = liveQuotesCache[stock.ns] || { cmp: stock.baseCost };
+                curEquity += stock.shares * q.cmp;
+            });
+            const curNAV = curEquity + CASH_BUFFER;
+            const portRetPct = ((curNAV - INITIAL_ACCOUNT_CAPITAL) / INITIAL_ACCOUNT_CAPITAL) * 100.0;
+
+            const initNifty = (ledgerData && ledgerData.initial_nifty_close) ? ledgerData.initial_nifty_close : 25387.4;
+            const initMidcap = (ledgerData && ledgerData.initial_midcap150_close) ? ledgerData.initial_midcap150_close : 231.87;
+            const hist = (ledgerData && Array.isArray(ledgerData.history)) ? ledgerData.history : [];
+
+            const liveNifty = (quoteData && quoteData.nifty && quoteData.nifty.cmp) ? quoteData.nifty.cmp
+                : (ledgerData && ledgerData.regime_intel && ledgerData.regime_intel.nifty_cmp) ? ledgerData.regime_intel.nifty_cmp
+                : (hist.length ? hist[hist.length - 1].nifty_close : initNifty);
+
+            const liveMidcap = (quoteData && quoteData.midcap150 && quoteData.midcap150.cmp) ? quoteData.midcap150.cmp
+                : (ledgerData && ledgerData.regime_intel && ledgerData.regime_intel.midcap_cmp) ? ledgerData.regime_intel.midcap_cmp
+                : (hist.length && hist[hist.length - 1].midcap_close ? hist[hist.length - 1].midcap_close : initMidcap);
+
+            const niftyRetPct = ((liveNifty - initNifty) / initNifty) * 100.0;
+            const midcapRetPct = ((liveMidcap - initMidcap) / initMidcap) * 100.0;
+            const alphaNifty = portRetPct - niftyRetPct;
+            const alphaMidcap = portRetPct - midcapRetPct;
+
+            const fmtSignPct = (v) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`;
+
+            const elAMid = document.getElementById('eval-alpha-midcap');
+            elAMid.innerText = fmtSignPct(alphaMidcap);
+            elAMid.style.color = alphaMidcap >= 0 ? 'var(--green)' : 'var(--red)';
+            document.getElementById('eval-midcap-sub').innerText = `Port ${fmtSignPct(portRetPct)} vs Midcap ${fmtSignPct(midcapRetPct)}`;
+
+            const elANif = document.getElementById('eval-alpha-nifty');
+            elANif.innerText = fmtSignPct(alphaNifty);
+            elANif.style.color = alphaNifty >= 0 ? 'var(--green)' : 'var(--red)';
+            document.getElementById('eval-nifty-sub').innerText = `Port ${fmtSignPct(portRetPct)} vs NIFTY ${fmtSignPct(niftyRetPct)}`;
+
+            // Drawdown & Win Rate from history + live NAV
+            let peak = INITIAL_ACCOUNT_CAPITAL;
+            let maxDD = 0;
+            let wins = 0;
+            const pRets = [];
+            const mRets = [];
+
+            for (let i = 0; i < hist.length; i++) {
+                const v = hist[i].value;
+                if (v > peak) peak = v;
+                const dd = ((v - peak) / peak) * 100.0;
+                if (dd < maxDD) maxDD = dd;
+                if (i > 0) {
+                    const rp = (hist[i].value - hist[i - 1].value) / hist[i - 1].value;
+                    pRets.push(rp);
+                    if (rp >= 0) wins++;
+                    if (hist[i].midcap_close && hist[i - 1].midcap_close) {
+                        mRets.push((hist[i].midcap_close - hist[i - 1].midcap_close) / hist[i - 1].midcap_close);
+                    }
+                }
+            }
+            if (curNAV > peak) peak = curNAV;
+            const curDD = ((curNAV - peak) / peak) * 100.0;
+            if (curDD < maxDD) maxDD = curDD;
+
+            document.getElementById('eval-mdd').innerText = `${maxDD.toFixed(2)}%`;
+            document.getElementById('eval-mdd').style.color = maxDD < -5 ? 'var(--red)' : 'var(--text-primary)';
+            document.getElementById('eval-mdd-sub').innerText = `Current DD: ${curDD.toFixed(2)}% • Peak ${formatINR(peak, 0)}`;
+
+            const winRate = pRets.length > 0 ? (wins / pRets.length) * 100.0 : 0.0;
+            document.getElementById('eval-winrate').innerText = `${winRate.toFixed(1)}%`;
+            const realVol = (ledgerData && ledgerData.regime_intel && ledgerData.regime_intel.realized_vol_20d) ? ledgerData.regime_intel.realized_vol_20d : 19.34;
+            document.getElementById('eval-vol-sub').innerText = `${wins}/${pRets.length} Green Days • 20D Vol: ${realVol.toFixed(1)}%`;
+
+            // 30-Session Statistical Warm-Up Gate for Sharpe, Sortino, Beta, Treynor, Jensen's Alpha
+            const nSess = pRets.length;
+            const statusPill = document.getElementById('ratios-status-pill');
+            if (nSess < 30) {
+                statusPill.innerText = `Calibrating (${nSess} / 30 sessions — unlocks after 30 trading days)`;
+                statusPill.style.color = 'var(--blue)';
+                ['ratio-sharpe', 'ratio-sortino', 'ratio-beta', 'ratio-treynor', 'ratio-jensen'].forEach(id => {
+                    const el = document.getElementById(id);
+                    el.innerText = `${nSess}/30d`;
+                    el.style.color = 'var(--text-muted)';
+                });
+            } else {
+                const rfDaily = 0.065 / 252.0;
+                const meanP = pRets.reduce((a, b) => a + b, 0) / nSess;
+                const varP = pRets.reduce((a, b) => a + (b - meanP) ** 2, 0) / nSess;
+                const stdP = Math.sqrt(varP);
+                const downSq = pRets.reduce((a, b) => a + (b < rfDaily ? (b - rfDaily) ** 2 : 0), 0) / nSess;
+                const downStd = Math.sqrt(downSq);
+
+                const sharpe = stdP > 0 ? ((meanP - rfDaily) / stdP) * Math.sqrt(252) : 0;
+                const sortino = downStd > 0 ? ((meanP - rfDaily) / downStd) * Math.sqrt(252) : 0;
+
+                let beta = 1.0, treynor = 0.0, jensen = 0.0;
+                if (mRets.length === nSess) {
+                    const meanM = mRets.reduce((a, b) => a + b, 0) / nSess;
+                    let cov = 0, varM = 0;
+                    for (let i = 0; i < nSess; i++) {
+                        cov += (pRets[i] - meanP) * (mRets[i] - meanM);
+                        varM += (mRets[i] - meanM) ** 2;
+                    }
+                    beta = varM > 0 ? cov / varM : 1.0;
+                    treynor = Math.abs(beta) > 0.05 ? ((meanP - rfDaily) * 252) / beta : 0;
+                    jensen = ((meanP - rfDaily) - beta * (meanM - rfDaily)) * 252 * 100.0;
+                }
+
+                statusPill.innerText = `● LIVE (${nSess} sessions)`;
+                statusPill.style.color = 'var(--green)';
+                document.getElementById('ratio-sharpe').innerText = sharpe.toFixed(2);
+                document.getElementById('ratio-sortino').innerText = sortino.toFixed(2);
+                document.getElementById('ratio-beta').innerText = beta.toFixed(2);
+                document.getElementById('ratio-treynor').innerText = treynor.toFixed(2);
+                document.getElementById('ratio-jensen').innerText = `${jensen >= 0 ? '+' : ''}${jensen.toFixed(1)}%`;
+            }
         }
 
         renderTable();

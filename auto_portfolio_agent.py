@@ -498,8 +498,10 @@ def run_eod_agent():
     # 1. Fetch live market signals
     nifty_price, nifty_ret = fetch_latest_quote("^NSEI")
     vix_price, vix_ret = fetch_latest_quote("^INDIAVIX")
+    midcap_price, midcap_ret = fetch_latest_quote("MID150BEES.NS")
     nifty_price = nifty_price or 25387.40
     vix_price = vix_price or 15.52
+    midcap_price = midcap_price or ledger.get('history', [{}])[-1].get('midcap_close', 231.87)
 
     # 2. Compute HMM Forward Filter (Asymmetric Downside Semi-Variance)
     # Standard Quantitative Modeling: Bull momentum (r > mu0) is upside drift, NOT panic volatility.
@@ -773,6 +775,7 @@ def run_eod_agent():
         'equity_weight_pct': round(new_eq_w * 100, 1),
         'cash_weight_pct': round(new_cash_w * 100, 1),
         'nifty_cmp': nifty_price,
+        'midcap_cmp': midcap_price,
         'vix_cmp': vix_price,
         'model_thinking': (
             f"Hamilton forward filter indicates {p_calm:.1f}% Calm Bull confidence. With 20-day realized volatility ({realized_vol_20d:.1f}%) "
@@ -790,10 +793,11 @@ def run_eod_agent():
 
     if not ledger.get('history'):
         ledger['history'] = []
+    hist_entry = {'date': today_str, 'value': total_account_nav, 'nifty_close': nifty_price, 'midcap_close': midcap_price, 'regime': new_regime}
     if ledger['history'] and ledger['history'][-1]['date'] == today_str:
-        ledger['history'][-1] = {'date': today_str, 'value': total_account_nav, 'nifty_close': nifty_price, 'regime': new_regime}
+        ledger['history'][-1] = hist_entry
     else:
-        ledger['history'].append({'date': today_str, 'value': total_account_nav, 'nifty_close': nifty_price, 'regime': new_regime})
+        ledger['history'].append(hist_entry)
 
     with open(LEDGER_FILE, 'w', encoding='utf-8') as f:
         json.dump(ledger, f, indent=2)

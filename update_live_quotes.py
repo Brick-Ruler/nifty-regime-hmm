@@ -14,7 +14,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_FILE = os.path.join(BASE_DIR, "live_quotes.json")
 
 SYMBOLS = [
-    '^NSEI', '^INDIAVIX',
+    '^NSEI', '^INDIAVIX', 'MID150BEES.NS',
     # 8 Aggressive Champions (Option B Top-5 Sector Rotation)
     'PERSISTENT.NS', 'COFORGE.NS', 'CHOLAFIN.NS', 'FEDERALBNK.NS',
     'INDHOTEL.NS', 'EIHOTEL.NS', 'BALKRISIND.NS', 'DIXON.NS',
@@ -188,6 +188,8 @@ def update_live_quotes():
                 quotes['nifty'] = res
             elif s == '^INDIAVIX':
                 quotes['vix'] = res
+            elif s == 'MID150BEES.NS':
+                quotes['midcap150'] = res
             else:
                 quotes['stocks'][s] = res
 

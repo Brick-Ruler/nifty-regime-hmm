@@ -267,55 +267,64 @@
       "date": "2026-11-18",
       "value": 100000.0,
       "nifty_close": 25387.4,
-      "regime": "AGGRESSIVE GROWTH"
+      "regime": "AGGRESSIVE GROWTH",
+      "midcap_close": 231.87
     },
     {
       "date": "2026-11-19",
       "value": 99502.4,
       "nifty_close": 25370.0,
-      "regime": "AGGRESSIVE GROWTH"
+      "regime": "AGGRESSIVE GROWTH",
+      "midcap_close": 234.75
     },
     {
       "date": "2026-11-20",
       "value": 102646.0,
       "nifty_close": 25739.69921875,
-      "regime": "AGGRESSIVE GROWTH"
+      "regime": "AGGRESSIVE GROWTH",
+      "midcap_close": 235.09
     },
     {
       "date": "2026-11-21",
       "value": 103441.8,
       "nifty_close": 25800.6,
-      "regime": "AGGRESSIVE GROWTH"
+      "regime": "AGGRESSIVE GROWTH",
+      "midcap_close": 235.09
     },
     {
       "date": "2026-11-23",
       "value": 103591.7,
       "nifty_close": 25366.4,
-      "regime": "AGGRESSIVE GROWTH"
+      "regime": "AGGRESSIVE GROWTH",
+      "midcap_close": 233.92
     },
     {
       "date": "2026-11-24",
       "value": 103384.9,
       "nifty_close": 25349.65,
-      "regime": "AGGRESSIVE GROWTH"
+      "regime": "AGGRESSIVE GROWTH",
+      "midcap_close": 233.92
     },
     {
       "date": "2026-11-25",
       "value": 102446.2,
       "nifty_close": 25791.25,
-      "regime": "AGGRESSIVE GROWTH"
+      "regime": "AGGRESSIVE GROWTH",
+      "midcap_close": 233.63
     },
     {
       "date": "2026-11-26",
       "value": 101241.0,
       "nifty_close": 25897.4,
-      "regime": "AGGRESSIVE GROWTH"
+      "regime": "AGGRESSIVE GROWTH",
+      "midcap_close": 234.79
     },
     {
       "date": "2026-11-27",
       "value": 102341.4,
       "nifty_close": 25593.85,
-      "regime": "AGGRESSIVE GROWTH"
+      "regime": "AGGRESSIVE GROWTH",
+      "midcap_close": 234.95
     }
   ],
   "last_updated": "2026-11-27 09:45:37",
@@ -396,5 +405,6 @@
         "shares": 2
       }
     ]
-  }
+  },
+  "initial_midcap150_close": 231.87
 }
